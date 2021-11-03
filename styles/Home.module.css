@@ -1,121 +1,130 @@
-.container {
-  min-height: 100vh;
-  padding: 0 0.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
+@import url("https://fonts.googleapis.com/css2?family=Sawarabi+Gothic&display=swap");
 
 .main {
-  padding: 5rem 0;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+	font-family: "Sawarabi Gothic", sans-serif;
 }
 
-.footer {
-  width: 100%;
-  height: 100px;
-  border-top: 1px solid #eaeaea;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.container {
+	min-height: 100vh;
+	padding: 0 0.5rem;
 }
 
 .footer a {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-grow: 1;
-}
-
-.title a {
-  color: #0070f3;
-  text-decoration: none;
-}
-
-.title a:hover,
-.title a:focus,
-.title a:active {
-  text-decoration: underline;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-grow: 1;
 }
 
 .title {
-  margin: 0;
-  line-height: 1.15;
-  font-size: 4rem;
+	line-height: 1.15;
+	font-size: 4rem;
+	color: #000000;
+	margin-top: 1em;
 }
 
-.title,
+.headStyle {
+	display: flex;
+	align-items: center;
+	gap: 1em;
+}
+.headStyle h1 {
+	font-size: 4rem;
+	color: #000000;
+	margin: 0;
+}
+.headStyle span {
+	font-size: 20px;
+	font-weight: bold;
+	border-radius: 10px;
+	padding: 0.3em 0.6em;
+	background-color: rgb(238, 238, 238);
+	color: grey;
+}
+
+.buttonGap button {
+	margin-top: 1em;
+	margin-right: 1em;
+}
+
 .description {
-  text-align: center;
+	font-size: 1.5rem;
 }
 
-.description {
-  line-height: 1.5;
-  font-size: 1.5rem;
+.duoGrid {
+	display: grid;
+}
+.duoGrid section {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+}
+.padding2em {
+	padding: 2em;
+}
+.duoGrid .aboutScroll {
+	overflow-y: scroll;
+	padding: 1em 1em;
+	margin-top: 3em;
+	margin-bottom: 3em;
 }
 
-.code {
-  background: #fafafa;
-  border-radius: 5px;
-  padding: 0.75rem;
-  font-size: 1.1rem;
-  font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
-    Bitstream Vera Sans Mono, Courier New, monospace;
+.carousel {
+	display: flex;
+	flex-direction: row;
+	overflow-x: scroll;
+	height: min-content;
+	margin: auto 0;
+	border-radius: 50px;
 }
 
-.grid {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  max-width: 800px;
-  margin-top: 3rem;
-}
-
-.card {
-  margin: 1rem;
-  padding: 1.5rem;
-  text-align: left;
-  color: inherit;
-  text-decoration: none;
-  border: 1px solid #eaeaea;
-  border-radius: 10px;
-  transition: color 0.15s ease, border-color 0.15s ease;
-  width: 45%;
-}
-
-.card:hover,
-.card:focus,
-.card:active {
-  color: #0070f3;
-  border-color: #0070f3;
-}
-
-.card h2 {
-  margin: 0 0 1rem 0;
-  font-size: 1.5rem;
-}
-
-.card p {
-  margin: 0;
-  font-size: 1.25rem;
-  line-height: 1.5;
+.carousel .card {
+	margin: 1rem;
+	padding: 1rem;
+	border: 2px solid rgb(238, 238, 238);
+	border-radius: 10px;
+	min-width: 500px;
+	height: min-content;
 }
 
 .logo {
-  height: 1em;
-  margin-left: 0.5rem;
+	height: 1em;
+	margin-left: 0.5rem;
 }
 
-@media (max-width: 600px) {
-  .grid {
-    width: 100%;
-    flex-direction: column;
-  }
+@media (min-width: 500px) {
+	.main {
+		padding: 0rem 1rem;
+		overflow: hidden;
+	}
+	.duoGrid {
+		grid-template-columns: 1fr;
+	}
+	.duoGrid li {
+		font-size: 16px;
+	}
+}
+@media (max-width: 501px) and (min-width: 1270px) {
+	.main {
+		padding: 0rem 3rem;
+		overflow: hidden;
+	}
+	.duoGrid {
+		grid-template-columns: 1fr;
+	}
+	.duoGrid li {
+		font-size: 20px;
+	}
+}
+@media (min-width: 1271px) {
+	.main {
+		padding: 0rem 10rem;
+	}
+	.duoGrid {
+		grid-template-columns: 1fr 1fr;
+		height: 100vh;
+	}
+	.duoGrid li {
+		font-size: 22px;
+	}
 }

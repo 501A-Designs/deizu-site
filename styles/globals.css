@@ -1,16 +1,137 @@
 html,
 body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+	padding: 0;
+	margin: 0;
+	font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+		Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+hr {
+	margin-top: 2em;
+	margin-bottom: 2em;
+	border: 1px solid lightgrey;
+}
+::-webkit-scrollbar {
+	width: 15px;
+	height: 15px;
 }
 
+::-webkit-scrollbar-thumb {
+	background: lightgrey;
+	border-radius: 5px;
+}
+
+::-webkit-scrollbar-track {
+	margin: 5px;
+	width: 5px;
+	height: 5px;
+	background-color: transparent;
+}
+header {
+	position: sticky;
+	background-color: white;
+	opacity: 90%;
+	border-radius: 15px;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-align-items: center;
+	align-items: center;
+	-webkit-justify-content: space-between;
+	justify-content: space-between;
+	z-index: 10;
+	padding: 15px;
+	top: 15px;
+	box-sizing: border-box;
+	border: 2px solid rgb(238, 238, 238);
+}
+header img {
+	width: 50px;
+	height: 50px;
+	border: 2px solid rgb(238, 238, 238);
+	border-radius: 15px;
+}
+header a {
+	text-decoration: none;
+}
+.alignItems {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 2em;
+}
+button {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	user-select: none;
+	gap: 5px;
+	border-radius: 5px;
+	padding: 10px 15px;
+	font-weight: bold;
+	outline: none;
+	cursor: pointer;
+	border: none;
+	transition: 0.25s;
+	background-color: #e2e2e2;
+	color: black;
+}
+button:hover {
+	transform: scale3d(1.05, 1.05, 1.05);
+	box-shadow: 0px 1px 20px #f3f3f3;
+}
+ul {
+	list-style-type: none;
+}
+ul li {
+	border-radius: 7px;
+	background-color: rgb(238, 238, 238);
+	padding: 0.5em 1em;
+	margin: 1em;
+	font-size: 1.5rem;
+	width: fit-content;
+}
+h2 {
+	color: grey;
+}
+h3 {
+	color: black;
+}
+h4 {
+	margin-bottom: 0;
+}
+p {
+	margin-top: 0;
+}
 a {
-  color: inherit;
-  text-decoration: none;
+	color: inherit;
+	/* text-decoration: none; */
 }
 
 * {
-  box-sizing: border-box;
+	box-sizing: border-box;
+}
+footer {
+	position: sticky;
+	bottom: 0;
+	background-color: white;
+	opacity: 90%;
+	width: 100%;
+	height: 100px;
+	border-top: 2px solid rgb(238, 238, 238);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+footer a {
+	text-decoration: none;
+}
+
+@media (max-width: 501px) and (min-width: 1270px) {
+	header {
+		margin: 5px 6rem;
+	}
+}
+@media (min-width: 1271px) {
+	header {
+		margin: 5px 10rem;
+	}
 }
