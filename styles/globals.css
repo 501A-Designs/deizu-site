@@ -35,8 +35,8 @@ header {
 	background-color: white;
 	background: radial-gradient(
 		86.36% 107.55% at 6.49% 12.32%,
-		rgba(255, 255, 255, 0.5) 0%,
-		rgba(255, 255, 255, 0.5) 100%
+		rgba(255, 255, 255, 0.7) 0%,
+		rgba(255, 255, 255, 0.7) 100%
 	);
 	backdrop-filter: blur(16px);
 	border-radius: 15px;
@@ -50,12 +50,12 @@ header {
 	padding: 15px;
 	top: 15px;
 	box-sizing: border-box;
-	border: 2px solid rgba(238, 238, 238, 0.651);
+	border: 1px solid rgba(238, 238, 238, 0.651);
 }
 header img {
 	width: 50px;
 	height: 50px;
-	border: 2px solid transparent;
+	border: 1px solid transparent;
 	box-shadow: 0px 0px 15px rgb(221, 221, 221);
 	border-radius: 15px;
 	transition: 0.5s;
@@ -80,14 +80,16 @@ button {
 	user-select: none;
 	gap: 5px;
 	border-radius: 5px;
-	padding: 10px 15px;
+	padding: 10px 25px;
 	font-weight: bold;
 	outline: none;
 	cursor: pointer;
 	border: none;
 	transition: 0.25s;
-	background-color: #e2e2e2;
-	color: black;
+	/* background-color: #e2e2e2; */
+	/* color: black; */
+	color: white;
+	background-color:black;
 }
 button:hover {
 	transform: scale3d(1.05, 1.05, 1.05);
@@ -106,7 +108,8 @@ ul li {
 }
 h2 {
 	/* color: grey; */
-	background-image: linear-gradient(90deg, #00a9e8, #26ff00);
+	width: fit-content;
+	background-image: linear-gradient(90deg, #00a9e8, #24f300);
 	background-clip: text;
 	color: transparent;
 }
@@ -157,4 +160,18 @@ footer a {
 	header {
 		margin: 5px 10rem;
 	}
+}
+
+.mockupContainer{
+	animation: mockupContainerAni infinite 5s;
+	animation-direction:alternate; 
+}
+
+@keyframes mockupContainerAni {
+	0%{
+		transform:  perspective(200px) rotateX(5deg) rotateY(-2deg);
+	}	
+	100%{
+		transform:  perspective(200px) rotateX(5deg) rotateY(2deg);
+	}	
 }

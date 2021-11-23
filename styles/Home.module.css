@@ -39,6 +39,10 @@
 	color: grey;
 }
 
+.buttonGap{
+	display: flex;
+}
+
 .buttonGap button {
 	margin-top: 1em;
 	margin-right: 1em;
