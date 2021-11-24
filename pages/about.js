@@ -57,7 +57,7 @@ export default function About() {
                                 <ol>Authentication：ログインシステム</ol>
                             </ul>
                         </ul>
-                        <p>バージョン情報についてはGitHubのリリースでも確認することができます</p>
+                        <p>バージョン情報については<a href="https://github.com/501A-Designs/DEIZU/releases">GitHubのリリース</a>でも確認することができます</p>
                     </div>
                 </div>
             </main>
