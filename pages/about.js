@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import Header from './Header'
+import { MdCode,MdPerson } from "react-icons/md";
 
 export default function About() {
     return (
@@ -44,8 +45,8 @@ export default function About() {
                         <h2>開発について</h2>
                         <p>オープンソースであるため、ソースコードは全てGitHubに有ります。以下のリンクからアクセスが可能です：</p>
                         <div className={styles.buttonGap}>
-                            <button className={styles.whiteBtn} onClick={() => { window.open('https://github.com/501A-Designs/DEIZU', "_blank") }}>GitHubを見る</button>
-                            <button className={styles.whiteBtn} onClick={() => { window.open('https://501a.netlify.app', "_blank") }}>開発者のサイト</button>
+                            <button className={styles.whiteBtn} onClick={() => { window.open('https://github.com/501A-Designs/DEIZU', "_blank") }}><MdCode className={styles.icon}/>GitHubを見る</button>
+                            <button className={styles.whiteBtn} onClick={() => { window.open('https://501a.netlify.app', "_blank") }}><MdPerson className={styles.icon}/>開発者のサイト</button>
                         </div>
 
                         <h3>テクノロジースタック</h3>

@@ -5,7 +5,7 @@ import styles from '../styles/Home.module.css'
 import { BrowserMockup } from 'react-mockup'
 import 'react-mockup/dist/index.css'
 import Header from './Header'
-import { MdOutlineOpenInBrowser } from "react-icons/md";
+import { MdOutlineOpenInBrowser,MdCode } from "react-icons/md";
 
 export default function Home() {
   const [versionData, setVersionData] = useState();
@@ -30,10 +30,16 @@ export default function Home() {
             </div>
             <div className={styles.buttonGap}>
               <button className={styles.blueBtn} onClick={() => { window.open('https://deizu-site.firebaseapp.com/', "_blank") }}><MdOutlineOpenInBrowser className={styles.icon}/>アプリを開く</button>
-              {/* <button className={styles.whiteBtn} onClick={() => { window.open('https://github.com/501A-Designs/DEIZU', "_blank") }}>GitHubを見る</button> */}
+              <button className={styles.whiteBtn} onClick={() => { window.open('https://github.com/501A-Designs/DEIZU', "_blank") }}><MdCode className={styles.icon}/>GitHubを見る</button>
             </div>
           </section>
-          <section className="mockupContainer"><BrowserMockup src="/deizu-screenshot.png" /></section>
+          <section className="mockupContainer">
+            <BrowserMockup
+              src="/deizu-screenshot.png"
+              type="mac"
+              color="black"
+            />
+          </section>
         </div>
 
         <div className={styles.duoGrid}>
