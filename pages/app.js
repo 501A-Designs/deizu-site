@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useState} from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Button from '../lib/component/Button';
@@ -7,13 +7,34 @@ import { MdPerson, MdDescription } from 'react-icons/md';
 import Container from '../lib/component/Container';
 import Banner from '../lib/component/Banner';
 
+// Firebase
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { auth } from "../firebase"
+
 export default function App() {
     const router = useRouter()
+    const [user, loading, error] = useAuthState(auth);
 
-    // const signInWithGoogle = () => {
-    //     const provider = new firebase.auth.GoogleAuthProvider();
-    //     auth.signInWithPopup(provider);
-    // }
+    const signInWithGoogle = () => {
+        const provider = new GoogleAuthProvider();
+        signInWithPopup(auth, provider)
+        .then((result) => {
+            const credential = GoogleAuthProvider.credentialFromResult(result);
+            const token = credential.accessToken;
+            console.log(token);
+            console.log(result.user);
+        }).catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            const email = error.email;
+            const credential = GoogleAuthProvider.credentialFromError(error);
+        });
+    }
+    if (user) {
+        router.push(`/user/${user.uid}`)
+    }
+
     return (
         <AlignItems
             style={{
@@ -41,7 +62,7 @@ export default function App() {
                     margin: 'auto'
                 }}>
                     <Button
-                        // onClick={signInWithGoogle}
+                        onClick={signInWithGoogle}
                         width='full'
                         icon={<MdPerson/>}
                     >
