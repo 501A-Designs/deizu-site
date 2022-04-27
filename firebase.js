@@ -11,7 +11,6 @@ const firebaseConfig = {
     appId: process.env.NEXT_APP_APP_ID,
     measurementId: process.env.NEXT_APP_MEASUREMENT_ID
 };
-// Firebaseのインスタンスが存在しない場合にのみ、インスタンスを作成します
 
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);

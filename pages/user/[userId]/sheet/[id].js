@@ -21,6 +21,7 @@ import Button from '../../../../lib/component/Button';
 import { modalStyle } from '../../../../lib/style/modalStyle'
 import Head from 'next/head';
 import LinkPreview from '../../../../lib/component/LinkPreview';
+import ScheduleGrid from '../../../../lib/schedule/ScheduleGrid';
 // Modal.setAppElement('#yourAppElement');
 
 function IndivisualSheet({ sheetName }) {
@@ -29,7 +30,7 @@ function IndivisualSheet({ sheetName }) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   moment.locale("ja");
-  
+
   const sheetOwnerId = router.query.userId;
   
   const fetchData = () => {
@@ -49,8 +50,6 @@ function IndivisualSheet({ sheetName }) {
     console.log('test')
   }, []);
 
-
-
   // const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
   const [user, loading, error] = useAuthState(auth);
   console.log(user, loading, error)
@@ -66,7 +65,6 @@ function IndivisualSheet({ sheetName }) {
       </Head>
       <Modal
         isOpen={modalIsOpen}
-        // onAfterOpen={afterOpenModal}
         onRequestClose={closeModal}
         style={modalStyle}
       >
@@ -79,16 +77,16 @@ function IndivisualSheet({ sheetName }) {
             閉じる
           </IconButton>
         </AlignItems>
-        <p>DEIZUについては詳しくはこちらの</p>
         <h3>共有設定</h3>
-        <p>
-          リンクをアクセスできる人全てに時間割の閲覧権限を与える
-        </p>
-        <AlignItems>
+        <AlignItems style={{justifyContent: 'space-between'}}>
+          <p>
+            時間割の閲覧権限を与える
+          </p>
           <Button>リンク共有を有効</Button>
-          <Button>共有リンクをコピー</Button>
           {/* <LinkPreview>{`https://prattle.vercel.app/user/${user.uid}/sheet/${sheetName}`}</LinkPreview> */}
         </AlignItems>
+        <p>URLをコピーして共有。なおリンクにアクセスできる人は全て時間割を閲覧することができます。</p>
+        <Button>共有リンクをコピー</Button>
         <hr/>
         <h3>デインジャーゾーン</h3>
         <AlignItems style={{justifyContent: 'space-between'}}>
@@ -98,7 +96,7 @@ function IndivisualSheet({ sheetName }) {
       </Modal>
       {sheetData &&
         <BodyMargin>
-          <AlignItems style={{justifyContent: 'space-between'}}>
+          <AlignItems style={{justifyContent: 'space-between', marginBottom:'1.5em'}}>
             <IconButton
               onClick={() => router.push('/app')}
               icon={<MdHomeFilled/>}
@@ -113,6 +111,11 @@ function IndivisualSheet({ sheetName }) {
               設定
             </IconButton>
           </AlignItems>
+          <ScheduleGrid
+            sheetName={sheetName}
+            sheetOwnerId={sheetOwnerId}
+            sheetData={sheetData}
+          />
         </BodyMargin>
       }
       {/* <Button onClick={docSnap}>bruh</Button> */}
