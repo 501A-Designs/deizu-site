@@ -97,10 +97,11 @@ export default function Home() {
               <Container>
                 <h2>iOSとAndroid &rarr;</h2>
                 <p>React Nativeで作成されたモバイルプラットフォームはWebほどヘビーユーザーでないあなたに最低限の機能が搭載され、時間割作成を簡単にそして素早く行ってくれるプラットフォームです。</p>
-                <AlignItems>
-                  <Button>iOSのアプリダウンロード</Button>
-                  <Button>Androidのアプリダウンロード</Button>
-                </AlignItems>
+                <p>Coming Soon ...</p>
+                {/* <AlignItems>
+                  <Button disabled={true}>iOSのアプリダウンロード</Button>
+                  <Button disabled={true}>Androidのアプリダウンロード</Button>
+                </AlignItems> */}
               </Container>
             </div>
           </AlignItems>

@@ -1,27 +1,34 @@
 import React,{useEffect, useState} from 'react'
-import { MdHomeFilled, MdSettings,MdClose } from "react-icons/md";
+import { MdHomeFilled, MdSettings,MdClose,MdDelete } from "react-icons/md";
 
 import IconButton from '../../../../lib/component/IconButton'
 import AlignItems from '../../../../lib/style/AlignItems';
-import Container from '../../../../lib/component/Container';
 import BodyMargin from '../../../../lib/style/BodyMargin';
 import StaticScene from '../../../../lib/style/StaticScene';
+import Stack from '../../../../lib/style/Stack';
 
+import SubjectCell from '../../../../lib/schedule/SubjectCell'
+import TimeCell from '../../../../lib/schedule/TimeCell'
+import Input from '../../../../lib/component/Input';
+import MockupCell from '../../../../lib/component/MockupCell';
+import Button from '../../../../lib/component/Button';
+import ColorButton from '../../../../lib/component/ColorButton';
 
 import { useRouter } from 'next/router'
 
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth,db } from "../../../../firebase"
-import { doc, getDoc } from "firebase/firestore";
+import { auth,db } from "../../../../src/service/firebase"
+import { doc, getDoc,setDoc,serverTimestamp, updateDoc, deleteField } from "firebase/firestore";
 
 import Modal from 'react-modal';
 import moment from 'moment';
-import Button from '../../../../lib/component/Button';
 
+// Data
 import { modalStyle } from '../../../../lib/style/modalStyle'
+import { scheduleCellId } from '../../../../lib/data/scheduleCellId'
+import { buttonColor } from '../../../../lib/data/buttonColor'
+
 import Head from 'next/head';
-import LinkPreview from '../../../../lib/component/LinkPreview';
-import ScheduleGrid from '../../../../lib/schedule/ScheduleGrid';
 // Modal.setAppElement('#yourAppElement');
 
 function IndivisualSheet({ sheetName }) {
@@ -40,21 +47,166 @@ function IndivisualSheet({ sheetName }) {
         router.push('/app') 
       }
       setSheetData(doc.data().sheets[sheetName]);
-      console.log(doc.data().sheets[sheetName]);
-      // console.log(doc.data().sheets)
     })
   }
-  // fetchData()
   useEffect(() => {
     fetchData()
     console.log('test')
   }, []);
 
-  // const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
   const [user, loading, error] = useAuthState(auth);
   console.log(user, loading, error)
 
+  function ScheduleGrid(props) {
+    let scheduleGridStyle ={
+        display: 'grid',
+        gridTemplateColumns:'1fr 1fr 1fr 1fr 1fr 1fr',
+        gap: '0.2em'
+    }
+    const [cellModalIsOpen, setCellModalIsOpen] = useState(false);
+    const [modalCellId, setModalCellId] = useState('');
+    const [subjectCellName, setSubjectCellName] = useState('');
+    const [subjectCellDescription, setSubjectCellDescription] = useState('')
+    const [subjectCellColor, setSubjectCellColor] = useState('')
+    const [subjectCellLink, setSubjectCellLink] = useState('')
 
+    const closeCellModal = () => {
+      setSubjectCellName('')
+      setSubjectCellDescription('');
+      setSubjectCellColor('');
+      setSubjectCellLink('');
+      setCellModalIsOpen(false);
+    };
+    const openCellModal = (prop) => {
+      console.log('OPENNNNN')
+      if (sheetData.cells[prop]) {  
+        setSubjectCellName(sheetData.cells[prop][prop])
+        setSubjectCellDescription(sheetData.cells[prop][prop+'Dscrp']);
+        setSubjectCellColor(sheetData.cells[prop][prop+'Color']);
+        setSubjectCellLink(sheetData.cells[prop][prop+'Link']);
+      }else{
+        setSubjectCellName('')
+        setSubjectCellDescription('');
+        setSubjectCellColor('');
+        setSubjectCellLink('');
+      }
+      setCellModalIsOpen(true);
+    };
+
+    const saveSubjectData = async (e) => {
+        e.preventDefault();
+        const docRef = doc(db, "users", user.uid);
+        await setDoc(docRef,
+            {
+                sheets:{
+                    [sheetName]: {
+                        date: serverTimestamp(),
+                        cells:{
+                            [modalCellId]: {
+                                [modalCellId]: subjectCellName,
+                                [modalCellId + 'Link']: subjectCellLink,
+                                [modalCellId + 'Dscrp']: subjectCellDescription,
+                                [modalCellId + 'Color']: subjectCellColor
+                            }
+                        }
+                    }
+                },
+            }, { merge: true }
+        );
+        fetchData()
+    }
+
+    return (
+        <>
+        <Modal
+            isOpen={cellModalIsOpen}
+            onRequestClose={closeCellModal}
+            style={modalStyle}
+        >
+            <Stack gap={'1em'}>
+                <MockupCell
+                    subjectCellName = {subjectCellName}
+                    subjectCellLink = {subjectCellLink}
+                    subjectCellColor = {subjectCellColor}
+                    subjectCellDescription = {subjectCellDescription}
+                />
+                <AlignItems style={{justifyContent: 'center'}}>
+                    {buttonColor.map((props)=>
+                        <ColorButton
+                            color={props}
+                            onClick={() => {
+                                setSubjectCellColor(props);
+                            }}
+                        />
+                    )}
+                </AlignItems>
+                <Stack>
+                  <Input
+                    value={subjectCellName}
+                    onChange={(e)=>setSubjectCellName(e.target.value)}
+                    placeholder={'科目名'}
+                  />
+                  <Input
+                    value={subjectCellLink}
+                    onChange={(e)=>setSubjectCellLink(e.target.value)}
+                    placeholder={'URLリンク'}
+                  />
+                  <Input
+                    value={subjectCellDescription}
+                    onChange={(e)=>setSubjectCellDescription(e.target.value)}
+                    placeholder={'概要・教室名等'}
+                  />
+                </Stack>
+                <Button
+                    width="full"
+                    onClick={(e)=>saveSubjectData(e)}
+                >
+                    保存
+                </Button>
+            </Stack>
+        </Modal>
+        <div 
+          style = {{
+            display:'grid',
+            gridTemplateColumns:'0.5fr 9fr',
+            gap: '0.5em'
+          }}
+        >
+            <Stack gap = {'0.2em'}>
+              <TimeCell displayPeriod={1}/>
+              <TimeCell displayPeriod={2}/>
+              <TimeCell displayPeriod={3}/>
+              <TimeCell displayPeriod={4}/>
+              <TimeCell displayPeriod={5}/>
+              <TimeCell displayPeriod={6}/>
+            </Stack>
+            <div style={scheduleGridStyle}>
+              {scheduleCellId.map(cellId =>                
+                <SubjectCell
+                  sheetData={sheetData}
+                  onClick={()=>{
+                    openCellModal(cellId);
+                    setModalCellId(cellId);
+                  }}
+                  cellId={cellId}
+                />
+              )}
+            </div>
+        </div>
+        <p
+            style = {{
+                textAlign:'center',
+                fontSize:'0.6em',
+                color:'grey'
+            }}
+        >
+            最終変更時：{sheetData.date.toDate().toDateString()}
+        </p>
+        </>
+    )
+  }
+
+  // Modal related
   const closeModal = () => setModalIsOpen(false);
   const openModal = () => setModalIsOpen(true);
 
@@ -83,7 +235,6 @@ function IndivisualSheet({ sheetName }) {
             時間割の閲覧権限を与える
           </p>
           <Button>リンク共有を有効</Button>
-          {/* <LinkPreview>{`https://prattle.vercel.app/user/${user.uid}/sheet/${sheetName}`}</LinkPreview> */}
         </AlignItems>
         <p>URLをコピーして共有。なおリンクにアクセスできる人は全て時間割を閲覧することができます。</p>
         <Button>共有リンクをコピー</Button>
@@ -91,7 +242,17 @@ function IndivisualSheet({ sheetName }) {
         <h3>デインジャーゾーン</h3>
         <AlignItems style={{justifyContent: 'space-between'}}>
           <p>「{sheetName}」を消去</p>
-          <Button>時間割表を消去</Button>
+          <Button
+            icon={<MdDelete />}
+            onClick={async() => {
+                if (window.confirm("今開いている時間割表を消去したいですか？一度消去すると復旧することはできません。")) {
+                  const docRef = doc(db, "users", user.uid);
+                  await updateDoc(docRef, {[`sheets.${sheetName}`]: deleteField()});
+                  router.push('/app');
+                }
+              }
+            }
+          >時間割表を消去</Button>
         </AlignItems>
       </Modal>
       {sheetData &&
@@ -112,9 +273,9 @@ function IndivisualSheet({ sheetName }) {
             </IconButton>
           </AlignItems>
           <ScheduleGrid
-            sheetName={sheetName}
-            sheetOwnerId={sheetOwnerId}
-            sheetData={sheetData}
+            // sheetName={sheetName}
+            // sheetOwnerId={sheetOwnerId}
+            // sheetData={sheetData}
           />
         </BodyMargin>
       }

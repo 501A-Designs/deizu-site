@@ -7,7 +7,7 @@ import BodyMargin from '../../../lib/style/BodyMargin';
 import { useRouter } from 'next/router'
 
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth,db } from "../../../firebase"
+import { auth,db } from "../../../src/service/firebase"
 import { doc, getDoc } from "firebase/firestore";
 
 import StaticScene from '../../../lib/style/StaticScene';

@@ -10,7 +10,7 @@ import Banner from '../lib/component/Banner';
 // Firebase
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { auth } from "../firebase"
+import { auth } from "../src/service/firebase"
 
 export default function App() {
     const router = useRouter()
