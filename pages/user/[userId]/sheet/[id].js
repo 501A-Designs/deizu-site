@@ -1,5 +1,5 @@
 import React,{useEffect, useState} from 'react'
-import { MdHomeFilled, MdSettings,MdClose,MdLink,MdLinkOff,MdDelete,MdPerson } from "react-icons/md";
+import { MdHomeFilled,MdAddCircle, MdSettings,MdClose,MdLink,MdLinkOff,MdDelete,MdPerson,MdCalendarViewMonth,MdCalendarViewWeek } from "react-icons/md";
 
 import IconButton from '../../../../lib/component/IconButton'
 import AlignItems from '../../../../lib/style/AlignItems';
@@ -23,13 +23,14 @@ import { doc, getDoc,setDoc,serverTimestamp, updateDoc, deleteField } from "fire
 import Modal from 'react-modal';
 import moment from 'moment';
 import { toast } from 'react-toastify';
+import { modalStyle } from '../../../../lib/style/modalStyle'
 
 // Data
-import { modalStyle } from '../../../../lib/style/modalStyle'
 import { scheduleCellId } from '../../../../lib/data/scheduleCellId'
 import { buttonColor } from '../../../../lib/data/buttonColor'
 
 import Head from 'next/head';
+import Container from '../../../../lib/component/Container';
 
 // Modal.setAppElement('#yourAppElement');
 function IndivisualSheet({ sheetName }) {
@@ -60,6 +61,11 @@ function IndivisualSheet({ sheetName }) {
   }, []);
 
   const [user] = useAuthState(auth);
+
+  const [listViewState, setListViewState] = useState(false)
+  const listView = (prop) => {
+    setListViewState(prop);
+  }
 
   function ScheduleGrid() {
     let scheduleGridStyle ={
@@ -109,7 +115,6 @@ function IndivisualSheet({ sheetName }) {
           } 
         })
         setSheetCellsData(newObject);
-        // console.log(newObject)
 
         const docRef = doc(db, "users", user.uid);
         await setDoc(docRef,
@@ -129,7 +134,6 @@ function IndivisualSheet({ sheetName }) {
               },
             }, { merge: true }
         );
-        // fetchData()
     }
 
     return (
@@ -181,40 +185,66 @@ function IndivisualSheet({ sheetName }) {
             </Button>
           </Stack>
         </Modal>
-        <div 
-          style = {{
-            display:'grid',
-            gridTemplateColumns:'0.5fr 9fr',
-            gap: '0.5em'
-          }}
+        <div
+          className={listViewState && 'grid-1fr-6fr'}
         >
-          <Stack gap = {'0.2em'}>
-            <TimeCell displayPeriod={1}/>
-            <TimeCell displayPeriod={2}/>
-            <TimeCell displayPeriod={3}/>
-            <TimeCell displayPeriod={4}/>
-            <TimeCell displayPeriod={5}/>
-            <TimeCell displayPeriod={6}/>
-          </Stack>
-          <div style={scheduleGridStyle}>
-            {scheduleCellId.map(cellId =>                
-              <SubjectCell
-                sheetData={sheetData}
-                sheetCellsData = {sheetCellsData}
-                onClick={()=>{
-                  openCellModal(cellId);
-                  setModalCellId(cellId);
-                }}
-                cellId={cellId}
-              />
-            )}
+          {listViewState &&
+            <Container>
+              <h1>{moment().format('LT')}</h1>
+              <h3>{moment().format('dddd')}</h3>
+              <h4>日程：{moment().format('MMMM Do YYYY')}</h4>
+            </Container>
+          }
+          <div 
+            style={{
+              display:'grid',
+              gridTemplateColumns:'0.5fr 9fr',
+              gap: '0.5em'
+            }}
+          >
+            <Stack gap = {'0.2em'}>
+              <TimeCell displayPeriod={1}/>
+              <TimeCell displayPeriod={2}/>
+              <TimeCell displayPeriod={3}/>
+              <TimeCell displayPeriod={4}/>
+              <TimeCell displayPeriod={5}/>
+              <TimeCell displayPeriod={6}/>
+            </Stack>
+            {listViewState ? 
+              <Stack gap={'0.2em'}>
+                {scheduleCellId.filter(word => word.split('')[0] === 'a').map(cellId =>
+                  <SubjectCell
+                    sheetData={sheetData}
+                    sheetCellsData = {sheetCellsData}
+                    onClick={()=>{
+                      openCellModal(cellId);
+                      setModalCellId(cellId);
+                    }}
+                    cellId={cellId}
+                  />
+                )}
+              </Stack>:
+              <div style={scheduleGridStyle}>
+                {scheduleCellId.map(cellId =>                
+                  <SubjectCell
+                    sheetData={sheetData}
+                    sheetCellsData = {sheetCellsData}
+                    onClick={()=>{
+                      openCellModal(cellId);
+                      setModalCellId(cellId);
+                    }}
+                    cellId={cellId}
+                  />
+                )}
+              </div>
+            }
           </div>
         </div>
         <p
           style = {{
             textAlign:'center',
             fontSize:'0.6em',
-            color:'grey'
+            color:'var(--txtColor0)'
           }}
         >
           最終変更時：{sheetData.date.toDate().toDateString()}
@@ -250,12 +280,20 @@ function IndivisualSheet({ sheetName }) {
       <BodyMargin>
         <AlignItems style={{justifyContent: 'space-between', marginBottom:'1.5em'}}>
           {user ?
-            <IconButton
-              onClick={() => router.push(`/user/${user.uid}/`)}
-              icon={<MdHomeFilled/>}
-            >
-              ダッシュボード
-            </IconButton>:
+            <AlignItems>
+              <IconButton
+                onClick={() => router.push(`/user/${user.uid}/`)}
+                icon={<MdHomeFilled/>}
+              >
+                ダッシュボード
+              </IconButton>
+              <IconButton
+                onClick={() => router.push(`/user/${user.uid}/sheet`)}
+                icon={<MdAddCircle/>}
+              >
+                新規作成
+              </IconButton>
+            </AlignItems>:
             <IconButton
               onClick={() => router.push('/app')}
               icon={<MdPerson/>}
@@ -264,13 +302,21 @@ function IndivisualSheet({ sheetName }) {
             </IconButton>
           }
           <h1>{sheetName}</h1>
-          {user ? 
-            <IconButton
-              onClick={()=>openModal()}
-              icon={<MdSettings/>}
-            >
-              設定
-            </IconButton>:
+          {user ?
+            <AlignItems>
+              <IconButton
+                onClick={()=>{listViewState ? listView(false):listView(true)}}
+                icon={!listViewState ? <MdCalendarViewWeek/>:<MdCalendarViewMonth/>}
+              >
+                {!listViewState ? 'リスト表示':'グリッド表示'}
+              </IconButton>
+              <IconButton
+                onClick={()=>openModal()}
+                icon={<MdSettings/>}
+              >
+                設定
+              </IconButton>
+            </AlignItems>:
             <p>現在閲覧中</p>
           }
         </AlignItems>

@@ -24,4 +24,9 @@ if (firebaseConfig?.projectId) {
   db = getFirestore();
 }
 
-export {analytics, db,auth};
+let root;
+if (typeof document !== 'undefined') {
+  root = document.documentElement;
+}
+
+export {analytics, db,auth,root};

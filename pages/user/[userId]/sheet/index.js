@@ -34,7 +34,6 @@ export default function index() {
         }, initialValue);
     }
 
-    const [sheetData, setSheetData] = useState()
     const createScheduleSheet = async (e) =>{
         e.preventDefault();
         const docRef = doc(db, "users", user.uid);
@@ -79,11 +78,6 @@ export default function index() {
                                 onChange={handleSheetNameInputChange}
                                 placeholder={'時間割タイトル'}
                             />
-                            {/* <Input
-                                value={sheetWallpaper}
-                                onChange={(e)=>e.target.value}
-                                placeholder={'壁紙（画像URL）※任意'}
-                            /> */}
                             <Button
                                 width={'full'}
                                 onClick={(e)=> createScheduleSheet(e)}

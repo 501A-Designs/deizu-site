@@ -3,6 +3,17 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500&display=swap');
 
+:root {
+	--r5: 5px;
+	--r10: 10px;
+	--system0: white;
+	--system1: #ececec;
+	--system2: #dbdbdb;
+	--system3: black;
+	--txtColor0: black;
+	--txtColor1: white;
+}
+
 
 html,
 body {
@@ -10,15 +21,20 @@ body {
 	margin: 0;
 	font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
 		Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+	background-color: var(--system0);
 }
 h1,h2,h3,h4,h5,h6 {
+	color: var(--txtColor0);
 	margin: 0.3em 0 0.3em 0;
+}
+p{
+	color: var(--txtColor0);
 }
 
 hr {
 	margin-top: 1em;
 	margin-bottom: 1em;
-	border: 1px solid lightgrey;
+	border: 1px solid var(--system1);
 }
 ::-webkit-scrollbar {
 	width: 15px;
@@ -61,6 +77,10 @@ a {
 	display: grid;
 	gap: 5em;
 }
+.grid-1fr-6fr{
+	display: grid;
+	gap: 2em;
+}
 
 .sidePadding{
 	margin: 0 10%;
@@ -71,7 +91,8 @@ a {
 		height: fit-content;
 	}
 	.grid-1fr-1fr,
-	.grid-1fr-2fr{
+	.grid-1fr-2fr,
+	.grid-1fr-6fr{
 		grid-template-columns: 1fr;
 	}
 }
@@ -85,6 +106,9 @@ a {
 	.grid-1fr-2fr{
 		grid-template-columns: 1fr 2fr;
 	}
+	.grid-1fr-6fr{
+		grid-template-columns: 1fr 6fr;
+	}
 }
 @media (min-width: 1271px) {
 	.responsiveFullHeight{
@@ -95,6 +119,9 @@ a {
 	}
 	.grid-1fr-2fr{
 		grid-template-columns: 1fr 2fr;
+	}
+	.grid-1fr-6fr{
+		grid-template-columns: 1fr 6fr;
 	}
 }
 

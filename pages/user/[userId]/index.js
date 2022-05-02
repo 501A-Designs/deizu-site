@@ -1,18 +1,26 @@
 import React,{useState,useEffect} from 'react'
 import Button from '../../../lib/component/Button'
-import { MdAddCircle } from "react-icons/md";
+import IconButton from '../../../lib/component/IconButton'
+
+import { MdAddCircle,MdSettings } from "react-icons/md";
 import AlignItems from '../../../lib/style/AlignItems';
 import Container from '../../../lib/component/Container';
 import BodyMargin from '../../../lib/style/BodyMargin';
 import { useRouter } from 'next/router'
 
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth,db } from "../../../src/service/firebase"
-import { doc, getDoc } from "firebase/firestore";
+import { auth,db,root } from "../../../src/service/firebase"
+import { doc, getDoc,setDoc } from "firebase/firestore";
+
+import Modal from 'react-modal';
+import { modalStyle } from '../../../lib/style/modalStyle'
+import { themeData, themeColorData } from '../../../lib/data/themeData'
 
 import StaticScene from '../../../lib/style/StaticScene';
 
 import moment from 'moment';
+import Stack from '../../../lib/style/Stack';
+import ImageButton from '../../../lib/component/ImageButton';
 
 function IndivisualUser() {
   const router = useRouter();
@@ -20,43 +28,54 @@ function IndivisualUser() {
   moment.locale("ja");
   console.log(userId);
   // const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
-  const [user, loading, error] = useAuthState(auth);
-  console.log(user, loading, error)
+  const [user, loading] = useAuthState(auth);
+  const [sheetTitle, setSheetTitle] = useState();
   
-  function OtherSheets() {
-    const [sheetTitle, setSheetTitle] = useState();
-    const fetchData = () => {
+  useEffect(() => {
+    if (user) {      
       const docRef = doc(db, "users", user.uid);
       getDoc(docRef).then((doc) => {
-        // setSheetData(doc.data().sheets);
+        setThemeColor(doc.data().themeColor);
+        setTheme(doc.data().theme);
         setSheetTitle(Object.keys(doc.data().sheets));
         console.log(sheetTitle);
       })
-    }
-
-    useEffect(() => {
-      fetchData()
       console.log('test')
-    }, []);
+    }
+  },[user])
 
-    return (
-      <>
-        {sheetTitle && sheetTitle.map((title) =>
-          <p
-            style={{
-              backgroundColor:'#F0F0F0',
-              padding:'0.5em 1em',
-              margin:'0.5em 0',
-              borderRadius:5,
-              cursor: 'pointer'
-            }}
-            onClick={() =>router.push(`/user/${user.uid}/sheet/${title}`)}
-          >
-            {title}
-          </p>
-        )}
-      </>
-    )
+  const [theme, setTheme] = useState();
+  const [themeColor, setThemeColor] = useState();
+
+  useEffect(() => {
+    if (theme) {
+      root?.style.setProperty("--r5", theme[0]);
+      root?.style.setProperty("--r10", theme[1]);
+    }
+    if (themeColor) {        
+      root?.style.setProperty("--system0", themeColor[0]);
+      root?.style.setProperty("--system1", themeColor[1]);
+      root?.style.setProperty("--system2", themeColor[2]);
+      root?.style.setProperty("--system3", themeColor[3]);
+      root?.style.setProperty("--txtColor0", themeColor[4]);
+      root?.style.setProperty("--txtColor1", themeColor[5]);
+    }
+  },[themeColor, theme])
+
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const openModal = () => setModalIsOpen(true);
+  const closeModal = () => setModalIsOpen(false);
+
+  const saveThemeData = async(e) => {
+    e.preventDefault();
+    const docRef = doc(db, "users", user.uid);
+    await setDoc(docRef,
+        {
+          theme: theme,
+          themeColor: themeColor,
+        }, { merge: true }
+    );
+    closeModal()
   }
 
   return (
@@ -65,15 +84,53 @@ function IndivisualUser() {
         <>
           {user.uid == userId &&
             <>
+              <Modal
+                isOpen={modalIsOpen}
+                onRequestClose={closeModal}
+                style={modalStyle}
+              >
+                <Stack>
+                  <h2>テーマ</h2>
+                  <h3>テーマ</h3>
+                  <Stack grid={'1fr 1fr 1fr'}>
+                    {themeData.map((prop)=>{
+                      return <ImageButton onClick={()=>setTheme(prop.value)}>{prop.name}</ImageButton>
+                    })}
+                  </Stack>
+                  <h3>色</h3>
+                  <Stack grid={'1fr 1fr 1fr 1fr'}>
+                    {themeColorData.map((prop)=>{
+                      return <ImageButton onClick={()=>setThemeColor(prop.value)}>{prop.name}</ImageButton>
+                    })}
+                  </Stack>
+                  <Button
+                    width="full"
+                    onClick={(e)=>saveThemeData(e)}
+                  >
+                    保存
+                  </Button>
+                </Stack>
+              </Modal>
               <BodyMargin>
                 <section className="grid-1fr-2fr">
                   <Container style={{display: 'grid',gridTemplateColumns:'1fr'}}>
+                    <AlignItems style={{justifyContent: 'space-between'}}>
                       <AlignItems style={{gap: '1em'}}>
-                      <img style={{width: '3em', height: '3em', borderRadius:50}} src={user.photoURL} />
-                      <h1 style={{ fontSize: '2em'}}>{user.displayName.split(' ')[0]}</h1>
+                        <img style={{width: '3em', height: '3em', borderRadius:50}} src={user.photoURL} />
+                        <h1 style={{ fontSize: '2em'}}>{user.displayName.split(' ')[0]}</h1>
                       </AlignItems>
+                      <IconButton
+                        onClick={() => openModal()}
+                        icon={<MdSettings/>}
+                      >
+                        設定
+                      </IconButton>
+                    </AlignItems>
                       <p>{user.email}</p>
-                      <h2 style={{ fontSize: '1em'}}>本日は：{moment().format("MMM Do dddd")}</h2>
+                      <h2 style={{ fontSize: '1em',marginBottom: '1.5em'}}>本日は：{moment().format("MMM Do dddd")}</h2>
+                      <AlignItems>
+                        <Button>ログアウト</Button>
+                      </AlignItems>
                   </Container>
                   <AlignItems style={{justifyContent: 'center'}}>
                     <section>
@@ -91,7 +148,21 @@ function IndivisualUser() {
                           新しい表を作成
                         </Button>
                       </AlignItems>
-                      <OtherSheets />
+                      {sheetTitle && sheetTitle.map((title) =>
+                        <p
+                          style={{
+                            backgroundColor:'var(--system1)',
+                            color:'var(--txtColor0)',
+                            borderRadius:'var(--r5)',
+                            padding:'0.5em 1em',
+                            margin:'0.5em 0',
+                            cursor: 'pointer'
+                          }}
+                          onClick={() =>router.push(`/user/${user.uid}/sheet/${title}`)}
+                        >
+                          {title}
+                        </p>
+                      )}
                     </section>
                   </AlignItems>
                 </section>

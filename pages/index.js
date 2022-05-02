@@ -64,6 +64,7 @@ export default function Home() {
               <BlockList>科目のセルの色、リンク、概要欄可</BlockList>
               <BlockList>時間割の時間を指定</BlockList>
               <BlockList>何枚もの時間割表を作成・保存可</BlockList>
+              <BlockList>リンクを通した時間割表の共有</BlockList>
             </div>
           </AlignItems>
           <AlignItems>
