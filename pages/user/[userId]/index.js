@@ -145,7 +145,13 @@ function IndivisualUser() {
                           onClick={() => router.push(`/user/${user.uid}/sheet`)}
                           icon={<MdAddCircle/>}
                         >
-                          新しい表を作成
+                          時間割表を作成
+                        </Button>
+                        <Button
+                          onClick={() => router.push(`/datasheet`)}
+                          icon={<MdAddCircle/>}
+                        >
+                          データシートを閲覧
                         </Button>
                       </AlignItems>
                       {sheetTitle && sheetTitle.map((title) =>

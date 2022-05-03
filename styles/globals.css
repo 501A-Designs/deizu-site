@@ -75,7 +75,7 @@ a {
 .grid-1fr-1fr,
 .grid-1fr-2fr{
 	display: grid;
-	gap: 5em;
+	gap: 4em;
 }
 .grid-1fr-6fr{
 	display: grid;
@@ -122,6 +122,19 @@ a {
 	}
 	.grid-1fr-6fr{
 		grid-template-columns: 1fr 6fr;
+	}
+}
+
+.scaleUp{
+	animation: scaleUpAni 0.5s;
+}
+@keyframes scaleUpAni {
+	0% {
+		opacity: 0;
+		transform: scale3d(0.05,0.05,0.05);
+	}
+	70% {
+		transform: scale3d(1.05,1.05,1.05);
 	}
 }
 
