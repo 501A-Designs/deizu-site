@@ -42,7 +42,7 @@ export default function App() {
                 justifyContent: 'center'
             }}
         >
-            <Container>
+            <Container style={{maxWidth:'600px'}}>
                 {/* <Banner type="announce">
                     <ul>
                         <li>2021年12月2日よりDEIZUのv1.0.0が一般公開されました（過去のバージョン情報はGitHubから見れます）</li>

@@ -1,5 +1,8 @@
 import React,{useState} from 'react'
 import Button from '../../../../lib/component/Button'
+import IconButton from '../../../../lib/component/IconButton'
+import { MdArrowBack,MdOutlineViewList,MdOutlineViewModule } from "react-icons/md";
+
 import Container from '../../../../lib/component/Container'
 import Input from '../../../../lib/component/Input'
 import AlignItems from '../../../../lib/style/AlignItems'
@@ -17,6 +20,7 @@ import StaticScene from '../../../../lib/style/StaticScene'
 export default function index() {
     const router = useRouter();
     const [sheetName, setSheetName] = useState('');
+    const [sheetImageUrl, setSheetImageUrl] = useState('');
     const [user] = useAuthState(auth);
 
     const convertArrayToObject = (array) => {
@@ -48,7 +52,8 @@ export default function index() {
                             [sheetName]: {
                                 cells: convertArrayToObject(scheduleCellId),
                                 date: serverTimestamp(),
-                                sharing:false
+                                sharing: false,
+                                imageUrl: sheetImageUrl
                             }
                         },
                     }, { merge: true }
@@ -61,13 +66,19 @@ export default function index() {
     const handleSheetNameInputChange =(e) =>{
         setSheetName(e.target.value)
     }
+    const handleSheetImageUrlInputChange = (e) =>{
+        setSheetImageUrl(e.target.value)
+    }
 
     return (
         <>
             {user ?
                 <AlignItems style={{justifyContent: 'center', height: '100vh'}}>
-                    <Container>
-                        <h1>新規作成</h1>
+                    <Container style={{maxWidth:'600px'}}>
+                        <AlignItems gap={'1em'}>
+                            <IconButton icon={<MdArrowBack/>} onClick={() =>router.push(`/user/${user.uid}/`)}>戻る</IconButton>
+                            <h1 style={{margin: 0,padding:0}}>新規作成</h1>
+                        </AlignItems>
                         <h3>新しい時間割を作成しよう</h3>
                         <p>
                             新しい時間割表のタイトルは一度指定すると変更することはできないのでご了承ください。
@@ -77,6 +88,11 @@ export default function index() {
                                 value={sheetName}
                                 onChange={handleSheetNameInputChange}
                                 placeholder={'時間割タイトル'}
+                            />
+                            <Input
+                                value={sheetImageUrl}
+                                onChange={handleSheetImageUrlInputChange}
+                                placeholder={'画像URL　※任意'}
                             />
                             <Button
                                 width={'full'}

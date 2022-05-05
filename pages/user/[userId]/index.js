@@ -2,7 +2,7 @@ import React,{useState,useEffect} from 'react'
 import Button from '../../../lib/component/Button'
 import IconButton from '../../../lib/component/IconButton'
 
-import { MdAddCircle,MdSettings } from "react-icons/md";
+import { MdAddCircle,MdSettings,MdOutlineExitToApp } from "react-icons/md";
 import AlignItems from '../../../lib/style/AlignItems';
 import Container from '../../../lib/component/Container';
 import BodyMargin from '../../../lib/style/BodyMargin';
@@ -21,6 +21,8 @@ import StaticScene from '../../../lib/style/StaticScene';
 import moment from 'moment';
 import Stack from '../../../lib/style/Stack';
 import ImageButton from '../../../lib/component/ImageButton';
+import ImageContainer from '../../../lib/component/ImageContainer';
+import Input from '../../../lib/component/Input';
 
 function IndivisualUser() {
   const router = useRouter();
@@ -29,12 +31,16 @@ function IndivisualUser() {
   console.log(userId);
   // const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
   const [user, loading] = useAuthState(auth);
+  const [theme, setTheme] = useState();
+  const [themeColor, setThemeColor] = useState();
+  const [userImageUrl, setUserImageUrl] = useState();
   const [sheetTitle, setSheetTitle] = useState();
   
   useEffect(() => {
     if (user) {      
       const docRef = doc(db, "users", user.uid);
       getDoc(docRef).then((doc) => {
+        setUserImageUrl(doc.data().url)
         setThemeColor(doc.data().themeColor);
         setTheme(doc.data().theme);
         setSheetTitle(Object.keys(doc.data().sheets));
@@ -42,10 +48,8 @@ function IndivisualUser() {
       })
       console.log('test')
     }
+    console.log(userImageUrl)
   },[user])
-
-  const [theme, setTheme] = useState();
-  const [themeColor, setThemeColor] = useState();
 
   useEffect(() => {
     if (theme) {
@@ -90,7 +94,11 @@ function IndivisualUser() {
                 style={modalStyle}
               >
                 <Stack>
-                  <h2>テーマ</h2>
+                  <h2>設定</h2>
+                  <h3>背景画像</h3>
+                  <Stack>
+                    <Input placeholder={'画像URL'}/>
+                  </Stack>
                   <h3>テーマ</h3>
                   <Stack grid={'1fr 1fr 1fr'}>
                     {themeData.map((prop)=>{
@@ -113,25 +121,29 @@ function IndivisualUser() {
               </Modal>
               <BodyMargin>
                 <section className="grid-1fr-2fr">
-                  <Container style={{display: 'grid',gridTemplateColumns:'1fr'}}>
-                    <AlignItems style={{justifyContent: 'space-between'}}>
-                      <AlignItems style={{gap: '1em'}}>
-                        <img style={{width: '3em', height: '3em', borderRadius:50}} src={user.photoURL} />
-                        <h1 style={{ fontSize: '2em'}}>{user.displayName.split(' ')[0]}</h1>
+                  <Stack>
+                    <ImageContainer src={userImageUrl && userImageUrl}>
+                      <AlignItems style={{justifyContent: 'space-between'}}>
+                        <AlignItems style={{gap: '1em'}}>
+                          <img style={{width: '3em', height: '3em', borderRadius:50}} src={user.photoURL} />
+                          <h1 style={{ fontSize: '2em'}}>{user.displayName.split(' ')[0]}</h1>
+                        </AlignItems>
+                        <IconButton
+                          onClick={() => openModal()}
+                          icon={<MdSettings/>}
+                        >
+                          設定
+                        </IconButton>
                       </AlignItems>
-                      <IconButton
-                        onClick={() => openModal()}
-                        icon={<MdSettings/>}
-                      >
-                        設定
-                      </IconButton>
-                    </AlignItems>
+                    </ImageContainer>
+                    <Container style={{display: 'grid',gridTemplateColumns:'1fr'}}>
                       <p>{user.email}</p>
                       <h2 style={{ fontSize: '1em',marginBottom: '1.5em'}}>本日は：{moment().format("MMM Do dddd")}</h2>
                       <AlignItems>
-                        <Button>ログアウト</Button>
+                        <Button icon={<MdOutlineExitToApp/>}>ログアウト</Button>
                       </AlignItems>
-                  </Container>
+                    </Container>
+                  </Stack>
                   <AlignItems style={{justifyContent: 'center'}}>
                     <section>
                       <h1 style={{ fontSize: '2em'}}>ダッシュボード</h1>

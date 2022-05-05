@@ -188,7 +188,6 @@ function IndivisualSheet({ dataSheetId }) {
                   rows={rowState}
                   style={{
                     userSelect:'text',
-                    border:'none',
                     borderRadius:'var(--r10)',
                   }}
                 />}

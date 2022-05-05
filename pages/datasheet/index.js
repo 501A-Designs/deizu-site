@@ -1,17 +1,22 @@
 import React,{useState,useEffect} from 'react'
 import BodyMargin from '../../lib/style/BodyMargin'
-import { MdAddCircle,MdSettings } from "react-icons/md";
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth,db } from "../../src/service/firebase"
+import { MdAddCircle,MdArrowBack } from "react-icons/md";
+
 import { collection, getDocs } from "firebase/firestore";
 import Button from '../../lib/component/Button';
+import IconButton from '../../lib/component/IconButton';
+
 import LargeImageButton from '../../lib/component/LargeImageButton';
 import Stack from '../../lib/style/Stack';
 import AlignItems from '../../lib/style/AlignItems';
 import { useRouter } from 'next/router'
 
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth,db } from "../../src/service/firebase"
+
 export default function index() {
   const router = useRouter()
+  const [user, loading, error] = useAuthState(auth);
 
   const [allSheetData, setAllSheetData] = useState()
 
@@ -47,8 +52,11 @@ export default function index() {
   return (
     <BodyMargin>
       <AlignItems style={{justifyContent: 'space-between'}}>
-        <h1>データシート一覧</h1>
-        <Button icon={<MdAddCircle/>} onClick={() => createDataSheet()}>
+        <AlignItems gap={'1em'}>
+          <IconButton icon={<MdArrowBack/>} onClick={() =>router.push(`/user/${user.uid}`)}>戻る</IconButton>
+          <h1 style={{margin: 0,padding:0}}>データシート一覧</h1>
+        </AlignItems>
+        <Button icon={<MdAddCircle/>} onClick={() => router.push('/datasheet/create')}>
           データシートを作成
         </Button>
       </AlignItems>
@@ -58,7 +66,9 @@ export default function index() {
           allSheetData.map((prop) =>{
             return (
               <LargeImageButton
-                imageSource={`https://avatars.dicebear.com/api/jdenticon/${prop.dataSheetData.dataSheetName}.svg`}
+                dataSheetId={prop.dataSheetId}
+                dataSheetName={prop.dataSheetData.dataSheetName}
+                imageSource={prop.dataSheetData.dataSheetImageUrl}
                 subtitle={prop.dataSheetData.dataSheetDescription}
                 onClick={() => router.push(`/datasheet/${prop.dataSheetId}`)}
               >

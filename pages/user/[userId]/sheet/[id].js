@@ -1,5 +1,5 @@
 import React,{useEffect, useState} from 'react'
-import { MdHomeFilled,MdAddCircle, MdSettings,MdClose,MdLink,MdLinkOff,MdDelete,MdPerson,MdCalendarViewMonth,MdCalendarViewWeek } from "react-icons/md";
+import {MdHomeFilled,MdAddCircle, MdSettings,MdClose,MdLink,MdLinkOff,MdDelete,MdPerson,MdCalendarViewMonth,MdCalendarViewWeek,MdOutlineMediation,MdArrowForwardIos,MdPeopleAlt,MdImage,MdDangerous,MdInfo,MdArrowBack } from "react-icons/md";
 
 import IconButton from '../../../../lib/component/IconButton'
 import AlignItems from '../../../../lib/style/AlignItems';
@@ -31,27 +31,57 @@ import { buttonColor } from '../../../../lib/data/buttonColor'
 
 import Head from 'next/head';
 import Container from '../../../../lib/component/Container';
+import ImageContainer from '../../../../lib/component/ImageContainer';
+import SectionButton from '../../../../lib/component/SectionButton';
+import ModalSection from '../../../../lib/style/ModalSection';
+import TextPreview from '../../../../lib/component/TextPreview';
 
 // Modal.setAppElement('#yourAppElement');
 function IndivisualSheet({ sheetName }) {
   const router = useRouter();
   const [sheetData, setSheetData] = useState()
   const [sheetCellsData, setSheetCellsData] = useState()
-
+  const [sheetImageUrl, setSheetImageUrl] = useState()
+  const [shareSheetState, setShareSheetState] = useState()
+  
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
+  const [dataSheetId, setDataSheetId] = useState()
+  const [dataSheet, setDataSheet] = useState()
+  const [dataSheetName, setDataSheetName] = useState()
+  
   moment.locale("ja");
 
   const sheetOwnerId = router.query.userId;
   
+  const fetchDataSheet = (prop) =>{
+    if (prop) {
+      console.log(prop)
+      getDoc(doc(db, "sheets", prop)).then((doc) => {
+        if(doc.data()){
+          setDataSheet(doc.data().dataSheet);
+          setDataSheetName(doc.data().dataSheetName);
+        }else{
+          alert("データシートが見つかりません")
+        }
+      })
+    }else{
+      console.log("removed");
+    }
+  }
+
   const fetchData = () => {
     const docRef = doc(db, "users", sheetOwnerId);
     getDoc(docRef).then((doc) => {
       if (!doc.data().sheets[sheetName]) {
-        router.push('/app') 
+        router.push('/app')
       }
       setSheetData(doc.data().sheets[sheetName]);
       setSheetCellsData(doc.data().sheets[sheetName].cells);
+      setSheetImageUrl(doc.data().sheets[sheetName].imageUrl);
+      setShareSheetState(doc.data().sheets[sheetName].sharing);
+      setDataSheetId(doc.data().sheets[sheetName].dataSheetId);
+      fetchDataSheet(doc.data().sheets[sheetName].dataSheetId);
     })
   }
   
@@ -59,6 +89,7 @@ function IndivisualSheet({ sheetName }) {
     fetchData()
     console.log('test')
   }, []);
+
 
   const [user] = useAuthState(auth);
 
@@ -68,7 +99,7 @@ function IndivisualSheet({ sheetName }) {
   }
 
   function ScheduleGrid() {
-    let scheduleGridStyle ={
+    let scheduleGridStyle = {
       display: 'grid',
       gridTemplateColumns:'1fr 1fr 1fr 1fr 1fr 1fr',
       gap: '0.2em'
@@ -103,7 +134,6 @@ function IndivisualSheet({ sheetName }) {
         setCellModalIsOpen(true);
       }
     };
-
     const saveSubjectData = async (e) => {
         e.preventDefault();
         let newObject = Object.assign({ ...sheetCellsData, 
@@ -139,9 +169,9 @@ function IndivisualSheet({ sheetName }) {
     return (
       <>
         <Modal
-            isOpen={cellModalIsOpen}
-            onRequestClose={closeCellModal}
-            style={modalStyle}
+          isOpen={cellModalIsOpen}
+          onRequestClose={closeCellModal}
+          style={modalStyle}
         >
           <Stack gap={'1em'}>
             <MockupCell
@@ -150,7 +180,36 @@ function IndivisualSheet({ sheetName }) {
               subjectCellColor = {subjectCellColor}
               subjectCellDescription = {subjectCellDescription}
             />
+
+            {dataSheetName &&             
+              <>
+                <h4 style={{textAlign: 'center', marginBottom:'0'}}>「{dataSheetName}」データシートより</h4>
+                <AlignItems style={{overflowX:'scroll', padding:'1em'}}>
+                  {dataSheet.map(prop => {
+                    return <MockupCell
+                      onClick={() => {
+                        setSubjectCellName(prop.subjectName);
+                        setSubjectCellLink(prop.subjectLink)
+                        setSubjectCellColor(prop.subjectColor);
+                        setSubjectCellDescription(prop.subjectDescription)
+                      }}
+                      padding={'0 0.5em'}
+                      subjectCellName = {prop.subjectName}
+                      subjectCellLink = {prop.subjectLink}
+                      subjectCellColor = {prop.subjectColor}
+                      subjectCellDescription = {prop.subjectDescription}
+                    />})
+                  }
+                </AlignItems>
+              </>
+            }
             <AlignItems style={{justifyContent: 'center'}}>
+              <ColorButton
+                color={'var(--system1'}
+                onClick={() => {
+                    setSubjectCellColor('');
+                }}
+              />
               {buttonColor.map((props)=>
                 <ColorButton
                   color={props}
@@ -185,9 +244,7 @@ function IndivisualSheet({ sheetName }) {
             </Button>
           </Stack>
         </Modal>
-        <div
-          className={listViewState && 'grid-1fr-6fr'}
-        >
+        <div className={listViewState && 'grid-1fr-3fr'}>
           {listViewState &&
             <Container>
               <h1>{moment().format('LT')}</h1>
@@ -253,8 +310,6 @@ function IndivisualSheet({ sheetName }) {
     )
   }
 
-
-  const [shareSheetState, setShareSheetState] = useState(sheetData && sheetData.sharing)
   // Modal related
   const closeModal = () => setModalIsOpen(false);
   const openModal = () => {
@@ -263,6 +318,17 @@ function IndivisualSheet({ sheetName }) {
     }
     setModalIsOpen(true)
   };
+
+  const saveDataSheetId = async() =>{
+    const docRef = doc(db, "users", user.uid);
+    await setDoc(docRef, {sheets:{[sheetName]:{dataSheetId:dataSheetId}}}, { merge: true });
+    fetchDataSheet(dataSheetId)
+  }
+
+  const saveSheetImageUrl = async() =>{
+    const docRef = doc(db, "users", user.uid);
+    await setDoc(docRef, {sheets:{[sheetName]:{imageUrl:sheetImageUrl}}}, { merge: true });    
+  }
 
   const shareSheet = async(prop) => {
     setShareSheetState(prop)
@@ -278,53 +344,56 @@ function IndivisualSheet({ sheetName }) {
   function Editor() {
     return (
       <BodyMargin>
-        <AlignItems style={{justifyContent: 'space-between', marginBottom:'1.5em'}}>
-          {user ?
-            <AlignItems>
+        <ImageContainer style={{marginBottom:'1.5em'}} src={sheetImageUrl}>
+          <AlignItems style={{justifyContent: 'space-between'}}>
+            {user ?
+              <AlignItems>
+                <IconButton
+                  onClick={() => router.push(`/user/${user.uid}/`)}
+                  icon={<MdHomeFilled/>}
+                >
+                  ダッシュボード
+                </IconButton>
+                <IconButton
+                  onClick={() => router.push(`/user/${user.uid}/sheet`)}
+                  icon={<MdAddCircle/>}
+                >
+                  新規作成
+                </IconButton>
+              </AlignItems>:
               <IconButton
-                onClick={() => router.push(`/user/${user.uid}/`)}
-                icon={<MdHomeFilled/>}
+                onClick={() => router.push('/app')}
+                icon={<MdPerson/>}
               >
-                ダッシュボード
+                アカウント作成
               </IconButton>
-              <IconButton
-                onClick={() => router.push(`/user/${user.uid}/sheet`)}
-                icon={<MdAddCircle/>}
-              >
-                新規作成
-              </IconButton>
-            </AlignItems>:
-            <IconButton
-              onClick={() => router.push('/app')}
-              icon={<MdPerson/>}
-            >
-              アカウント作成
-            </IconButton>
-          }
-          <h1>{sheetName}</h1>
-          {user ?
-            <AlignItems>
-              <IconButton
-                onClick={()=>{listViewState ? listView(false):listView(true)}}
-                icon={!listViewState ? <MdCalendarViewWeek/>:<MdCalendarViewMonth/>}
-              >
-                {!listViewState ? 'リスト表示':'グリッド表示'}
-              </IconButton>
-              <IconButton
-                onClick={()=>openModal()}
-                icon={<MdSettings/>}
-              >
-                設定
-              </IconButton>
-            </AlignItems>:
-            <p>現在閲覧中</p>
-          }
-        </AlignItems>
+            }
+            <h1>{sheetName}</h1>
+            {user ?
+              <AlignItems>
+                <IconButton
+                  onClick={()=>{listViewState ? listView(false):listView(true)}}
+                  icon={!listViewState ? <MdCalendarViewWeek/>:<MdCalendarViewMonth/>}
+                >
+                  {!listViewState ? 'リスト表示':'グリッド表示'}
+                </IconButton>
+                <IconButton
+                  onClick={()=>openModal()}
+                  icon={<MdSettings/>}
+                >
+                  設定
+                </IconButton>
+              </AlignItems>:
+              <p>現在閲覧中</p>
+            }
+          </AlignItems>
+        </ImageContainer>
         <ScheduleGrid/>
       </BodyMargin>
     )
   }
   
+  const [modalSection, setModalSection] = useState(0);
   return (
     <>
       <Head>
@@ -344,54 +413,145 @@ function IndivisualSheet({ sheetName }) {
             閉じる
           </IconButton>
         </AlignItems>
-        <h3>共有設定</h3>
-        <p>
-          リンク共有を有効するとこのリンクにアクセスできる人は全て時間割を閲覧することができますのでご了承下さい。
-        </p>
-        <AlignItems style={{justifyContent: 'space-between'}}>
-          <p>{shareSheetState ? ' 自分しか見えないようにする':'時間割の閲覧権限を与える'}</p>
-          <AlignItems>
-            {shareSheetState ? <Button
-              icon={<MdLinkOff/>}
-              onClick={()=>shareSheet(false)}
-            >
-              ロック
-            </Button>:
-            <Button
-              icon={<MdLink/>}
-              onClick={()=>shareSheet(true)}
-            >
-              共有
-            </Button>}
-          </AlignItems>
-        </AlignItems>
-        {shareSheetState &&
-          <Stack>
-            <p>URLをコピーし他の人に送信することで時間割表を共有することができます。</p>
-            <Button
-              width={'full'}
-              onClick={() => copyAlert(`deizu.vercel.app/user/${user.uid}/sheet/${sheetName}`,'時間割表のリンク')}
-            >
-              時間割表のリンクをコピー
-            </Button>
-          </Stack>
-        }
-        <hr/>
-        <h3>デインジャーゾーン</h3>
-        <AlignItems style={{justifyContent: 'space-between'}}>
-          <p>「{sheetName}」を消去</p>
-          <Button
-            icon={<MdDelete />}
-            onClick={async() => {
-                if (window.confirm("今開いている時間割表を消去したいですか？一度消去すると復旧することはできません。")) {
-                  const docRef = doc(db, "users", user.uid);
-                  await updateDoc(docRef, {[`sheets.${sheetName}`]: deleteField()});
-                  router.push('/app');
-                }
+        {modalSection === 0 && <>
+          <SectionButton
+            onClick={()=>setModalSection(1)}
+            leftIcon={<MdOutlineMediation/>}
+            rightIcon={<MdArrowForwardIos/>}
+          >
+            データシートを繋げる
+          </SectionButton>
+          <SectionButton
+            onClick={()=>setModalSection(2)}
+            leftIcon={<MdImage/>}
+            rightIcon={<MdArrowForwardIos/>}
+          >
+            バナー画像を追加
+          </SectionButton>
+          <SectionButton
+            onClick={()=>setModalSection(3)}
+            leftIcon={<MdPeopleAlt/>}
+            rightIcon={<MdArrowForwardIos/>}
+          >
+            共有設定
+          </SectionButton>
+          <SectionButton
+            onClick={()=>setModalSection(4)}
+            leftIcon={<MdDangerous/>}
+            rightIcon={<MdArrowForwardIos/>}
+          >
+            デインジャーゾーン
+          </SectionButton>
+          <SectionButton
+            onClick={()=>setModalSection(1)}
+            leftIcon={<MdInfo/>}
+          >
+            DEIZUについて
+          </SectionButton>
+        </>}
+
+        {modalSection !== 0 &&
+        <Stack>
+          <SectionButton
+            onClick={()=>setModalSection(0)}
+            leftIcon={<MdArrowBack/>}
+          >
+            戻る
+          </SectionButton>
+          {modalSection === 1 && 
+            <>
+              <AlignItems style={{justifyContent: 'space-between'}}>
+                <h3>データシートを繋げる</h3>
+                <Button onClick={()=>router.push(`/datasheet`)}>データシートを探す</Button>
+              </AlignItems>
+              <p>データシートを繋げることで科目を時間割表に入力する作業がより早まります。</p>
+              <Stack>
+                {dataSheetName && <TextPreview style={{textAlign: 'center'}}>「{dataSheetName}」のデータシートに繋がっています</TextPreview>}
+                <Input
+                  placeholder={'データシートID'}
+                  value={dataSheetId}
+                  onChange={(e)=>setDataSheetId(e.target.value)}
+                />
+                <Button
+                  onClick={()=>saveDataSheetId()}
+                  width={"full"}
+                >
+                  データシートを繋げる
+                </Button>
+              </Stack>
+            </>
+          }
+          {modalSection === 2 && 
+            <>
+              <h3>バナー画像</h3>
+              <p>インターネット上にある画像URLを追加するとバナー画像として追加されます。</p>
+              <Stack>
+                <Input
+                  placeholder={'画像URL'}
+                  value={sheetImageUrl}
+                  onChange={(e)=>setSheetImageUrl(e.target.value)}
+                />
+                <Button onClick={()=>saveSheetImageUrl()} width={"full"}>保存</Button>
+              </Stack>
+            </>
+          }
+          {modalSection === 3 &&         
+            <>
+              <h3>共有設定</h3>
+              <p>
+                リンク共有を有効するとこのリンクにアクセスできる人は全て時間割を閲覧することができます。なお共有するとユーザー様がご指定しているテーマは共有されないのでご了承下さい。
+              </p>
+              <AlignItems style={{justifyContent: 'space-between'}}>
+                <p>{shareSheetState ? ' 自分しか見えないようにする':'時間割の閲覧権限を与える'}</p>
+                <AlignItems>
+                  {shareSheetState ? <Button
+                    icon={<MdLinkOff/>}
+                    onClick={()=>shareSheet(false)}
+                  >
+                    ロック
+                  </Button>:
+                  <Button
+                    icon={<MdLink/>}
+                    onClick={()=>shareSheet(true)}
+                  >
+                    共有
+                  </Button>}
+                </AlignItems>
+              </AlignItems>
+              {shareSheetState &&
+                <Stack>
+                  <p>URLをコピーし他の人に送信することで時間割表を共有することができます。</p>
+                  <Button
+                    width={'full'}
+                    onClick={() => copyAlert(`deizu.vercel.app/user/${user.uid}/sheet/${sheetName}`,'時間割表のリンク')}
+                  >
+                    時間割表のリンクをコピー
+                  </Button>
+                </Stack>
               }
-            }
-          >時間割表を消去</Button>
-        </AlignItems>
+            </>
+          }
+          {modalSection === 4 &&         
+            <>
+              <h3>デインジャーゾーン</h3>
+              <AlignItems style={{justifyContent: 'space-between'}}>
+                <p>「{sheetName}」を消去</p>
+                <Button
+                  icon={<MdDelete />}
+                  onClick={async() => {
+                      if (window.confirm("今開いている時間割表を消去したいですか？一度消去すると復旧することはできません。")) {
+                        const docRef = doc(db, "users", user.uid);
+                        await updateDoc(docRef, {[`sheets.${sheetName}`]: deleteField()});
+                        router.push('/app');
+                      }
+                    }
+                  }
+                >時間割表を消去</Button>
+              </AlignItems>
+            </>
+          }
+        </Stack>
+        }
       </Modal>
 
       {!sheetData ? <StaticScene type="loading"/>:
