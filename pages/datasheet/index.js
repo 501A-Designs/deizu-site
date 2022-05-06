@@ -13,6 +13,7 @@ import { useRouter } from 'next/router'
 
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth,db } from "../../src/service/firebase"
+import Link from 'next/link';
 
 export default function index() {
   const router = useRouter()
@@ -41,14 +42,6 @@ export default function index() {
     console.log('test')
   }, []);
 
-  if (allSheetData) {
-    console.log(allSheetData)
-  }
-
-  const createDataSheet = (e) => {
-
-  }
-
   return (
     <BodyMargin>
       <AlignItems style={{justifyContent: 'space-between'}}>
@@ -60,7 +53,11 @@ export default function index() {
           データシートを作成
         </Button>
       </AlignItems>
-      <br/>
+      <p>
+        データシートは科目を項目ごとですばやく時間割表を入力することを可能とする機能です。
+        <br />
+        データシートのIDをコピーし時間割表の設定から追加しよう！（使用法について、詳しくは<Link href={'/usage'}>こちら</Link>から。）
+      </p>
       <Stack grid={'1fr 1fr'}>
         {allSheetData && 
           allSheetData.map((prop) =>{

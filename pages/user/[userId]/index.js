@@ -2,7 +2,7 @@ import React,{useState,useEffect} from 'react'
 import Button from '../../../lib/component/Button'
 import IconButton from '../../../lib/component/IconButton'
 
-import { MdAddCircle,MdSettings,MdOutlineExitToApp } from "react-icons/md";
+import { MdAddCircle,MdPalette,MdOutlineExitToApp,MdOutlineSearch } from "react-icons/md";
 import AlignItems from '../../../lib/style/AlignItems';
 import Container from '../../../lib/component/Container';
 import BodyMargin from '../../../lib/style/BodyMargin';
@@ -40,11 +40,10 @@ function IndivisualUser() {
     if (user) {      
       const docRef = doc(db, "users", user.uid);
       getDoc(docRef).then((doc) => {
-        setUserImageUrl(doc.data().url)
+        setUserImageUrl(doc.data().url);
         setThemeColor(doc.data().themeColor);
         setTheme(doc.data().theme);
         setSheetTitle(Object.keys(doc.data().sheets));
-        console.log(sheetTitle);
       })
       console.log('test')
     }
@@ -94,7 +93,7 @@ function IndivisualUser() {
                 style={modalStyle}
               >
                 <Stack>
-                  <h2>設定</h2>
+                  <h2>見た目の設定</h2>
                   <h3>背景画像</h3>
                   <Stack>
                     <Input placeholder={'画像URL'}/>
@@ -130,9 +129,9 @@ function IndivisualUser() {
                         </AlignItems>
                         <IconButton
                           onClick={() => openModal()}
-                          icon={<MdSettings/>}
+                          icon={<MdPalette/>}
                         >
-                          設定
+                          見た目の変更
                         </IconButton>
                       </AlignItems>
                     </ImageContainer>
@@ -161,7 +160,7 @@ function IndivisualUser() {
                         </Button>
                         <Button
                           onClick={() => router.push(`/datasheet`)}
-                          icon={<MdAddCircle/>}
+                          icon={<MdOutlineSearch/>}
                         >
                           データシートを閲覧
                         </Button>

@@ -17,7 +17,7 @@ import ColorButton from '../../../../lib/component/ColorButton';
 import { useRouter } from 'next/router'
 
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth,db } from "../../../../src/service/firebase"
+import { auth,db,root } from "../../../../src/service/firebase"
 import { doc, getDoc,setDoc,serverTimestamp, updateDoc, deleteField } from "firebase/firestore";
 
 import Modal from 'react-modal';
@@ -50,6 +50,9 @@ function IndivisualSheet({ sheetName }) {
   const [dataSheet, setDataSheet] = useState()
   const [dataSheetName, setDataSheetName] = useState()
   
+  const [theme, setTheme] = useState();
+  const [themeColor, setThemeColor] = useState();
+
   moment.locale("ja");
 
   const sheetOwnerId = router.query.userId;
@@ -76,14 +79,34 @@ function IndivisualSheet({ sheetName }) {
       if (!doc.data().sheets[sheetName]) {
         router.push('/app')
       }
-      setSheetData(doc.data().sheets[sheetName]);
-      setSheetCellsData(doc.data().sheets[sheetName].cells);
-      setSheetImageUrl(doc.data().sheets[sheetName].imageUrl);
-      setShareSheetState(doc.data().sheets[sheetName].sharing);
-      setDataSheetId(doc.data().sheets[sheetName].dataSheetId);
-      fetchDataSheet(doc.data().sheets[sheetName].dataSheetId);
+      setThemeColor(doc.data().themeColor);
+      setTheme(doc.data().theme);
+
+      const thisSheet = doc.data().sheets[sheetName];
+      setSheetData(thisSheet);
+      setSheetCellsData(thisSheet.cells);
+      setSheetImageUrl(thisSheet.imageUrl);
+      setShareSheetState(thisSheet.sharing);
+      setDataSheetId(thisSheet.dataSheetId);
+      fetchDataSheet(thisSheet.dataSheetId);
     })
   }
+
+  useEffect(() => {
+    if (theme) {
+      root?.style.setProperty("--r5", theme[0]);
+      root?.style.setProperty("--r10", theme[1]);
+    }
+    if (themeColor) {        
+      root?.style.setProperty("--system0", themeColor[0]);
+      root?.style.setProperty("--system1", themeColor[1]);
+      root?.style.setProperty("--system2", themeColor[2]);
+      root?.style.setProperty("--system3", themeColor[3]);
+      root?.style.setProperty("--txtColor0", themeColor[4]);
+      root?.style.setProperty("--txtColor1", themeColor[5]);
+    }
+    console.log('bruh')
+  },[themeColor, theme])
   
   useEffect(() => {
     fetchData()
@@ -499,7 +522,7 @@ function IndivisualSheet({ sheetName }) {
             <>
               <h3>共有設定</h3>
               <p>
-                リンク共有を有効するとこのリンクにアクセスできる人は全て時間割を閲覧することができます。なお共有するとユーザー様がご指定しているテーマは共有されないのでご了承下さい。
+                リンク共有を有効するとこのリンクにアクセスできる人は全て時間割を閲覧することができます。なお共有するとユーザー様がご指定しているテーマ・バナー画像等も共有されるのでご了承下さい。
               </p>
               <AlignItems style={{justifyContent: 'space-between'}}>
                 <p>{shareSheetState ? ' 自分しか見えないようにする':'時間割の閲覧権限を与える'}</p>
