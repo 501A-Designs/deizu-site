@@ -44,10 +44,14 @@ import DayOfWeek from '../../../../lib/schedule/DayOfWeek';
 
 function IndivisualSheet({ sheetName }) {
   const cellVerticalLocation =['a', 'b', 'c', 'd', 'e', 'f'];
+  const timeCellLocation = [1,2,3,4,5,6,7]
 
   const router = useRouter();
   const [sheetData, setSheetData] = useState()
   const [sheetCellsData, setSheetCellsData] = useState()
+
+  const [sheetTimeData, setSheetTimeData] = useState()
+
   const [sheetImageUrl, setSheetImageUrl] = useState()
   const [shareSheetState, setShareSheetState] = useState()
   
@@ -90,6 +94,7 @@ function IndivisualSheet({ sheetName }) {
       const thisSheet = doc.data().sheets[sheetName];
       setSheetData(thisSheet);
       setSheetCellsData(thisSheet.cells);
+      setSheetTimeData(thisSheet.time);
       setSheetImageUrl(thisSheet.imageUrl);
       setShareSheetState(thisSheet.sharing);
       setDataSheetId(thisSheet.dataSheetId);
@@ -194,6 +199,58 @@ function IndivisualSheet({ sheetName }) {
         );
     }
 
+
+    // TIME MODAL
+    const [timeModalIsOpen, setTimeModalIsOpen] = useState(false);
+    const [timeStart, setTimeStart] = useState('');
+    const [timeEnd, setTimeEnd] = useState('');
+    const [modalTimeNumber, setModalTimeNumber] = useState('');
+
+    const closeTimeModal = () => {
+      setTimeStart('')
+      setTimeEnd('');
+      setTimeModalIsOpen(false);
+    }
+    const openTimeModal = (prop) => {
+      if (user) {
+        if (sheetTimeData[prop]) {
+          setTimeStart(sheetTimeData[prop].start);
+          setTimeEnd(sheetTimeData[prop].end)
+        }else{
+          setTimeStart('');
+          setTimeEnd('');
+        }
+        setTimeModalIsOpen(true);
+      }
+    }
+    const saveTimeData = async (e) => {
+      e.preventDefault();
+      let newObject = Object.assign({ ...sheetTimeData, 
+        [modalTimeNumber]: {
+          start: timeStart,
+          end: timeEnd,
+        } 
+      })
+      setSheetTimeData(newObject);
+      const docRef = doc(db, "users", user.uid);
+      await setDoc(docRef,
+          {
+            sheets:{
+              [sheetName]: {
+                date: serverTimestamp(),
+                time:{
+                  [modalTimeNumber]: {
+                    start: timeStart,
+                    end: timeEnd,
+                  }
+                }
+              }
+            },
+          }, { merge: true }
+      );
+      closeTimeModal();
+    }
+
     return (
       <>
         <Modal
@@ -276,8 +333,56 @@ function IndivisualSheet({ sheetName }) {
             </Button>
           </Stack>
         </Modal>
+
+        <Modal
+          isOpen={timeModalIsOpen}
+          onRequestClose={closeTimeModal}
+          style={modalStyle}
+        >
+          <Stack gap={'1em'}>
+            <AlignItems style={{justifyContent: 'space-between'}}>
+              <h2 className={"scaleFontLarge"}>時間を入力</h2>
+              <IconButton icon={<MdClose/>} onClick={() =>closeTimeModal()}>閉じる</IconButton>
+            </AlignItems>
+            <AlignItems style={{justifyContent: 'center'}}>
+              <TextPreview>{timeStart ? timeStart:'開始時'}</TextPreview>
+              <span>〜</span>
+              <TextPreview>{timeEnd ? timeEnd:'終了時'}</TextPreview>
+            </AlignItems>
+            <Stack>
+              <Input
+                type={'time'}
+                value={timeStart}
+                onChange={(e)=>setTimeStart(e.target.value)}
+                placeholder={'開始時'}
+              />
+              <Input
+                type={'time'}
+                value={timeEnd}
+                onChange={(e)=>setTimeEnd(e.target.value)}
+                placeholder={'終了時'}
+              />
+            </Stack>
+            <Button
+              width="full"
+              onClick={(e)=>saveTimeData(e)}
+            >
+              保存
+            </Button>
+          </Stack>
+        </Modal>
+
+
         {!listViewState && 
-          <Stack grid={isMobile ? '1fr 1fr 1fr 1fr 1fr 1fr':'0.41fr 1fr 1fr 1fr 1fr 1fr 1fr'} style={{marginBottom:'0.5em',gap: '0.2em'}}>
+          <Stack
+            grid={
+              isMobile ? '1fr 1fr 1fr 1fr 1fr 1fr':'0.37fr 1fr 1fr 1fr 1fr 1fr 1fr'
+            }
+            style={{
+              marginBottom:'0.2em',
+              gap: '0.2em'
+            }}
+          >
             {!isMobile && <br/>}
             <DayOfWeek day={1}/>
             <DayOfWeek day={2}/>    
@@ -299,17 +404,23 @@ function IndivisualSheet({ sheetName }) {
             style={{
               display:'grid',
               gridTemplateColumns:`${isMobile ? '1fr':'0.5fr 9fr'}`,
-              gap: '0.5em'
+              gap: '0.2em'
             }}
           >
             {!isMobile &&
               <Stack gap = {'0.2em'}>
-                <TimeCell displayPeriod={1}/>
-                <TimeCell displayPeriod={2}/>
-                <TimeCell displayPeriod={3}/>
-                <TimeCell displayPeriod={4}/>
-                <TimeCell displayPeriod={5}/>
-                <TimeCell displayPeriod={6}/>
+                {
+                  timeCellLocation.map(cellNumber => {
+                    return <TimeCell
+                        onClick={()=>{
+                          openTimeModal(cellNumber);
+                          setModalTimeNumber(cellNumber);
+                        }}
+                        sheetTimeData={sheetTimeData}
+                        displayPeriod={cellNumber}
+                      />
+                  })
+                }
               </Stack>
             }
             {listViewState ? 
