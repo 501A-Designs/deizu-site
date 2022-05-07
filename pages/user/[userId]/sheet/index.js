@@ -23,20 +23,20 @@ export default function index() {
     const [sheetImageUrl, setSheetImageUrl] = useState('');
     const [user] = useAuthState(auth);
 
-    const convertArrayToObject = (array) => {
-        const initialValue = {};
-        return array.reduce((obj, cellId) => {
-            return {
-                ...obj,
-                [cellId]: {
-                    [cellId]: '',
-                    [cellId + 'Link']: '',
-                    [cellId + 'Dscrp']: '',
-                    [cellId + 'Color']: ''
-                }
-            };
-        }, initialValue);
-    }
+    // const convertCellIdToObject = (array) => {
+    //     const initialValue = {};
+    //     return array.reduce((obj, cellId) => {
+    //         return {
+    //             ...obj,
+    //             [cellId]: {
+    //                 [cellId]: '',
+    //                 [cellId + 'Link']: '',
+    //                 [cellId + 'Dscrp']: '',
+    //                 [cellId + 'Color']: ''
+    //             }
+    //         };
+    //     }, initialValue);
+    // }
 
     const createScheduleSheet = async (e) =>{
         e.preventDefault();
@@ -50,10 +50,10 @@ export default function index() {
                     {
                         sheets:{
                             [sheetName]: {
-                                cells: convertArrayToObject(scheduleCellId),
+                                // cells: convertCellIdToObject(scheduleCellId),
                                 date: serverTimestamp(),
                                 sharing: false,
-                                imageUrl: sheetImageUrl
+                                imageUrl: sheetImageUrl,
                             }
                         },
                     }, { merge: true }

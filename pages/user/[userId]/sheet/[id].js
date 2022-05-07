@@ -95,6 +95,7 @@ function IndivisualSheet({ sheetName }) {
       setSheetData(thisSheet);
       setSheetCellsData(thisSheet.cells);
       setSheetTimeData(thisSheet.time);
+      
       setSheetImageUrl(thisSheet.imageUrl);
       setShareSheetState(thisSheet.sharing);
       setDataSheetId(thisSheet.dataSheetId);
@@ -152,8 +153,8 @@ function IndivisualSheet({ sheetName }) {
       setCellModalIsOpen(false);
     };
     const openCellModal = (prop) => {
-      if (user) {        
-        if (sheetCellsData[prop]) {  
+      if (user) {
+        if (sheetCellsData[prop]) {
           setSubjectCellName(sheetCellsData[prop][prop])
           setSubjectCellDescription(sheetCellsData[prop][prop+'Dscrp']);
           setSubjectCellColor(sheetCellsData[prop][prop+'Color']);
@@ -213,7 +214,7 @@ function IndivisualSheet({ sheetName }) {
     }
     const openTimeModal = (prop) => {
       if (user) {
-        if (sheetTimeData[prop]) {
+        if (sheetTimeData) {
           setTimeStart(sheetTimeData[prop].start);
           setTimeEnd(sheetTimeData[prop].end)
         }else{
@@ -259,8 +260,7 @@ function IndivisualSheet({ sheetName }) {
           style={modalStyle}
         >
           <Stack gap={'1em'}>
-            <AlignItems style={{justifyContent: 'space-between'}}>
-              <h2 className={"scaleFontLarge"}>科目を入力</h2>
+            <AlignItems style={{justifyContent: 'right'}}>
               <IconButton icon={<MdClose/>} onClick={() =>closeCellModal()}>閉じる</IconButton>
             </AlignItems>
             <MockupCell
@@ -340,8 +340,7 @@ function IndivisualSheet({ sheetName }) {
           style={modalStyle}
         >
           <Stack gap={'1em'}>
-            <AlignItems style={{justifyContent: 'space-between'}}>
-              <h2 className={"scaleFontLarge"}>時間を入力</h2>
+            <AlignItems style={{justifyContent: 'right'}}>
               <IconButton icon={<MdClose/>} onClick={() =>closeTimeModal()}>閉じる</IconButton>
             </AlignItems>
             <AlignItems style={{justifyContent: 'center'}}>
@@ -427,7 +426,6 @@ function IndivisualSheet({ sheetName }) {
               <Stack gap={'0.2em'}>
                 {scheduleCellId.filter(word => word.split('')[0] === cellVerticalLocation[moment().format('d')-1]).map(cellId =>
                   <SubjectCell
-                    sheetData={sheetData}
                     sheetCellsData = {sheetCellsData}
                     onClick={()=>{
                       openCellModal(cellId);
@@ -440,7 +438,6 @@ function IndivisualSheet({ sheetName }) {
               <div style={scheduleGridStyle}>
                 {scheduleCellId.map(cellId =>                
                   <SubjectCell
-                    sheetData={sheetData}
                     sheetCellsData = {sheetCellsData}
                     onClick={()=>{
                       openCellModal(cellId);
