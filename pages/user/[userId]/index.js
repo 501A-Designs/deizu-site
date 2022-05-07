@@ -2,16 +2,19 @@ import React,{useState,useEffect} from 'react'
 import Button from '../../../lib/component/Button'
 import IconButton from '../../../lib/component/IconButton'
 
-import { MdAddCircle,MdPalette,MdOutlineExitToApp,MdOutlineSearch } from "react-icons/md";
+import { MdAddCircle,MdPalette,MdOutlineExitToApp,MdOutlineSearch,MdClose } from "react-icons/md";
 import AlignItems from '../../../lib/style/AlignItems';
 import Container from '../../../lib/component/Container';
 import BodyMargin from '../../../lib/style/BodyMargin';
 import { useRouter } from 'next/router'
 
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth,db,root } from "../../../src/service/firebase"
-import { doc, getDoc,setDoc } from "firebase/firestore";
 
+import { signOut } from 'firebase/auth'
+import { auth,db,root } from "../../../src/service/firebase"
+import { doc, getDoc,　setDoc } from "firebase/firestore";
+
+Modal.setAppElement('#__next');
 import Modal from 'react-modal';
 import { modalStyle } from '../../../lib/style/modalStyle'
 import { themeData, themeColorData } from '../../../lib/data/themeData'
@@ -19,16 +22,18 @@ import { themeData, themeColorData } from '../../../lib/data/themeData'
 import StaticScene from '../../../lib/style/StaticScene';
 
 import moment from 'moment';
+import 'moment/locale/ja';
+
 import Stack from '../../../lib/style/Stack';
 import ImageButton from '../../../lib/component/ImageButton';
 import ImageContainer from '../../../lib/component/ImageContainer';
 import Input from '../../../lib/component/Input';
 
+import {isMobile} from 'react-device-detect';
+
 function IndivisualUser() {
   const router = useRouter();
   const userId = router.query.userId;
-  moment.locale("ja");
-  console.log(userId);
   // const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
   const [user, loading] = useAuthState(auth);
   const [theme, setTheme] = useState();
@@ -45,9 +50,7 @@ function IndivisualUser() {
         setTheme(doc.data().theme);
         setSheetTitle(Object.keys(doc.data().sheets));
       })
-      console.log('test')
     }
-    console.log(userImageUrl)
   },[user])
 
   useEffect(() => {
@@ -93,7 +96,10 @@ function IndivisualUser() {
                 style={modalStyle}
               >
                 <Stack>
-                  <h2>見た目の設定</h2>
+                  <AlignItems style={{justifyContent: 'space-between'}}>
+                    <h2>見た目の設定</h2>
+                    <IconButton icon={<MdClose/>} onClick={() =>closeModal()}>閉じる</IconButton>
+                  </AlignItems>
                   <h3>背景画像</h3>
                   <Stack>
                     <Input placeholder={'画像URL'}/>
@@ -105,7 +111,7 @@ function IndivisualUser() {
                     })}
                   </Stack>
                   <h3>色</h3>
-                  <Stack grid={'1fr 1fr 1fr 1fr'}>
+                  <Stack grid={isMobile ? '1fr 1fr':'1fr 1fr 1fr 1fr'}>
                     {themeColorData.map((prop)=>{
                       return <ImageButton onClick={()=>setThemeColor(prop.value)}>{prop.name}</ImageButton>
                     })}
@@ -139,13 +145,20 @@ function IndivisualUser() {
                       <p>{user.email}</p>
                       <h2 style={{ fontSize: '1em',marginBottom: '1.5em'}}>本日は：{moment().format("MMM Do dddd")}</h2>
                       <AlignItems>
-                        <Button icon={<MdOutlineExitToApp/>}>ログアウト</Button>
+                        <Button
+                          icon={<MdOutlineExitToApp/>}
+                          onClick={()=> {
+                            signOut(auth);
+                            router.push('/app')
+                          }}
+                        >
+                          ログアウト
+                        </Button>
                       </AlignItems>
                     </Container>
                   </Stack>
-                  <AlignItems style={{justifyContent: 'center'}}>
-                    <section>
-                      <h1 style={{ fontSize: '2em'}}>ダッシュボード</h1>
+                    <div>
+                      <h1>ダッシュボード</h1>
                       <p>
                         DEIZUへようこそ！
                         <br />
@@ -156,7 +169,7 @@ function IndivisualUser() {
                           onClick={() => router.push(`/user/${user.uid}/sheet`)}
                           icon={<MdAddCircle/>}
                         >
-                          時間割表を作成
+                          時間割作成
                         </Button>
                         <Button
                           onClick={() => router.push(`/datasheet`)}
@@ -180,8 +193,7 @@ function IndivisualUser() {
                           {title}
                         </p>
                       )}
-                    </section>
-                  </AlignItems>
+                    </div>
                 </section>
               </BodyMargin>
             </>

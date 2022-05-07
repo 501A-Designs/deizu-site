@@ -27,13 +27,13 @@ export default function index() {
         const initialValue = {};
         return array.reduce((obj, cellId) => {
             return {
-            ...obj,
-            [cellId]: {
-                [cellId]: '',
-                [cellId + 'Link']: '',
-                [cellId + 'Dscrp']: '',
-                [cellId + 'Color']: ''
-            }
+                ...obj,
+                [cellId]: {
+                    [cellId]: '',
+                    [cellId + 'Link']: '',
+                    [cellId + 'Dscrp']: '',
+                    [cellId + 'Color']: ''
+                }
             };
         }, initialValue);
     }

@@ -84,7 +84,7 @@ export default function Home() {
               <h1 style={{fontSize:'3em'}}>あなたにあった場所で</h1>
               <h2>異なるデバイスでも同じデータを共有。</h2>
               <p>
-                Webプラットフォーム・モバイルアプリ問わずデータは全てユーザー毎に共有されたデータベースに保存されます。Webで作成した時間割をスマホアプリで見れる便利さ。シンプルでかつ説明書すらいらないユーザー重視のプラットフォームを体験してませんか？
+                場所と機種問わずデータは全てユーザーに結び付けられ保存されています。Webで作成した時間割をスマホアプリで見れる便利さ。シンプルでかつ説明書すらいらないユーザー重視のプラットフォームを体験してませんか？
               </p>
             </div>
           </AlignItems>
@@ -95,15 +95,15 @@ export default function Home() {
                 <p>Next.Js等のモダンなウェブテクノロジーで構成された時間割作成アプリケーション。バックエンドではFirebaseを使用し、充実したユーザーエクスピリエンスとデザインを兼ね備えた唯一無二な時間割表作成プラットフォームです。</p>
                 <Button>Webアプリを開く</Button>                
               </Container>
-              <Container>
+              {/* <Container>
                 <h2>iOSとAndroid &rarr;</h2>
                 <p>React Nativeで作成されたモバイルプラットフォームはWebほどヘビーユーザーでないあなたに最低限の機能が搭載され、時間割作成を簡単にそして素早く行ってくれるプラットフォームです。</p>
                 <p>Coming Soon ...</p>
-                {/* <AlignItems>
+                <AlignItems>
                   <Button disabled={true}>iOSのアプリダウンロード</Button>
                   <Button disabled={true}>Androidのアプリダウンロード</Button>
-                </AlignItems> */}
-              </Container>
+                </AlignItems>
+              </Container> */}
             </div>
           </AlignItems>
         </div>

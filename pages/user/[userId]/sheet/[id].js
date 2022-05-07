@@ -1,6 +1,8 @@
 import React,{useEffect, useState} from 'react'
 import {MdHomeFilled,MdAddCircle, MdSettings,MdClose,MdLink,MdLinkOff,MdDelete,MdPerson,MdCalendarViewMonth,MdCalendarViewWeek,MdOutlineMediation,MdArrowForwardIos,MdPeopleAlt,MdImage,MdDangerous,MdInfo,MdArrowBack } from "react-icons/md";
 
+import {isMobile} from 'react-device-detect';
+
 import IconButton from '../../../../lib/component/IconButton'
 import AlignItems from '../../../../lib/style/AlignItems';
 import BodyMargin from '../../../../lib/style/BodyMargin';
@@ -20,8 +22,11 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth,db,root } from "../../../../src/service/firebase"
 import { doc, getDoc,setDoc,serverTimestamp, updateDoc, deleteField } from "firebase/firestore";
 
+Modal.setAppElement('#__next');
 import Modal from 'react-modal';
 import moment from 'moment';
+import 'moment/locale/ja';
+
 import { toast } from 'react-toastify';
 import { modalStyle } from '../../../../lib/style/modalStyle'
 
@@ -35,9 +40,11 @@ import ImageContainer from '../../../../lib/component/ImageContainer';
 import SectionButton from '../../../../lib/component/SectionButton';
 import ModalSection from '../../../../lib/style/ModalSection';
 import TextPreview from '../../../../lib/component/TextPreview';
+import DayOfWeek from '../../../../lib/schedule/DayOfWeek';
 
-// Modal.setAppElement('#yourAppElement');
 function IndivisualSheet({ sheetName }) {
+  const cellVerticalLocation =['a', 'b', 'c', 'd', 'e', 'f'];
+
   const router = useRouter();
   const [sheetData, setSheetData] = useState()
   const [sheetCellsData, setSheetCellsData] = useState()
@@ -52,8 +59,6 @@ function IndivisualSheet({ sheetName }) {
   
   const [theme, setTheme] = useState();
   const [themeColor, setThemeColor] = useState();
-
-  moment.locale("ja");
 
   const sheetOwnerId = router.query.userId;
   
@@ -197,6 +202,10 @@ function IndivisualSheet({ sheetName }) {
           style={modalStyle}
         >
           <Stack gap={'1em'}>
+            <AlignItems style={{justifyContent: 'space-between'}}>
+              <h2 className={"scaleFontLarge"}>科目を入力</h2>
+              <IconButton icon={<MdClose/>} onClick={() =>closeCellModal()}>閉じる</IconButton>
+            </AlignItems>
             <MockupCell
               subjectCellName = {subjectCellName}
               subjectCellLink = {subjectCellLink}
@@ -267,6 +276,17 @@ function IndivisualSheet({ sheetName }) {
             </Button>
           </Stack>
         </Modal>
+        {!listViewState && 
+          <Stack grid={isMobile ? '1fr 1fr 1fr 1fr 1fr 1fr':'0.41fr 1fr 1fr 1fr 1fr 1fr 1fr'} style={{marginBottom:'0.5em',gap: '0.2em'}}>
+            {!isMobile && <br/>}
+            <DayOfWeek day={1}/>
+            <DayOfWeek day={2}/>    
+            <DayOfWeek day={3}/>    
+            <DayOfWeek day={4}/>    
+            <DayOfWeek day={5}/>    
+            <DayOfWeek day={6}/>    
+          </Stack>
+        }
         <div className={listViewState && 'grid-1fr-3fr'}>
           {listViewState &&
             <Container>
@@ -278,21 +298,23 @@ function IndivisualSheet({ sheetName }) {
           <div 
             style={{
               display:'grid',
-              gridTemplateColumns:'0.5fr 9fr',
+              gridTemplateColumns:`${isMobile ? '1fr':'0.5fr 9fr'}`,
               gap: '0.5em'
             }}
           >
-            <Stack gap = {'0.2em'}>
-              <TimeCell displayPeriod={1}/>
-              <TimeCell displayPeriod={2}/>
-              <TimeCell displayPeriod={3}/>
-              <TimeCell displayPeriod={4}/>
-              <TimeCell displayPeriod={5}/>
-              <TimeCell displayPeriod={6}/>
-            </Stack>
+            {!isMobile &&
+              <Stack gap = {'0.2em'}>
+                <TimeCell displayPeriod={1}/>
+                <TimeCell displayPeriod={2}/>
+                <TimeCell displayPeriod={3}/>
+                <TimeCell displayPeriod={4}/>
+                <TimeCell displayPeriod={5}/>
+                <TimeCell displayPeriod={6}/>
+              </Stack>
+            }
             {listViewState ? 
               <Stack gap={'0.2em'}>
-                {scheduleCellId.filter(word => word.split('')[0] === 'a').map(cellId =>
+                {scheduleCellId.filter(word => word.split('')[0] === cellVerticalLocation[moment().format('d')-1]).map(cellId =>
                   <SubjectCell
                     sheetData={sheetData}
                     sheetCellsData = {sheetCellsData}
@@ -377,12 +399,14 @@ function IndivisualSheet({ sheetName }) {
                 >
                   ダッシュボード
                 </IconButton>
-                <IconButton
-                  onClick={() => router.push(`/user/${user.uid}/sheet`)}
-                  icon={<MdAddCircle/>}
-                >
-                  新規作成
-                </IconButton>
+                {!isMobile &&                
+                  <IconButton
+                    onClick={() => router.push(`/user/${user.uid}/sheet`)}
+                    icon={<MdAddCircle/>}
+                  >
+                    新規作成
+                  </IconButton>
+                }
               </AlignItems>:
               <IconButton
                 onClick={() => router.push('/app')}
@@ -391,15 +415,17 @@ function IndivisualSheet({ sheetName }) {
                 アカウント作成
               </IconButton>
             }
-            <h1>{sheetName}</h1>
+            <h1 className={'scaleFontLarge'}>{sheetName}</h1>
             {user ?
               <AlignItems>
-                <IconButton
-                  onClick={()=>{listViewState ? listView(false):listView(true)}}
-                  icon={!listViewState ? <MdCalendarViewWeek/>:<MdCalendarViewMonth/>}
-                >
-                  {!listViewState ? 'リスト表示':'グリッド表示'}
-                </IconButton>
+                {!isMobile &&
+                  <IconButton
+                    onClick={()=>{listViewState ? listView(false):listView(true)}}
+                    icon={!listViewState ? <MdCalendarViewWeek/>:<MdCalendarViewMonth/>}
+                  >
+                    {!listViewState ? 'リスト表示':'グリッド表示'}
+                  </IconButton>
+                }
                 <IconButton
                   onClick={()=>openModal()}
                   icon={<MdSettings/>}
@@ -466,7 +492,7 @@ function IndivisualSheet({ sheetName }) {
             デインジャーゾーン
           </SectionButton>
           <SectionButton
-            onClick={()=>setModalSection(1)}
+            onClick={()=>router.push('/about')}
             leftIcon={<MdInfo/>}
           >
             DEIZUについて
@@ -484,7 +510,7 @@ function IndivisualSheet({ sheetName }) {
           {modalSection === 1 && 
             <>
               <AlignItems style={{justifyContent: 'space-between'}}>
-                <h3>データシートを繋げる</h3>
+                <h3 className={'scaleFontLarge'}>データシートを繋げる</h3>
                 <Button onClick={()=>router.push(`/datasheet`)}>データシートを探す</Button>
               </AlignItems>
               <p>データシートを繋げることで科目を時間割表に入力する作業がより早まります。</p>
@@ -543,7 +569,9 @@ function IndivisualSheet({ sheetName }) {
               </AlignItems>
               {shareSheetState &&
                 <Stack>
-                  <p>URLをコピーし他の人に送信することで時間割表を共有することができます。</p>
+                  <p>
+                    URLをコピーし他の人に送信することで時間割表を共有することができます。
+                  </p>
                   <Button
                     width={'full'}
                     onClick={() => copyAlert(`deizu.vercel.app/user/${user.uid}/sheet/${sheetName}`,'時間割表のリンク')}
@@ -576,7 +604,6 @@ function IndivisualSheet({ sheetName }) {
         </Stack>
         }
       </Modal>
-
       {!sheetData ? <StaticScene type="loading"/>:
         <>
           {user ? 

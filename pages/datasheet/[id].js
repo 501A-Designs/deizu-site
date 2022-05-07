@@ -28,6 +28,7 @@ import Image from 'next/image';
 import DataGrid from 'react-data-grid';
 import ColorButton from '../../lib/component/ColorButton';
 // Modal.setAppElement('#yourAppElement');
+import {isMobile} from 'react-device-detect';
 
 function IndivisualSheet({ dataSheetId }) {
   const router = useRouter();
@@ -117,11 +118,16 @@ function IndivisualSheet({ dataSheetId }) {
         <BodyMargin>
           <AlignItems style={{marginBottom:'2em', justifyContent: 'space-between'}}>
             <AlignItems>
-              <IconButton icon={<MdArrowBack/>} onClick={()=>router.push('/datasheet')}>戻る</IconButton>
+              <IconButton
+                icon={<MdArrowBack/>}
+                onClick={()=>router.push('/datasheet')}
+              >
+                戻る
+              </IconButton>
             </AlignItems>
             <AlignItems style={{flexDirection:'column', justifyContent: 'center'}}>
-              <h1 style={{margin:0,padding:0}}>{dataSheetData.dataSheetName}</h1>
-              <p style={{margin:0,padding:0}}>{dataSheetData.dataSheetDescription}</p>
+              <h1 style={{margin:0,padding:0,textAlign: 'center'}}>{dataSheetData.dataSheetName}</h1>
+              <p style={{margin:0,padding:0,textAlign: 'center'}}>{dataSheetData.dataSheetDescription}</p>
             </AlignItems>
             <IconButton
               icon={dataSheetCellView ? <MdOutlineViewList/>:<MdOutlineViewModule/>}
@@ -167,7 +173,7 @@ function IndivisualSheet({ dataSheetId }) {
               </Stack>
             </Container>
             {dataSheetCellView ?
-              <div style={{display: 'grid', gridTemplateColumns:'1fr 1fr 1fr', height: 'fit-content',gap: '0.5em'}}>
+              <div style={{display: 'grid', gridTemplateColumns:`${isMobile ? '1fr 1fr':'1fr 1fr 1fr'}`, height: 'fit-content',gap: '0.5em'}}>
                 {rowState && 
                   rowState.map(props =>{
                     return <MockupCell

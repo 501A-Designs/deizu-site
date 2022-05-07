@@ -11,6 +11,8 @@ import Stack from '../../lib/style/Stack';
 import AlignItems from '../../lib/style/AlignItems';
 import { useRouter } from 'next/router'
 
+import {isMobile} from 'react-device-detect';
+
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth,db } from "../../src/service/firebase"
 import Link from 'next/link';
@@ -44,13 +46,16 @@ export default function index() {
 
   return (
     <BodyMargin>
-      <AlignItems style={{justifyContent: 'space-between'}}>
+      <AlignItems style={{
+          justifyContent: 'space-between',
+        }}
+      >
         <AlignItems gap={'1em'}>
           <IconButton icon={<MdArrowBack/>} onClick={() =>router.push(`/user/${user.uid}`)}>戻る</IconButton>
-          <h1 style={{margin: 0,padding:0}}>データシート一覧</h1>
+          <h1 style={{margin: 0,padding:0}} className={'scaleFontLarge'}>データシート一覧</h1>
         </AlignItems>
         <Button icon={<MdAddCircle/>} onClick={() => router.push('/datasheet/create')}>
-          データシートを作成
+          新規作成
         </Button>
       </AlignItems>
       <p>
@@ -58,7 +63,7 @@ export default function index() {
         <br />
         データシートのIDをコピーし時間割表の設定から追加しよう！（使用法について、詳しくは<Link href={'/usage'}>こちら</Link>から。）
       </p>
-      <Stack grid={'1fr 1fr'}>
+      <div className={'grid-1fr-1fr'} style={{gap: '0.5em'}}>
         {allSheetData && 
           allSheetData.map((prop) =>{
             return (
@@ -74,7 +79,7 @@ export default function index() {
             )
           })
         }
-      </Stack>
+      </div>
     </BodyMargin>
   )
 }

@@ -6,7 +6,8 @@ function MyApp({ Component, pageProps }) {
   return (
     <>
       <ToastContainer
-        position="top-right"
+        toastStyle={{ backgroundColor: 'var(--system0',borderRadius:'var(--r5)',boxShadow:'0 8px 30px rgba(0, 0, 0, 0.12)',padding: '1em',border:'1px solid var(--system2)'}}
+        position="top-center"
         autoClose={5000}
         hideProgressBar
         newestOnTop={false}
