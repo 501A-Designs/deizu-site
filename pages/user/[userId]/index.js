@@ -79,6 +79,7 @@ function IndivisualUser() {
         {
           theme: theme,
           themeColor: themeColor,
+          url:userImageUrl
         }, { merge: true }
     );
     closeModal()
@@ -102,7 +103,11 @@ function IndivisualUser() {
                   </AlignItems>
                   <h3>背景画像</h3>
                   <Stack>
-                    <Input placeholder={'画像URL'}/>
+                    <Input
+                      value={userImageUrl}
+                      onChange={(e)=>setUserImageUrl(e.target.value)}
+                      placeholder={'画像URL'}
+                    />
                   </Stack>
                   <h3>テーマ</h3>
                   <Stack grid={'1fr 1fr 1fr'}>

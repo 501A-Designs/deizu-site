@@ -140,6 +140,9 @@ function IndivisualSheet({ dataSheetId }) {
             <Container>
               <Stack gap={'1em'}>
                 <h3>データを追加</h3>
+                <p>
+                  データを一度追加すると消去することができませんのでご了承下さい。
+                </p>
                 <Stack>
                   <Input
                     value={subjectNameInput}

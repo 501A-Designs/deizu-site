@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@500;800&display=swap');
-/* @import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New&display=swap');
 
 @import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500&display=swap');
 
@@ -64,12 +64,15 @@ hr {
 	gap: 2em;
 }
 *{
-	/* font-family: 'Raleway', sans-serif; */
 	font-family: 'Zen Kaku Gothic New', sans-serif;
 	box-sizing: border-box;
 }
 a {
 	color: inherit;
+}
+
+.logoFont {
+	font-family: 'Raleway', sans-serif;
 }
 
 .grid-1fr-1fr,
@@ -94,6 +97,7 @@ a {
 		font-size: 1em;
 	}
 	.responsiveFullHeight{
+		margin-top:2.5em;
 		height: fit-content;
 	}
 	.grid-1fr-1fr,
@@ -101,7 +105,7 @@ a {
 	.grid-1fr-3fr{
 		grid-template-columns: 1fr;
 	}
-	.bodyMargin{padding:2% 5%}
+	.bodyMargin{padding:5% 5%}
 }
 @media (min-width: 701px) and (max-width: 1000px) {
 	.responsiveFullHeight{
@@ -116,7 +120,7 @@ a {
 	.grid-1fr-3fr{
 		grid-template-columns: 1.5fr 3fr;
 	}
-	.bodyMargin{padding:3% 7%}
+	.bodyMargin{padding:5% 7%}
 }
 @media (min-width: 1001px) and (max-width: 1270px) {
 	.responsiveFullHeight{

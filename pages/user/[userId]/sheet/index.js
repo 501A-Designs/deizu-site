@@ -13,8 +13,6 @@ import { useRouter } from 'next/router'
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth,db } from '../../../../src/service/firebase'
 import { doc, setDoc,getDoc, serverTimestamp} from "firebase/firestore";
-
-import { scheduleCellId } from '../../../../lib/data/scheduleCellId'
 import StaticScene from '../../../../lib/style/StaticScene'
 
 export default function index() {
@@ -22,21 +20,6 @@ export default function index() {
     const [sheetName, setSheetName] = useState('');
     const [sheetImageUrl, setSheetImageUrl] = useState('');
     const [user] = useAuthState(auth);
-
-    // const convertCellIdToObject = (array) => {
-    //     const initialValue = {};
-    //     return array.reduce((obj, cellId) => {
-    //         return {
-    //             ...obj,
-    //             [cellId]: {
-    //                 [cellId]: '',
-    //                 [cellId + 'Link']: '',
-    //                 [cellId + 'Dscrp']: '',
-    //                 [cellId + 'Color']: ''
-    //             }
-    //         };
-    //     }, initialValue);
-    // }
 
     const createScheduleSheet = async (e) =>{
         e.preventDefault();
@@ -50,7 +33,6 @@ export default function index() {
                     {
                         sheets:{
                             [sheetName]: {
-                                // cells: convertCellIdToObject(scheduleCellId),
                                 date: serverTimestamp(),
                                 sharing: false,
                                 imageUrl: sheetImageUrl,
@@ -63,17 +45,15 @@ export default function index() {
         })
     }
 
-    const handleSheetNameInputChange =(e) =>{
-        setSheetName(e.target.value)
-    }
-    const handleSheetImageUrlInputChange = (e) =>{
-        setSheetImageUrl(e.target.value)
-    }
-
     return (
         <>
             {user ?
-                <AlignItems style={{justifyContent: 'center', height: '100vh'}}>
+                <AlignItems
+                    style={{
+                        justifyContent: 'center',
+                        height: '100vh'
+                    }}
+                >
                     <Container style={{maxWidth:'600px'}}>
                         <AlignItems gap={'1em'}>
                             <IconButton icon={<MdArrowBack/>} onClick={() =>router.push(`/user/${user.uid}/`)}>戻る</IconButton>
@@ -86,12 +66,12 @@ export default function index() {
                         <Stack>
                             <Input
                                 value={sheetName}
-                                onChange={handleSheetNameInputChange}
+                                onChange={(e) => setSheetName(e.target.value)}
                                 placeholder={'時間割タイトル'}
                             />
                             <Input
                                 value={sheetImageUrl}
-                                onChange={handleSheetImageUrlInputChange}
+                                onChange={(e) =>setSheetImageUrl(e.target.value)}
                                 placeholder={'画像URL　※任意'}
                             />
                             <Button
