@@ -112,13 +112,13 @@ function IndivisualUser() {
                   <h3>テーマ</h3>
                   <Stack grid={'1fr 1fr 1fr'}>
                     {themeData.map((prop)=>{
-                      return <ImageButton onClick={()=>setTheme(prop.value)}>{prop.name}</ImageButton>
+                      return <ImageButton key={prop} onClick={()=>setTheme(prop.value)}>{prop.name}</ImageButton>
                     })}
                   </Stack>
                   <h3>色</h3>
                   <Stack grid={isMobile ? '1fr 1fr':'1fr 1fr 1fr 1fr'}>
                     {themeColorData.map((prop)=>{
-                      return <ImageButton onClick={()=>setThemeColor(prop.value)}>{prop.name}</ImageButton>
+                      return <ImageButton key={prop} onClick={()=>setThemeColor(prop.value)}>{prop.name}</ImageButton>
                     })}
                   </Stack>
                   <Button
@@ -185,6 +185,7 @@ function IndivisualUser() {
                       </AlignItems>
                       {sheetTitle && sheetTitle.map((title) =>
                         <p
+                          key={title}
                           style={{
                             backgroundColor:'var(--system1)',
                             color:'var(--txtColor0)',

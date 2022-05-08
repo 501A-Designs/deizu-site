@@ -18,7 +18,7 @@ import { auth,db } from "../../src/service/firebase"
 
 import { useRouter } from 'next/router'
 
-export default function create() {
+export default function Create() {
     const router = useRouter();
     const [user, loading, error] = useAuthState(auth);
 

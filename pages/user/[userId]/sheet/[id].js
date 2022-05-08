@@ -282,6 +282,7 @@ function IndivisualSheet({ sheetName }) {
                         setSubjectCellColor(prop.subjectColor);
                         setSubjectCellDescription(prop.subjectDescription)
                       }}
+                      key={prop}
                       padding={'0 0.5em'}
                       subjectCellName = {prop.subjectName}
                       subjectCellLink = {prop.subjectLink}
@@ -301,6 +302,7 @@ function IndivisualSheet({ sheetName }) {
               />
               {buttonColor.map((props)=>
                 <ColorButton
+                  key={props}
                   color={props}
                   onClick={() => {
                       setSubjectCellColor(props);
@@ -415,6 +417,7 @@ function IndivisualSheet({ sheetName }) {
                           openTimeModal(cellNumber);
                           setModalTimeNumber(cellNumber);
                         }}
+                        key={cellNumber}
                         sheetTimeData={sheetTimeData}
                         displayPeriod={cellNumber}
                       />
@@ -426,6 +429,7 @@ function IndivisualSheet({ sheetName }) {
               <Stack gap={'0.2em'}>
                 {scheduleCellId.filter(word => word.split('')[0] === cellVerticalLocation[moment().format('d')-1]).map(cellId =>
                   <SubjectCell
+                    key={cellId}
                     sheetCellsData = {sheetCellsData}
                     onClick={()=>{
                       openCellModal(cellId);
@@ -438,6 +442,7 @@ function IndivisualSheet({ sheetName }) {
               <div style={scheduleGridStyle}>
                 {scheduleCellId.map(cellId =>                
                   <SubjectCell
+                    key={cellId}
                     sheetCellsData = {sheetCellsData}
                     onClick={()=>{
                       openCellModal(cellId);

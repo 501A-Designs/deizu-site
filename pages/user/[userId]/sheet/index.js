@@ -15,7 +15,7 @@ import { auth,db } from '../../../../src/service/firebase'
 import { doc, setDoc,getDoc, serverTimestamp} from "firebase/firestore";
 import StaticScene from '../../../../lib/style/StaticScene'
 
-export default function index() {
+export default function Index() {
     const router = useRouter();
     const [sheetName, setSheetName] = useState('');
     const [sheetImageUrl, setSheetImageUrl] = useState('');

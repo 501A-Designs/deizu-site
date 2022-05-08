@@ -19,6 +19,7 @@ import Stack from '../lib/style/Stack'
 import {isMobile} from 'react-device-detect';
 import appIcon from '../public/deizuAppIconUpdated.png'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 export default function Home() {
   let router = useRouter();
@@ -58,7 +59,7 @@ export default function Home() {
                 <li>データシートによる効率的な時間割入力</li>
                 <li>モバイルに適したリスト表示</li>
               </ul>
-              <p>詳しい情報については<a href='/updates'>こちらから</a></p>
+              <p>詳しい情報については<Link href='/updates'>こちらから</Link></p>
             </Container>
           </AlignItems>
         </div>

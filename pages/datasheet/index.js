@@ -17,7 +17,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth,db } from "../../src/service/firebase"
 import Link from 'next/link';
 
-export default function index() {
+export default function Index() {
   const router = useRouter()
   const [user, loading, error] = useAuthState(auth);
 
@@ -68,6 +68,7 @@ export default function index() {
           allSheetData.map((prop) =>{
             return (
               <LargeImageButton
+                key={prop}
                 dataSheetId={prop.dataSheetId}
                 dataSheetName={prop.dataSheetData.dataSheetName}
                 imageSource={prop.dataSheetData.dataSheetImageUrl}

@@ -13,7 +13,7 @@ import { useRouter } from 'next/router'
 
 export default function Updates() {
     const router = useRouter();
-    
+
   return (
     <BodyMargin>
         <AlignItems gap={'1em'}>
@@ -24,12 +24,12 @@ export default function Updates() {
         <Container style={{marginBottom:'1.5em'}}>
             <h4>他のプラットフォームでもDEIZUの開発について書かれています：</h4>
             <ul>
-                <li><a href='https://zenn.dev/501a' target='_blank'>501AのZenn</a></li>
+                <li><a href='https://zenn.dev/501a' target='_blank' rel="noreferrer">501AのZenn</a></li>
                 <ul>
                     <li><a href='https://'>v2.0.0の記事</a></li>
                     <li><a href='https://'>v1.0.0の記事</a></li>
                 </ul>
-                <li><a href='https://twitter.com/Design501A' target='_blank'>501AのTwitter</a></li>
+                <li><a href='https://twitter.com/Design501A' target='_blank' rel="noreferrer">501AのTwitter</a></li>
                 {/* <li><a>Prattle</a>（自分のプラットフォーム）</li> */}
             </ul>
         </Container>

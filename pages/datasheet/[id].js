@@ -163,6 +163,7 @@ function IndivisualSheet({ dataSheetId }) {
                   <Stack grid={'1fr 1fr 1fr 1fr 1fr 1fr'}>
                     {buttonColor.map((props)=>
                       <ColorButton
+                        key={props}
                         width={'100%'}
                         color={props}
                         onClick={() => {
@@ -180,6 +181,7 @@ function IndivisualSheet({ dataSheetId }) {
                 {rowState && 
                   rowState.map(props =>{
                     return <MockupCell
+                      key={props}
                       margin={0}
                       width={'100%'}
                       padding={'none'}
