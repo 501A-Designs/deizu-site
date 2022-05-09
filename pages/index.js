@@ -44,7 +44,8 @@ export default function Home() {
         <div className={'grid-1fr-1fr sidePadding responsiveFullHeight'}>
           <AlignItems style={{justifyContent: 'center'}}>
             <div>
-              <h1>v2.0.0で激的な変化</h1>
+              <h2>5月14日にリリース。</h2>
+              <h1>v2.0.0で激的な変化。</h1>
               <p>テンプレートの作成で時間をかけてしまい、大事だった「時間割」を作れなかった日々はもう終わり。</p>
               <p>v2.0.0ではDEIZUを根本的に作り直しました。これによって様々な機能の搭載が可能となりました。</p>
             </div>
@@ -104,12 +105,12 @@ export default function Home() {
               <Container style={{marginBottom:'1.5em'}}>
                 <h2>Web &rarr;</h2>
                 <p>Next.Js等のモダンなウェブテクノロジーで構成された時間割作成アプリケーション。バックエンドではFirebaseを使用し、充実したユーザーエクスピリエンスとデザインを兼ね備えた唯一無二な時間割表作成プラットフォームです。</p>
-                <Button
+                {/* <Button
                   onClick={() =>router.push('/app')}
                   icon={<MdOutlineOpenInBrowser/>}
                 >
                   Webアプリを開く
-                </Button>      
+                </Button>       */}
               </Container>
             </div>
           </AlignItems>
