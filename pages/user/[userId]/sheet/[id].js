@@ -154,7 +154,7 @@ function IndivisualSheet({ sheetName }) {
     };
     const openCellModal = (prop) => {
       if (user) {
-        if (sheetCellsData[prop]) {
+        if (sheetCellsData) {
           setSubjectCellName(sheetCellsData[prop][prop])
           setSubjectCellDescription(sheetCellsData[prop][prop+'Dscrp']);
           setSubjectCellColor(sheetCellsData[prop][prop+'Color']);

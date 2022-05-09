@@ -36,24 +36,25 @@ function IndivisualUser() {
   const userId = router.query.userId;
   // const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
   const [user, loading] = useAuthState(auth);
-  const [theme, setTheme] = useState();
-  const [themeColor, setThemeColor] = useState();
-  const [userImageUrl, setUserImageUrl] = useState();
+  const [theme, setTheme] = useState([]);
+  const [themeColor, setThemeColor] = useState([]);
+  const [userImageUrl, setUserImageUrl] = useState('');
   const [sheetTitle, setSheetTitle] = useState();
   
   useEffect(() => {
     if (user) {      
       const docRef = doc(db, "users", user.uid);
       getDoc(docRef).then((doc) => {
-        setUserImageUrl(doc.data().url);
-        setThemeColor(doc.data().themeColor);
-        setTheme(doc.data().theme);
+        setUserImageUrl(doc.data().url ? doc.data().url:'');
+        setThemeColor(doc.data().themeColor ? doc.data().themeColor:themeColorData[0].value);
+        setTheme(doc.data().theme ? doc.data().theme:themeData[0].value);
         setSheetTitle(Object.keys(doc.data().sheets));
       })
     }
   },[user])
 
   useEffect(() => {
+    console.log(theme)
     if (theme) {
       root?.style.setProperty("--r5", theme[0]);
       root?.style.setProperty("--r10", theme[1]);
