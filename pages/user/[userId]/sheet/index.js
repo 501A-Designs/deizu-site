@@ -24,25 +24,18 @@ export default function Index() {
     const createScheduleSheet = async (e) =>{
         e.preventDefault();
         const docRef = doc(db, "users", user.uid);
-        await getDoc(docRef).then((doc) => {
-            if(doc.data().sheets[sheetName]){
-                alert(`${sheetName}は既に作成されております。別の名前を試そう！`)
-            }else{
-                console.log(sheetName)
-                setDoc(docRef,
-                    {
-                        sheets:{
-                            [sheetName]: {
-                                date: serverTimestamp(),
-                                sharing: false,
-                                imageUrl: sheetImageUrl,
-                            }
-                        },
-                    }, { merge: true }
-                );
-                router.push(`/user/${user.uid}/sheet/${sheetName}`)
-            };
-        })
+        await setDoc(docRef,
+            {
+                sheets:{
+                    [sheetName]: {
+                        date: serverTimestamp(),
+                        sharing: false,
+                        imageUrl: sheetImageUrl,
+                    }
+                },
+            }, { merge: true }
+        );
+        router.push(`/user/${user.uid}/sheet/${sheetName}`)
     }
 
     return (
@@ -61,7 +54,7 @@ export default function Index() {
                         </AlignItems>
                         <h3>新しい時間割を作成しよう</h3>
                         <p>
-                            新しい時間割表のタイトルは一度指定すると変更することはできないのでご了承ください。
+                            新しい時間割表のタイトルは一度指定すると変更することはできないのでご了承ください。なお、今まで作った時間割と重複しないようなタイトルにしてください。
                         </p>
                         <Stack>
                             <Input
