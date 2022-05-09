@@ -1,34 +1,31 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+![DEIZU logo](./public//deizuBanner.png)
 
-## Getting Started
+DEIZU に興味を持ちありがとうございます。
 
-First, run the development server:
+### シンプルで使いやすい時間割表作成サイト
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+このソフトは時間割表の作りにくさを改善しようと考えられ、シンプルかつ使いやすいUIを意識して開発されたソフトです。
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 現在搭載せれている機能
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+- シンプルで使いやすいUI
+- Googleアカウントでログイン
+- Web上で端末問わず使用可能
+- 科目のセルの色、オンライン授業のリンク、教室名・場所等の情報書き込み可
+- 時間割の時間を指定
+- 何枚もの時間割表を作成・保存可
+- バナー画像の指定可
+- テーマの変更可
+- 色の変更可
+- ユーザーのバナー画像指定可
+- リンクを通して時間割の共有
+- [詳しくはこちらへ！](https://deizu.vercel.app/)
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+### 現在検討中の機能
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+- Google Calender との連携
 
-## Learn More
+### 開発について
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+DEIZU はオープンソース！つまり、ソースコードは全て GitHub に有ります。
+開発者、私（501A）の[サイト](https://501a.netlify.app/)はこちらです。
