@@ -1,5 +1,5 @@
 import React,{useEffect, useState} from 'react'
-import { MdArrowBack,MdOutlineViewList,MdOutlineViewModule } from "react-icons/md";
+import { MdArrowBack,MdOutlineViewList,MdOutlineViewModule,MdContentCopy } from "react-icons/md";
 
 import IconButton from '../../lib/component/IconButton'
 import AlignItems from '../../lib/style/AlignItems';
@@ -29,6 +29,8 @@ import DataGrid from 'react-data-grid';
 import ColorButton from '../../lib/component/ColorButton';
 // Modal.setAppElement('#yourAppElement');
 import {isMobile} from 'react-device-detect';
+
+import { toast } from 'react-toastify';
 
 function IndivisualSheet({ dataSheetId }) {
   const router = useRouter();
@@ -109,6 +111,11 @@ function IndivisualSheet({ dataSheetId }) {
     setSubjectColorInput('');
   }
 
+  const copySheetId = () =>{
+    navigator.clipboard.writeText(`${dataSheetId}`);
+    toast(`${dataSheetData.dataSheetName}のIDがコピーされました。`);
+  }
+
   return (
     <>
       <Head>
@@ -139,7 +146,15 @@ function IndivisualSheet({ dataSheetId }) {
           <div className="grid-1fr-2fr">
             <Container>
               <Stack gap={'1em'}>
-                <h3>データを追加</h3>
+                <AlignItems style={{justifyContent: 'space-between'}}>
+                  <h3>データを追加</h3>
+                  <IconButton
+                    onClick={() => copySheetId()}
+                    icon={<MdContentCopy/>}
+                  >
+                    IDをコピー
+                  </IconButton>
+                </AlignItems>
                 <p>
                   データを一度追加すると消去することができませんのでご了承下さい。
                 </p>

@@ -102,10 +102,7 @@ export default function Home() {
           <AlignItems>
             <div>
               <Container style={{marginBottom:'1.5em'}}>
-                <AlignItems>
-                  {/* <h1 className={'logoFont'}>DEIZU</h1> */}
-                  <h2>Web &rarr;</h2>
-                </AlignItems>
+                <h2>Web &rarr;</h2>
                 <p>Next.Js等のモダンなウェブテクノロジーで構成された時間割作成アプリケーション。バックエンドではFirebaseを使用し、充実したユーザーエクスピリエンスとデザインを兼ね備えた唯一無二な時間割表作成プラットフォームです。</p>
                 <Button
                   onClick={() =>router.push('/app')}
@@ -114,20 +111,9 @@ export default function Home() {
                   Webアプリを開く
                 </Button>      
               </Container>
-              {/* <Container>
-                <h2>iOSとAndroid &rarr;</h2>
-                <p>React Nativeで作成されたモバイルプラットフォームはWebほどヘビーユーザーでないあなたに最低限の機能が搭載され、時間割作成を簡単にそして素早く行ってくれるプラットフォームです。</p>
-                <p>Coming Soon ...</p>
-                <AlignItems>
-                  <Button disabled={true}>iOSのアプリダウンロード</Button>
-                  <Button disabled={true}>Androidのアプリダウンロード</Button>
-                </AlignItems>
-              </Container> */}
             </div>
           </AlignItems>
         </div>
-
-
       <Footer />
     </div >
   )
