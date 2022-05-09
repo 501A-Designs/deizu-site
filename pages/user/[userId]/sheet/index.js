@@ -21,8 +21,11 @@ export default function Index() {
     const [sheetImageUrl, setSheetImageUrl] = useState('');
     const [user] = useAuthState(auth);
 
+    const [loading, setLoading] = useState(false)
+
     const createScheduleSheet = async (e) =>{
         e.preventDefault();
+        setLoading(true);
         const docRef = doc(db, "users", user.uid);
         await setDoc(docRef,
             {
@@ -56,24 +59,27 @@ export default function Index() {
                         <p>
                             新しい時間割表のタイトルは一度指定すると変更することはできないのでご了承ください。なお、今まで作った時間割と重複しないようなタイトルにしてください。
                         </p>
-                        <Stack>
-                            <Input
-                                value={sheetName}
-                                onChange={(e) => setSheetName(e.target.value)}
-                                placeholder={'時間割タイトル'}
-                            />
-                            <Input
-                                value={sheetImageUrl}
-                                onChange={(e) =>setSheetImageUrl(e.target.value)}
-                                placeholder={'画像URL　※任意'}
-                            />
-                            <Button
-                                width={'full'}
-                                onClick={(e)=> createScheduleSheet(e)}
-                            >
-                                新規作成
-                            </Button>
-                        </Stack>
+                        {!loading ?
+                            <Stack>
+                                <Input
+                                    value={sheetName}
+                                    onChange={(e) => setSheetName(e.target.value)}
+                                    placeholder={'時間割タイトル'}
+                                />
+                                <Input
+                                    value={sheetImageUrl}
+                                    onChange={(e) =>setSheetImageUrl(e.target.value)}
+                                    placeholder={'画像URL　※任意'}
+                                />
+                                <Button
+                                    width={'full'}
+                                    onClick={(e)=> createScheduleSheet(e)}
+                                >
+                                    新規作成
+                                </Button>
+                            </Stack>:
+                            <h3>作成中・・・</h3>
+                        }
                     </Container>
                 </AlignItems>:<StaticScene type="notLoggedIn"/>
             }
