@@ -34,6 +34,7 @@ p{
 hr {
 	margin-top: 1em;
 	margin-bottom: 1em;
+	background-color:var(--system1);
 	border: 1px solid var(--system1);
 }
 ::-webkit-scrollbar {

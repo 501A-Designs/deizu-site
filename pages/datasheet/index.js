@@ -1,6 +1,8 @@
 import React,{useState,useEffect} from 'react'
 import BodyMargin from '../../lib/style/BodyMargin'
 import { MdAddCircle,MdArrowBack } from "react-icons/md";
+import { NextSeo } from 'next-seo';
+
 
 import { collection, getDocs } from "firebase/firestore";
 import Button from '../../lib/component/Button';
@@ -46,17 +48,30 @@ export default function Index() {
 
   return (
     <BodyMargin>
+      <NextSeo
+        title="データシート"
+        description="時間割表を作成するアプリ"
+      />
       <AlignItems style={{
           justifyContent: 'space-between',
         }}
       >
         <AlignItems gap={'1em'}>
-          <IconButton icon={<MdArrowBack/>} onClick={() =>router.push(`/user/${user.uid}`)}>戻る</IconButton>
+          <IconButton
+            icon={<MdArrowBack/>}
+            onClick={() =>{
+              user ? router.push(`/user/${user.uid}`):router.push('/app')
+            }}
+          >
+            戻る
+          </IconButton>
           <h1 style={{margin: 0,padding:0}} className={'scaleFontLarge'}>データシート一覧</h1>
         </AlignItems>
-        <Button icon={<MdAddCircle/>} onClick={() => router.push('/datasheet/create')}>
-          新規作成
-        </Button>
+        {user && 
+          <Button icon={<MdAddCircle/>} onClick={() => router.push('/datasheet/create')}>
+            新規作成
+          </Button>
+        }
       </AlignItems>
       <p>
         データシートは科目を項目ごとですばやく時間割表を入力することを可能とする機能です。

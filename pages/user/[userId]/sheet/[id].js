@@ -1,6 +1,8 @@
 import React,{useEffect, useState} from 'react'
 import {MdHomeFilled,MdAddCircle, MdSettings,MdClose,MdLink,MdLinkOff,MdDelete,MdPerson,MdCalendarViewMonth,MdCalendarViewWeek,MdOutlineMediation,MdArrowForwardIos,MdPeopleAlt,MdImage,MdDangerous,MdInfo,MdArrowBack } from "react-icons/md";
 
+import { NextSeo } from 'next-seo';
+
 import {isMobile} from 'react-device-detect';
 
 import IconButton from '../../../../lib/component/IconButton'
@@ -478,24 +480,20 @@ function IndivisualSheet({ sheetName }) {
     }
     setModalIsOpen(true)
   };
-
   const saveDataSheetId = async() =>{
     const docRef = doc(db, "users", user.uid);
     await setDoc(docRef, {sheets:{[sheetName]:{dataSheetId:dataSheetId}}}, { merge: true });
     fetchDataSheet(dataSheetId)
   }
-
   const saveSheetImageUrl = async() =>{
     const docRef = doc(db, "users", user.uid);
     await setDoc(docRef, {sheets:{[sheetName]:{imageUrl:sheetImageUrl}}}, { merge: true });    
   }
-
   const shareSheet = async(prop) => {
     setShareSheetState(prop)
     const docRef = doc(db, "users", user.uid);
     await setDoc(docRef, {sheets:{[sheetName]:{sharing:prop}}}, { merge: true });
   }
-
   const copyAlert = (prop, message) => {
     navigator.clipboard.writeText(`${prop} `);
     toast(`${message}がコピーされました。`);
@@ -560,9 +558,13 @@ function IndivisualSheet({ sheetName }) {
   const [modalSection, setModalSection] = useState(0);
   return (
     <>
-      <Head>
+      <NextSeo
+        title={sheetName}
+        description={"DEIZUで作成した時間割表"}
+      />
+      {/* <Head>
         <title>{sheetName}</title>
-      </Head>
+      </Head> */}
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}

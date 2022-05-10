@@ -22,8 +22,8 @@ export default function Create() {
     const router = useRouter();
     const [user, loading, error] = useAuthState(auth);
 
-    const [dataSheetName, setDataSheetName] = useState()
-    const [dataSheetDescription, setDataSheetDescription] = useState()
+    const [dataSheetName, setDataSheetName] = useState('')
+    const [dataSheetDescription, setDataSheetDescription] = useState('')
     const [dataSheetImageUrl, setDataSheetImageUrl] = useState()
 
     const createDataSheet = async (e) =>{
