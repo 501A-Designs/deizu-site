@@ -44,12 +44,13 @@ export default function App() {
             }}
         >
             <Container style={{maxWidth:'600px'}}>
-                {/* <Banner type="announce">
+                <Banner type="announce">
                     <ul>
-                        <li>2021年12月2日よりDEIZUのv1.0.0が一般公開されました（過去のバージョン情報はGitHubから見れます）</li>
-                        <li>Zennにて開発に関する記事が投稿されました。</li>
+                        <li>アプリケーションのサイトURLが変わりました（deizu-site.web.appはもう使用することはできません）</li>
+                        <li>2022年5月14日よりDEIZUのv2.0.0が一般公開されました（過去のバージョン情報はGitHubから見れます）</li>
+                        <li>Zennにて開発に関する記事が再び投稿されました。</li>
                     </ul>
-                </Banner> */}
+                </Banner>
                 <h1>時間割表をすばやく作成</h1>
                 <strong>DEIZUへようこそ！</strong>
                 <p>

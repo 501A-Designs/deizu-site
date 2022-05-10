@@ -377,18 +377,17 @@ function IndivisualSheet({ sheetName }) {
           </Stack>
         </Modal>
 
-
         {!listViewState && 
           <Stack
             grid={
-              isMobile ? '1fr 1fr 1fr 1fr 1fr 1fr':'0.37fr 1fr 1fr 1fr 1fr 1fr 1fr'
+              isMobile ? '1fr 1fr 1fr 1fr 1fr 1fr':'0.5fr 1.5fr 1.5fr 1.5fr 1.5fr 1.5fr 1.5fr'
             }
             style={{
               marginBottom:'0.2em',
               gap: '0.2em'
             }}
           >
-            {!isMobile && <br/>}
+            {!isMobile && <div style={{width:'100%',minWidth:'46.47px'}}></div>}
             <DayOfWeek day={1}/>
             <DayOfWeek day={2}/>    
             <DayOfWeek day={3}/>    
@@ -546,7 +545,7 @@ function IndivisualSheet({ sheetName }) {
                   設定
                 </IconButton>
               </AlignItems>:
-              <p>現在閲覧中</p>
+              <p>閲覧中</p>
             }
           </AlignItems>
         </ImageContainer>
@@ -724,8 +723,18 @@ function IndivisualSheet({ sheetName }) {
       {!sheetData ? <StaticScene type="loading"/>:
         <>
           {user ? 
-            <>{sheetOwnerId === user.uid ? <Editor/>:<StaticScene type="accessDenied"/>}</>:
-            <>{sheetData.sharing ? <Editor/>:<StaticScene type="accessDenied"/>}</>
+            <>
+              {sheetOwnerId === user.uid ? 
+                <Editor/>:
+                <StaticScene type="accessDenied"/>
+              }
+            </>:
+            <>
+              {sheetData.sharing ? 
+                <Editor/>:
+                <StaticScene type="accessDenied"/>
+              }
+            </>
           }
         </>
       }
