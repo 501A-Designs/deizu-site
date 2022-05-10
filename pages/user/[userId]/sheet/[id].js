@@ -67,6 +67,16 @@ function IndivisualSheet({ sheetName }) {
   const [themeColor, setThemeColor] = useState();
 
   const sheetOwnerId = router.query.userId;
+
+  const [user] = useAuthState(auth);
+  const [viewOnly, setViewOnly] = useState(true);
+  useEffect(() => {
+    if (user) {
+      if(sheetOwnerId == user.uid){
+        setViewOnly(false);
+      }
+    }
+  },[])
   
   const fetchDataSheet = (prop) =>{
     if (prop) {
@@ -126,9 +136,6 @@ function IndivisualSheet({ sheetName }) {
     console.log('test')
   }, []);
 
-
-  const [user] = useAuthState(auth);
-
   const [listViewState, setListViewState] = useState(false)
   const listView = (prop) => {
     setListViewState(prop);
@@ -155,7 +162,7 @@ function IndivisualSheet({ sheetName }) {
       setCellModalIsOpen(false);
     };
     const openCellModal = (prop) => {
-      if (user) {
+      if (!viewOnly) {
         if (sheetCellsData) {
           if (sheetCellsData[prop]) {
             setSubjectCellName(sheetCellsData[prop][prop])
@@ -217,7 +224,7 @@ function IndivisualSheet({ sheetName }) {
       setTimeModalIsOpen(false);
     }
     const openTimeModal = (prop) => {
-      if (user) {
+      if (!viewOnly) {
         if (sheetTimeData) {
           setTimeStart(sheetTimeData[prop].start);
           setTimeEnd(sheetTimeData[prop].end)
@@ -503,7 +510,7 @@ function IndivisualSheet({ sheetName }) {
       <BodyMargin>
         <ImageContainer style={{marginBottom:'1.5em'}} src={sheetImageUrl}>
           <AlignItems style={{justifyContent: 'space-between'}}>
-            {user ?
+            {!viewOnly ?
               <AlignItems>
                 <IconButton
                   onClick={() => router.push(`/user/${user.uid}/`)}
@@ -528,7 +535,7 @@ function IndivisualSheet({ sheetName }) {
               </IconButton>
             }
             <h1 className={'scaleFontLarge'}>{sheetName}</h1>
-            {user ?
+            {!viewOnly ?
               <AlignItems>
                 {!isMobile &&
                   <IconButton
@@ -726,7 +733,12 @@ function IndivisualSheet({ sheetName }) {
             <>
               {sheetOwnerId === user.uid ? 
                 <Editor/>:
-                <StaticScene type="accessDenied"/>
+                <>
+                  {sheetData.sharing ?
+                    <Editor/>:
+                    <StaticScene type="accessDenied"/>
+                  }
+                </>
               }
             </>:
             <>

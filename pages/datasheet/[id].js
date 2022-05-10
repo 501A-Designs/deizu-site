@@ -131,7 +131,12 @@ function IndivisualSheet({ dataSheetId }) {
         <>
           {user ? 
             <BodyMargin>
-              <AlignItems style={{marginBottom:'2em', justifyContent: 'space-between'}}>
+              <AlignItems
+                style={{
+                  marginBottom:'2em',
+                  justifyContent: 'space-between'
+                }}
+              >
                 <AlignItems>
                   <IconButton
                     icon={<MdArrowBack/>}
@@ -205,7 +210,6 @@ function IndivisualSheet({ dataSheetId }) {
                       </h3>
                       <p>データを追加するにはログインをする必要がございます。</p>
                       <Button onClick={()=> router.push('/app')}>ログイン・新規登録へ</Button>
-
                     </Stack>
                   }
                 </Container>
