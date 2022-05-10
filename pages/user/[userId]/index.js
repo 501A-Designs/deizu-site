@@ -36,6 +36,7 @@ function IndivisualUser() {
   const userId = router.query.userId;
   // const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
   const [user, loading] = useAuthState(auth);
+  const [loadSheet, setLoadSheet] = useState(false);
   const [theme, setTheme] = useState([]);
   const [themeColor, setThemeColor] = useState([]);
   const [userImageUrl, setUserImageUrl] = useState('');
@@ -54,7 +55,6 @@ function IndivisualUser() {
   },[user])
 
   useEffect(() => {
-    console.log(theme)
     if (theme) {
       root?.style.setProperty("--r5", theme[0]);
       root?.style.setProperty("--r10", theme[1]);
@@ -195,7 +195,10 @@ function IndivisualUser() {
                             margin:'0.5em 0',
                             cursor: 'pointer'
                           }}
-                          onClick={() =>router.push(`/user/${user.uid}/sheet/${title}`)}
+                          onClick={() =>{
+                            setLoadSheet(true);
+                            router.push(`/user/${user.uid}/sheet/${title}`);
+                          }}
                         >
                           {title}
                         </p>
@@ -207,7 +210,7 @@ function IndivisualUser() {
           }
         </>
       }
-      {loading ? <StaticScene type="loading"/>:
+      {loading || loadSheet ? <StaticScene type="loading"/>:
         <>
           {!user && <StaticScene type="accessDenied"/>}
         </>
