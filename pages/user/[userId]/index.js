@@ -28,6 +28,8 @@ import 'moment/locale/ja';
 
 import Stack from '../../../lib/style/Stack';
 import ImageButton from '../../../lib/component/ImageButton';
+import SheetButton from '../../../lib/component/SheetButton';
+
 import ImageContainer from '../../../lib/component/ImageContainer';
 import Input from '../../../lib/component/Input';
 
@@ -43,6 +45,7 @@ function IndivisualUser() {
   const [themeColor, setThemeColor] = useState([]);
   const [userImageUrl, setUserImageUrl] = useState('');
   const [sheetTitle, setSheetTitle] = useState();
+  const [sheetMetaData, setSheetMetaData] = useState([]);
   
   useEffect(() => {
     if (user) {      
@@ -52,6 +55,35 @@ function IndivisualUser() {
         setThemeColor(doc.data().themeColor ? doc.data().themeColor:themeColorData[0].value);
         setTheme(doc.data().theme ? doc.data().theme:themeData[0].value);
         setSheetTitle(Object.keys(doc.data().sheets));
+
+        let sheetMetaDataArray = [];
+        // const convertArrayToObject = (array) => {
+        //   const initialValue = {};
+        //   return array.reduce((obj, cellId) => {
+        //       return {
+        //       ...obj,
+        //       [cellId]: {
+        //           [cellId]: '',
+        //           [cellId + 'Link']: '',
+        //           [cellId + 'Dscrp']: '',
+        //           [cellId + 'Color']: ''
+        //       }
+        //       };
+        //   }, initialValue);
+        // }
+
+        const sheetObject = doc.data().sheets
+        if (Object.keys(doc.data().sheets).length > 0) {
+          Object.keys(sheetObject).map(sheetName => {
+            sheetMetaDataArray.push({
+              sheetName: sheetName,
+              imageUrl:doc.data().sheets[sheetName].imageUrl,
+              sharing:doc.data().sheets[sheetName].sharing,
+              date:doc.data().sheets[sheetName].date,
+            })
+          })
+          setSheetMetaData(sheetMetaDataArray)
+        }
       })
     }
   },[user])
@@ -185,25 +217,23 @@ function IndivisualUser() {
                             }
                           </>
                         }
-                        {sheetTitle && sheetTitle.map((title) =>
-                          <p
-                            key={title}
-                            style={{
-                              backgroundColor:'var(--system1)',
-                              color:'var(--txtColor0)',
-                              borderRadius:'var(--r5)',
-                              padding:'0.5em 1em',
-                              margin:'0.5em 0',
-                              cursor: 'pointer'
-                            }}
-                            onClick={() =>{
-                              setLoadSheet(true);
-                              router.push(`/user/${user.uid}/sheet/${title}`);
-                            }}
-                          >
-                            {title}
-                          </p>
-                        )
+                        {sheetTitle && 
+                          <Stack style={{marginTop:'1em'}}>
+                            {sheetMetaData.map((prop) =>
+                              <SheetButton
+                                key={prop.sheetName}
+                                imageSource={prop.imageUrl}
+                                onClick={() =>{
+                                  setLoadSheet(true);
+                                  router.push(`/user/${user.uid}/sheet/${prop.sheetName}`);
+                                }}
+                                sharing={prop.sharing}
+                                date={prop.date.toDate().toDateString()}
+                              >
+                                {prop.sheetName}
+                              </SheetButton>
+                            )}
+                          </Stack>
                         }
                         {
                           sheetTitle &&
