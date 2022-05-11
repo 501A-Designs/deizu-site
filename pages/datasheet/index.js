@@ -65,7 +65,7 @@ export default function Index() {
           >
             戻る
           </IconButton>
-          <h1 style={{margin: 0,padding:0}} className={'scaleFontLarge'}>データシート一覧</h1>
+          <h1 style={{margin: 0,padding:0}} className={'scaleFontLarge'}>Datasheets</h1>
         </AlignItems>
         {user && 
           <Button icon={<MdAddCircle/>} onClick={() => router.push('/datasheet/create')}>

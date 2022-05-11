@@ -2,7 +2,7 @@ import React,{useState,useEffect} from 'react'
 import Button from '../../../lib/component/Button'
 import IconButton from '../../../lib/component/IconButton'
 
-import { MdAddCircle,MdPalette,MdOutlineExitToApp,MdOutlineSearch,MdClose } from "react-icons/md";
+import { MdAddCircle,MdPalette,MdOutlineExitToApp,MdOutlineSearch,MdClose,MdCloudOff } from "react-icons/md";
 import AlignItems from '../../../lib/style/AlignItems';
 import Container from '../../../lib/component/Container';
 import BodyMargin from '../../../lib/style/BodyMargin';
@@ -165,25 +165,20 @@ function IndivisualUser() {
                       </Container>
                     </Stack>
                       <div>
-                        <h1>ダッシュボード</h1>
-                        <p>
-                          DEIZUへようこそ！
-                          <br />
-                          こちらがDEIZUダッシュボードとなります。下のボタンで新しい時間割表を作成することができます。また、これまで作成した時間割表も閲覧し更新することができます！
-                        </p>
-                        <AlignItems>
+                        <AlignItems style={{justifyContent: 'space-between'}}>
+                          <h1>Dashboard</h1>
                           <Button
                             onClick={() => router.push(`/user/${user.uid}/sheet`)}
                             icon={<MdAddCircle/>}
                           >
                             時間割作成
                           </Button>
-                          <Button
+                          {/* <Button
                             onClick={() => router.push(`/datasheet`)}
                             icon={<MdOutlineSearch/>}
                           >
                             データシートを閲覧
-                          </Button>
+                          </Button> */}
                         </AlignItems>
                         {sheetTitle && sheetTitle.map((title) =>
                           <p
@@ -203,7 +198,22 @@ function IndivisualUser() {
                           >
                             {title}
                           </p>
-                        )}
+                        )
+                        }
+                        {
+                          sheetTitle &&
+                          <>
+                            {sheetTitle.length <= 0 ?
+                              <AlignItems style={{height: '50vh', justifyContent: 'center'}}>
+                                <AlignItems style={{justifyContent: 'center', flexDirection: 'column'}}>
+                                  <span style={{fontSize: '2em',color: 'var(--system3)'}}><MdCloudOff/></span>
+                                  <h3 style={{color: 'var(--system3)'}}>時間割表がありません</h3>
+                                </AlignItems>
+                              </AlignItems>:
+                              <p style={{textAlign:'center',color: 'var(--system3)'}}>時間表合計：{sheetTitle.length}枚</p>
+                            }
+                          </>
+                        }
                       </div>
                   </section>
                 </BodyMargin>
