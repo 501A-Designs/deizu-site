@@ -2,6 +2,8 @@ import React,{useState,useEffect} from 'react'
 import Button from '../../../lib/component/Button'
 import IconButton from '../../../lib/component/IconButton'
 
+import Banner from '../../../lib/component/Banner'
+
 import { MdAddCircle,MdPalette,MdOutlineExitToApp,MdOutlineSearch,MdClose,MdCloudOff } from "react-icons/md";
 import AlignItems from '../../../lib/style/AlignItems';
 import Container from '../../../lib/component/Container';
@@ -136,9 +138,12 @@ function IndivisualUser() {
                     <Stack>
                       <ImageContainer src={userImageUrl && userImageUrl}>
                         <AlignItems style={{justifyContent: 'space-between'}}>
-                          <AlignItems style={{gap: '1em'}}>
-                            <img style={{width: '3em', height: '3em', borderRadius:50}} src={user.photoURL} />
-                            <h1 style={{ fontSize: '2em'}}>{user.displayName.split(' ')[0]}</h1>
+                          <AlignItems style={{gap: '1.5em'}}>
+                            <img style={{width: '3.5em', height: '3.5em', borderRadius:50}} src={user.photoURL} />
+                            <Stack gap={'0'}>
+                              <h1 style={{ margin: 0, padding: 0, fontSize: '1.5em'}}>{user.displayName.split(' ')[0]}</h1>
+                              <p style={{ margin: 0, padding: 0 }}>{moment().format("MMM Do dddd")}</p>
+                            </Stack>
                           </AlignItems>
                           <IconButton
                             onClick={() => openModal()}
@@ -148,11 +153,13 @@ function IndivisualUser() {
                           </IconButton>
                         </AlignItems>
                       </ImageContainer>
-                      <Container style={{display: 'grid',gridTemplateColumns:'1fr'}}>
-                        <p>{user.email}</p>
-                        <h2 style={{ fontSize: '1em',marginBottom: '1.5em'}}>本日は：{moment().format("MMM Do dddd")}</h2>
-                        <AlignItems>
-                          <Button
+                      {/* <Button
+                        onClick={() => router.push(`/datasheet`)}
+                        icon={<MdOutlineSearch/>}
+                        >
+                        データシートを閲覧
+                      </Button> */}
+                          {/* <Button
                             icon={<MdOutlineExitToApp/>}
                             onClick={()=> {
                               signOut(auth);
@@ -160,26 +167,24 @@ function IndivisualUser() {
                             }}
                           >
                             ログアウト
-                          </Button>
-                        </AlignItems>
-                      </Container>
-                    </Stack>
-                      <div>
-                        <AlignItems style={{justifyContent: 'space-between'}}>
-                          <h1>Dashboard</h1>
-                          <Button
-                            onClick={() => router.push(`/user/${user.uid}/sheet`)}
-                            icon={<MdAddCircle/>}
-                          >
-                            時間割作成
-                          </Button>
-                          {/* <Button
-                            onClick={() => router.push(`/datasheet`)}
-                            icon={<MdOutlineSearch/>}
-                          >
-                            データシートを閲覧
                           </Button> */}
-                        </AlignItems>
+                    </Stack>
+                      <Container>
+                        {sheetTitle && 
+                          <>
+                            {sheetTitle.length > 0 && 
+                              <AlignItems style={{justifyContent: 'space-between'}}>
+                                <h1>Dashboard</h1>
+                                <Button
+                                  onClick={() => router.push(`/user/${user.uid}/sheet`)}
+                                  icon={<MdAddCircle/>}
+                                  >
+                                  時間割作成
+                                </Button>
+                              </AlignItems>
+                            }
+                          </>
+                        }
                         {sheetTitle && sheetTitle.map((title) =>
                           <p
                             key={title}
@@ -204,17 +209,34 @@ function IndivisualUser() {
                           sheetTitle &&
                           <>
                             {sheetTitle.length <= 0 ?
-                              <AlignItems style={{height: '50vh', justifyContent: 'center'}}>
+                              <>
+                              <Banner type="tutorial">
+                                <ol>
+                                  <li>時間割表を作成</li>
+                                  <li>科目や時間を入力する</li>
+                                  <li>友達や家族と共有！</li>
+                                </ol>
+                              </Banner>
+                              <AlignItems style={{height: '30vh', justifyContent: 'center'}}>
                                 <AlignItems style={{justifyContent: 'center', flexDirection: 'column'}}>
                                   <span style={{fontSize: '2em',color: 'var(--system3)'}}><MdCloudOff/></span>
-                                  <h3 style={{color: 'var(--system3)'}}>時間割表がありません</h3>
+                                  <h3 style={{color: 'var(--system3)'}}>時間割表が作成されていません</h3>
+                                  <AlignItems>
+                                    <Button
+                                      onClick={() => router.push(`/user/${user.uid}/sheet`)}
+                                      icon={<MdAddCircle/>}
+                                    >
+                                      時間割作成
+                                    </Button>
+                                  </AlignItems>
                                 </AlignItems>
-                              </AlignItems>:
+                              </AlignItems>
+                              </>:
                               <p style={{textAlign:'center',color: 'var(--system3)'}}>時間表合計：{sheetTitle.length}枚</p>
                             }
                           </>
                         }
-                      </div>
+                      </Container>
                   </section>
                 </BodyMargin>
               }
