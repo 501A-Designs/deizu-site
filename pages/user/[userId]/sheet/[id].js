@@ -226,8 +226,10 @@ function IndivisualSheet({ sheetName }) {
     const openTimeModal = (prop) => {
       if (!viewOnly) {
         if (sheetTimeData) {
-          setTimeStart(sheetTimeData[prop].start);
-          setTimeEnd(sheetTimeData[prop].end)
+          if (sheetTimeData[prop]) {
+            setTimeStart(sheetTimeData[prop].start);
+            setTimeEnd(sheetTimeData[prop].end)
+          }
         }else{
           setTimeStart('');
           setTimeEnd('');

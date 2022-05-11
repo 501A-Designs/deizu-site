@@ -130,82 +130,84 @@ function IndivisualUser() {
                   </Button>
                 </Stack>
               </Modal>
-              <BodyMargin>
-                <section className="grid-1fr-2fr">
-                  <Stack>
-                    <ImageContainer src={userImageUrl && userImageUrl}>
-                      <AlignItems style={{justifyContent: 'space-between'}}>
-                        <AlignItems style={{gap: '1em'}}>
-                          <img style={{width: '3em', height: '3em', borderRadius:50}} src={user.photoURL} />
-                          <h1 style={{ fontSize: '2em'}}>{user.displayName.split(' ')[0]}</h1>
+              {!loadSheet &&
+                <BodyMargin>
+                  <section className="grid-1fr-2fr">
+                    <Stack>
+                      <ImageContainer src={userImageUrl && userImageUrl}>
+                        <AlignItems style={{justifyContent: 'space-between'}}>
+                          <AlignItems style={{gap: '1em'}}>
+                            <img style={{width: '3em', height: '3em', borderRadius:50}} src={user.photoURL} />
+                            <h1 style={{ fontSize: '2em'}}>{user.displayName.split(' ')[0]}</h1>
+                          </AlignItems>
+                          <IconButton
+                            onClick={() => openModal()}
+                            icon={<MdPalette/>}
+                          >
+                            見た目の変更
+                          </IconButton>
                         </AlignItems>
-                        <IconButton
-                          onClick={() => openModal()}
-                          icon={<MdPalette/>}
-                        >
-                          見た目の変更
-                        </IconButton>
-                      </AlignItems>
-                    </ImageContainer>
-                    <Container style={{display: 'grid',gridTemplateColumns:'1fr'}}>
-                      <p>{user.email}</p>
-                      <h2 style={{ fontSize: '1em',marginBottom: '1.5em'}}>本日は：{moment().format("MMM Do dddd")}</h2>
-                      <AlignItems>
-                        <Button
-                          icon={<MdOutlineExitToApp/>}
-                          onClick={()=> {
-                            signOut(auth);
-                            router.push('/app')
-                          }}
-                        >
-                          ログアウト
-                        </Button>
-                      </AlignItems>
-                    </Container>
-                  </Stack>
-                    <div>
-                      <h1>ダッシュボード</h1>
-                      <p>
-                        DEIZUへようこそ！
-                        <br />
-                        こちらがDEIZUダッシュボードとなります。下のボタンで新しい時間割表を作成することができます。また、これまで作成した時間割表も閲覧し更新することができます！
-                      </p>
-                      <AlignItems>
-                        <Button
-                          onClick={() => router.push(`/user/${user.uid}/sheet`)}
-                          icon={<MdAddCircle/>}
-                        >
-                          時間割作成
-                        </Button>
-                        <Button
-                          onClick={() => router.push(`/datasheet`)}
-                          icon={<MdOutlineSearch/>}
-                        >
-                          データシートを閲覧
-                        </Button>
-                      </AlignItems>
-                      {sheetTitle && sheetTitle.map((title) =>
-                        <p
-                          key={title}
-                          style={{
-                            backgroundColor:'var(--system1)',
-                            color:'var(--txtColor0)',
-                            borderRadius:'var(--r5)',
-                            padding:'0.5em 1em',
-                            margin:'0.5em 0',
-                            cursor: 'pointer'
-                          }}
-                          onClick={() =>{
-                            setLoadSheet(true);
-                            router.push(`/user/${user.uid}/sheet/${title}`);
-                          }}
-                        >
-                          {title}
+                      </ImageContainer>
+                      <Container style={{display: 'grid',gridTemplateColumns:'1fr'}}>
+                        <p>{user.email}</p>
+                        <h2 style={{ fontSize: '1em',marginBottom: '1.5em'}}>本日は：{moment().format("MMM Do dddd")}</h2>
+                        <AlignItems>
+                          <Button
+                            icon={<MdOutlineExitToApp/>}
+                            onClick={()=> {
+                              signOut(auth);
+                              router.push('/app')
+                            }}
+                          >
+                            ログアウト
+                          </Button>
+                        </AlignItems>
+                      </Container>
+                    </Stack>
+                      <div>
+                        <h1>ダッシュボード</h1>
+                        <p>
+                          DEIZUへようこそ！
+                          <br />
+                          こちらがDEIZUダッシュボードとなります。下のボタンで新しい時間割表を作成することができます。また、これまで作成した時間割表も閲覧し更新することができます！
                         </p>
-                      )}
-                    </div>
-                </section>
-              </BodyMargin>
+                        <AlignItems>
+                          <Button
+                            onClick={() => router.push(`/user/${user.uid}/sheet`)}
+                            icon={<MdAddCircle/>}
+                          >
+                            時間割作成
+                          </Button>
+                          <Button
+                            onClick={() => router.push(`/datasheet`)}
+                            icon={<MdOutlineSearch/>}
+                          >
+                            データシートを閲覧
+                          </Button>
+                        </AlignItems>
+                        {sheetTitle && sheetTitle.map((title) =>
+                          <p
+                            key={title}
+                            style={{
+                              backgroundColor:'var(--system1)',
+                              color:'var(--txtColor0)',
+                              borderRadius:'var(--r5)',
+                              padding:'0.5em 1em',
+                              margin:'0.5em 0',
+                              cursor: 'pointer'
+                            }}
+                            onClick={() =>{
+                              setLoadSheet(true);
+                              router.push(`/user/${user.uid}/sheet/${title}`);
+                            }}
+                          >
+                            {title}
+                          </p>
+                        )}
+                      </div>
+                  </section>
+                </BodyMargin>
+              }
             </>
           }
         </>
