@@ -12,7 +12,6 @@ import { useRouter } from 'next/router'
 
 import { useAuthState } from 'react-firebase-hooks/auth';
 
-import { signOut } from 'firebase/auth'
 import { auth,db,root } from "../../../src/service/firebase"
 import { doc, getDoc,　setDoc } from "firebase/firestore";
 
@@ -176,7 +175,17 @@ function IndivisualUser() {
                       <ImageContainer src={userImageUrl && userImageUrl}>
                         <AlignItems style={{justifyContent: 'space-between'}}>
                           <AlignItems style={{gap: '1.5em'}}>
-                            <img style={{width: '3.5em', height: '3.5em', borderRadius:50}} src={user.photoURL} />
+                            <img
+                              style={{
+                                width: '3.5em',
+                                height: '3.5em',
+                                borderRadius:50,
+                                cursor: 'pointer',
+                                border:'1px solid var(--system1)'
+                              }}
+                              src={user.photoURL}
+                              onClick={() => router.push('/user')}
+                            />
                             <Stack gap={'0'}>
                               <h1 style={{ margin: 0, padding: 0, fontSize: '1.5em'}}>{user.displayName.split(' ')[0]}</h1>
                               <p style={{ margin: 0, padding: 0 }}>{moment().format("MMM Do dddd")}</p>
@@ -196,15 +205,6 @@ function IndivisualUser() {
                         >
                         データシートを閲覧
                       </Button> */}
-                          {/* <Button
-                            icon={<MdOutlineExitToApp/>}
-                            onClick={()=> {
-                              signOut(auth);
-                              router.push('/app')
-                            }}
-                          >
-                            ログアウト
-                          </Button> */}
                     </Stack>
                       <Container>
                         {sheetTitle && 

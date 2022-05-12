@@ -17,6 +17,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth,db } from "../../src/service/firebase"
 
 import { useRouter } from 'next/router'
+import { NextSeo } from 'next-seo';
 
 export default function Create() {
     const router = useRouter();

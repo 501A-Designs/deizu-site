@@ -25,7 +25,7 @@ export default function App() {
             const credential = GoogleAuthProvider.credentialFromResult(result);
             const token = credential.accessToken;
             console.log(token);
-            console.log(result.user);
+            // console.log(result.user);
         }).catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
