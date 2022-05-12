@@ -11,6 +11,7 @@ import Banner from '../lib/component/Banner';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { auth } from "../src/service/firebase"
+import { NextSeo } from 'next-seo';
 
 
 export default function App() {
@@ -43,6 +44,10 @@ export default function App() {
                 justifyContent: 'center'
             }}
         >
+            <NextSeo
+                title="新規登録・ログイン"
+                description="DEIZUのアカウントにログイン・新規登録"
+            />
             <Container style={{maxWidth:'600px'}}>
                 <Banner type="announce">
                     <ul>

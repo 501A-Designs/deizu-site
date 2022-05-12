@@ -34,6 +34,7 @@ import ImageContainer from '../../../lib/component/ImageContainer';
 import Input from '../../../lib/component/Input';
 
 import {isMobile} from 'react-device-detect';
+import { NextSeo } from 'next-seo';
 
 function IndivisualUser() {
   const router = useRouter();
@@ -124,6 +125,10 @@ function IndivisualUser() {
     <>
       {user &&
         <>
+          <NextSeo
+            title={`ダッシュボード`}
+            description={`${user.displayName.split(' ')[0]}さんのDEIZUダッシュボード`}
+          />
           {user.uid == userId &&
             <>
               <Modal
@@ -205,7 +210,7 @@ function IndivisualUser() {
                         {sheetTitle && 
                           <>
                             {sheetTitle.length > 0 && 
-                              <AlignItems style={{justifyContent: 'space-between'}}>
+                              <AlignItems style={{justifyContent: 'space-between', marginBottom: '1em'}}>
                                 <h1>Dashboard</h1>
                                 <Button
                                   onClick={() => router.push(`/user/${user.uid}/sheet`)}
@@ -218,7 +223,7 @@ function IndivisualUser() {
                           </>
                         }
                         {sheetTitle && 
-                          <Stack style={{marginTop:'1em'}}>
+                          <Stack>
                             {sheetMetaData.map((prop) =>
                               <SheetButton
                                 key={prop.sheetName}

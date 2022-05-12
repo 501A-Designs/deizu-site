@@ -14,6 +14,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth,db } from '../../../../src/service/firebase'
 import { doc, setDoc,getDoc, serverTimestamp} from "firebase/firestore";
 import StaticScene from '../../../../lib/style/StaticScene'
+import { NextSeo } from 'next-seo';
 
 export default function Index() {
     const router = useRouter();
@@ -43,6 +44,10 @@ export default function Index() {
 
     return (
         <>
+            <NextSeo
+                title={`新規作成`}
+                description={`新しい時間割表を作成`}
+            />
             {user ?
                 <AlignItems
                     style={{

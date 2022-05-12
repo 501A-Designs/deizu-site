@@ -42,6 +42,10 @@ export default function Create() {
 
     return (
         <>
+            <NextSeo
+                title="新規作成"
+                description="データシートを新しく作成"
+            />
             {user ?
                 <AlignItems style={{justifyContent: 'center', height: '100vh'}}>
                     <Container style={{maxWidth:'600px'}}>
