@@ -17,14 +17,9 @@ import { doc, getDoc,setDoc,arrayUnion } from "firebase/firestore";
 
 import { buttonColor } from '../../lib/data/buttonColor'
 
-import Modal from 'react-modal';
-import moment from 'moment';
 import Button from '../../lib/component/Button';
 import Input from '../../lib/component/Input';
-
-import Head from 'next/head';
 import Stack from '../../lib/style/Stack';
-import Image from 'next/image';
 
 import DataGrid from 'react-data-grid';
 import ColorButton from '../../lib/component/ColorButton';
@@ -33,12 +28,10 @@ import {isMobile} from 'react-device-detect';
 
 import { toast } from 'react-toastify';
 
-function IndivisualSheet({ dataSheetId }) {
+function IndivisualSheet() {
   const router = useRouter();
   const [dataSheetData, setDataSheetData] = useState()
-
-  moment.locale("ja");
-
+  const dataSheetId = router.query.id;
   const [rowState, setRowState] = useState([])
   
   const fetchData = () => {
@@ -54,7 +47,6 @@ function IndivisualSheet({ dataSheetId }) {
     fetchData()
   }, []);
 
-  // const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
   const [user, loading, error] = useAuthState(auth);
 
   const columns = [
@@ -63,23 +55,12 @@ function IndivisualSheet({ dataSheetId }) {
     { key: 'subjectLink', name: 'URLリンク', editable: true },
     { key: 'subjectColor', name: '科目の色', editable: true },
   ];
-  
-  const rows = [
-    {
-      subjectName: 0,
-      subjectDescription: 'Example',
-      subjectLink: 'this is the subject link',
-      subjectColor: '#hexcode'
-    },
-  ];
 
   const [subjectNameInput, setSubjectNameInput] = useState('')
   const [subjectLinkInput, setSubjectLinkInput] = useState('')
   const [subjectDescriptionInput, setSubjectDescriptionInput] = useState('')
   const [subjectColorInput, setSubjectColorInput] = useState('')
-
   const [dataSheetCellView, setDataSheetCellView] = useState(true)
-
 
   const insertNewSubjectData = async (e) => {
     e.preventDefault();
@@ -123,9 +104,6 @@ function IndivisualSheet({ dataSheetId }) {
         title={dataSheetData && dataSheetData.dataSheetName}
         description="DEIZU上のデータシート"
       />
-      {/* <Head>
-        <title>{dataSheetData && dataSheetData.dataSheetName}</title>
-      </Head> */}
       {!dataSheetData ?
         <StaticScene type="loading"/>:
         <>
@@ -250,13 +228,5 @@ function IndivisualSheet({ dataSheetId }) {
     </>
   )
 }
-
-export async function getServerSideProps({ params }) {
-    let dataSheetId = params.id;
-
-    return {
-      props: { dataSheetId }
-    }
-  }
   
 export default IndivisualSheet

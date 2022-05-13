@@ -44,43 +44,63 @@ import ModalSection from '../../../../lib/style/ModalSection';
 import TextPreview from '../../../../lib/component/TextPreview';
 import DayOfWeek from '../../../../lib/schedule/DayOfWeek';
 
-function IndivisualSheet({ sheetName }) {
+
+function IndivisualSheet() {
+  const router = useRouter();
+
+  // const sheetName = router.query.id;
+  const sheetName = router.query.id;
+  const sheetOwnerId = router.query.userId;
+
   const cellVerticalLocation =['a', 'b', 'c', 'd', 'e', 'f'];
   const timeCellLocation = [1,2,3,4,5,6,7]
-
-  const router = useRouter();
   const [sheetData, setSheetData] = useState()
   const [sheetCellsData, setSheetCellsData] = useState()
-
   const [sheetTimeData, setSheetTimeData] = useState()
-
   const [sheetImageUrl, setSheetImageUrl] = useState()
   const [shareSheetState, setShareSheetState] = useState()
-  
   const [modalIsOpen, setModalIsOpen] = useState(false);
-
   const [dataSheetId, setDataSheetId] = useState()
   const [dataSheet, setDataSheet] = useState()
   const [dataSheetName, setDataSheetName] = useState()
-  
   const [theme, setTheme] = useState();
   const [themeColor, setThemeColor] = useState();
-
-  const sheetOwnerId = router.query.userId;
+  const [viewOnly, setViewOnly] = useState(true);
 
   const [user] = useAuthState(auth);
-  const [viewOnly, setViewOnly] = useState(true);
+
+  useEffect(() => {
+    if (sheetOwnerId) {      
+      const docRef = doc(db, "users", sheetOwnerId);
+      getDoc(docRef).then((doc) => {
+        if (!doc.data().sheets[sheetName]) {
+          router.push('/app')
+        }
+        setThemeColor(doc.data().themeColor);
+        setTheme(doc.data().theme);
+  
+        const thisSheet = doc.data().sheets[sheetName];
+        setSheetData(thisSheet);
+        setSheetCellsData(thisSheet.cells);
+        setSheetTimeData(thisSheet.time);
+        setSheetImageUrl(thisSheet.imageUrl);
+        setShareSheetState(thisSheet.sharing);
+        setDataSheetId(thisSheet.dataSheetId);
+        fetchDataSheet(thisSheet.dataSheetId);
+      })
+    }
+  },[sheetOwnerId])
+
   useEffect(() => {
     if (user) {
-      if(sheetOwnerId == user.uid){
+      if(sheetOwnerId === user.uid){
         setViewOnly(false);
       }
     }
-  },[])
+  },[user])
   
   const fetchDataSheet = (prop) =>{
     if (prop) {
-      console.log(prop)
       getDoc(doc(db, "sheets", prop)).then((doc) => {
         if(doc.data()){
           setDataSheet(doc.data().dataSheet);
@@ -94,26 +114,25 @@ function IndivisualSheet({ sheetName }) {
     }
   }
 
-  const fetchData = () => {
-    const docRef = doc(db, "users", sheetOwnerId);
-    getDoc(docRef).then((doc) => {
-      if (!doc.data().sheets[sheetName]) {
-        router.push('/app')
-      }
-      setThemeColor(doc.data().themeColor);
-      setTheme(doc.data().theme);
+  // const fetchData = () => {
+  //   const docRef = doc(db, "users", sheetOwnerId);
+  //   getDoc(docRef).then((doc) => {
+  //     if (!doc.data().sheets[sheetName]) {
+  //       router.push('/app')
+  //     }
+  //     setThemeColor(doc.data().themeColor);
+  //     setTheme(doc.data().theme);
 
-      const thisSheet = doc.data().sheets[sheetName];
-      setSheetData(thisSheet);
-      setSheetCellsData(thisSheet.cells);
-      setSheetTimeData(thisSheet.time);
-      
-      setSheetImageUrl(thisSheet.imageUrl);
-      setShareSheetState(thisSheet.sharing);
-      setDataSheetId(thisSheet.dataSheetId);
-      fetchDataSheet(thisSheet.dataSheetId);
-    })
-  }
+  //     const thisSheet = doc.data().sheets[sheetName];
+  //     setSheetData(thisSheet);
+  //     setSheetCellsData(thisSheet.cells);
+  //     setSheetTimeData(thisSheet.time);
+  //     setSheetImageUrl(thisSheet.imageUrl);
+  //     setShareSheetState(thisSheet.sharing);
+  //     setDataSheetId(thisSheet.dataSheetId);
+  //     fetchDataSheet(thisSheet.dataSheetId);
+  //   })
+  // }
 
   useEffect(() => {
     if (theme) {
@@ -128,13 +147,11 @@ function IndivisualSheet({ sheetName }) {
       root?.style.setProperty("--txtColor0", themeColor[4]);
       root?.style.setProperty("--txtColor1", themeColor[5]);
     }
-    console.log('bruh')
   },[themeColor, theme])
   
-  useEffect(() => {
-    fetchData()
-    console.log('test')
-  }, []);
+  // useEffect(() => {
+  //   fetchData()
+  // }, []);
 
   const [listViewState, setListViewState] = useState(false)
   const listView = (prop) => {
@@ -756,12 +773,4 @@ function IndivisualSheet({ sheetName }) {
   )
 }
 
-export async function getServerSideProps({ params }) {
-    let sheetName = params.id;
-
-    return {
-      props: { sheetName }
-    }
-  }
-  
 export default IndivisualSheet

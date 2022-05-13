@@ -26,7 +26,12 @@ export default function Index() {
             description={`${user.displayName.split(' ')[0]}さんのDEIZUダッシュボード`}
           />
           <BodyMargin>
-            <AlignItems style={{flexDirection: 'column', justifyContent: 'center'}}>
+            <AlignItems
+              style={{
+                flexDirection: 'column',
+                justifyContent: 'center'
+              }}
+            >
               <img
                 src={user.photoURL}
                 style={{

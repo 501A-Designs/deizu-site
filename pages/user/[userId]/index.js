@@ -38,8 +38,9 @@ import { NextSeo } from 'next-seo';
 function IndivisualUser() {
   const router = useRouter();
   const userId = router.query.userId;
-  // const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
+  
   const [user, loading] = useAuthState(auth);
+  // const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
   const [loadSheet, setLoadSheet] = useState(false);
   const [theme, setTheme] = useState([]);
   const [themeColor, setThemeColor] = useState([]);
@@ -57,21 +58,6 @@ function IndivisualUser() {
         setSheetTitle(Object.keys(doc.data().sheets));
 
         let sheetMetaDataArray = [];
-        // const convertArrayToObject = (array) => {
-        //   const initialValue = {};
-        //   return array.reduce((obj, cellId) => {
-        //       return {
-        //       ...obj,
-        //       [cellId]: {
-        //           [cellId]: '',
-        //           [cellId + 'Link']: '',
-        //           [cellId + 'Dscrp']: '',
-        //           [cellId + 'Color']: ''
-        //       }
-        //       };
-        //   }, initialValue);
-        // }
-
         const sheetObject = doc.data().sheets
         if (Object.keys(doc.data().sheets).length > 0) {
           Object.keys(sheetObject).map(sheetName => {
