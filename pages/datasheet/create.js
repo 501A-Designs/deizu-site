@@ -2,16 +2,15 @@ import React,{useState} from 'react'
 import Button from '../../lib/component/Button'
 import IconButton from '../../lib/component/IconButton'
 
-import { MdArrowBack,MdOutlineViewList,MdOutlineViewModule } from "react-icons/md";
+import { MdArrowBack,MdAddCircle } from "react-icons/md";
 
 import Container from '../../lib/component/Container'
 import Input from '../../lib/component/Input'
 import AlignItems from '../../lib/style/AlignItems'
-import BodyMargin from '../../lib/style/BodyMargin'
 import Stack from '../../lib/style/Stack'
 import StaticScene from '../../lib/style/StaticScene'
 
-import { collection, addDoc, documentId } from "firebase/firestore"; 
+import { collection, addDoc } from "firebase/firestore"; 
 
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth,db } from "../../src/service/firebase"
@@ -56,14 +55,14 @@ export default function Create() {
                         </AlignItems>
                         <h3>新しいデータシートを作成しよう</h3>
                         <p>
-                            新しいデータシートのタイトルは一度指定すると変更することはできないのでご了承ください。
+                            新しいデータシートのタイトルは一度指定すると変更することはできないのでご了承ください。また、何も入力しない場合画像が自動生成されるのでご了承下さい。
                         </p>
                         {!sheetLoading ? 
                             <Stack>
                                 <Input
                                     value={dataSheetName}
                                     onChange={(e)=>setDataSheetName(e.target.value)}
-                                    placeholder={'データシートタイトル'}
+                                    placeholder={'データシートタイトル　※必須'}
                                 />
                                 <Input
                                     value={dataSheetDescription}
@@ -73,14 +72,17 @@ export default function Create() {
                                 <Input
                                     value={dataSheetImageUrl}
                                     onChange={(e)=>setDataSheetImageUrl(e.target.value)}
-                                    placeholder={'画像URL *何も入力しない場合画像が自動生成されます'}
+                                    placeholder={'画像URL'}
                                 />
-                                <Button
-                                    width={'full'}
-                                    onClick={(e)=> createDataSheet(e)}
-                                >
-                                    新規作成
-                                </Button>
+                                {dataSheetName && 
+                                    <Button
+                                        icon={<MdAddCircle/>}
+                                        width={'full'}
+                                        onClick={(e)=> createDataSheet(e)}
+                                    >
+                                        新規作成
+                                    </Button>
+                                }
                             </Stack>:
                             <h3>作成中・・・</h3>
                         }

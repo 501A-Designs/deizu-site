@@ -38,28 +38,23 @@ export default function App() {
     }
 
     return (
-        <AlignItems
-            style={{
-                height: '100vh',
-                justifyContent: 'center'
-            }}
-        >
+        <AlignItems style={{justifyContent: 'center'}}>
             <NextSeo
                 title="新規登録・ログイン"
-                description="DEIZUのアカウントにログイン・新規登録"
+                description="Deizuのアカウントにログイン・新規登録"
             />
-            <Container style={{maxWidth:'600px'}}>
+            <Container style={{marginTop:'2em', marginBottom:'2em', maxWidth:'600px'}}>
                 <Banner type="announce">
                     <ul>
                         <li>アプリケーションのサイトURLが変わりました（deizu-site.web.appはもう使用することはできません）</li>
-                        <li>2022年5月14日よりDEIZUのv2.0.0が一般公開されました（過去のバージョン情報はGitHubから見れます）</li>
+                        <li>2022年5月14日よりDeizuのv2.0.0が一般公開されました（過去のバージョン情報はGitHubから見れます）</li>
                         <li>Zennにて開発に関する記事が再び投稿されました。</li>
                     </ul>
                 </Banner>
                 <h1>時間割表をすばやく作成</h1>
-                <strong>DEIZUへようこそ！</strong>
+                <strong>Deizuへようこそ！</strong>
                 <p>
-                    時間割表の作りづらさを改善しようと考えられ開発されたソフトです。シンプルなデザインを活用し誰もが簡単にそして満足できるような時間割作成に望めます！
+                    時間割表の作りづらさを改善しようと考えられ開発されたソフトです。シンプルなデザインを活用し誰もが簡単にそして満足できるような時間割作成に望めます！なお、登録される前は<Link href="/about">プライバシーポリシー</Link>を読むようお願い致します。
                 </p>
                 <div style={{
                     display: 'grid',

@@ -18,16 +18,16 @@ export default function Updates() {
     <BodyMargin>
         <AlignItems gap={'1em'}>
             <IconButton icon={<MdHomeFilled/>} onClick={() => router.push('/')}>メインメイン</IconButton>
-            <h1 className="scaleFontLarge">DEIZUの開発状況</h1>
+            <h1 className="scaleFontLarge">Deizuの開発状況</h1>
         </AlignItems>
-        <p>DEIZUは私（501A）が手掛けて作成した時間割表作成プラットフォームです。</p>
+        <p>Deizuは私（501A）が手掛けて作成した時間割表作成プラットフォームです。</p>
         <Container style={{marginBottom:'1.5em'}}>
-            <h4>他のプラットフォームでもDEIZUの開発について書かれています：</h4>
+            <h4>他のプラットフォームでもDeizuの開発について書かれています：</h4>
             <ul>
                 <li><a href='https://zenn.dev/501a' target='_blank' rel="noreferrer">501AのZenn</a></li>
                 <ul>
-                    <li><a href='https://'>v2.0.0の記事</a></li>
-                    <li><a href='https://'>v1.0.0の記事</a></li>
+                    {/* <li><a href='https://'>v2.0.0の記事</a></li> */}
+                    <li><a href='https://zenn.dev/501a/articles/1772f7ce5aa384'>v1.0.0の記事：「時間割表を作成するサイトを作ってみた」</a></li>
                 </ul>
                 <li><a href='https://twitter.com/Design501A' target='_blank' rel="noreferrer">501AのTwitter</a></li>
                 {/* <li><a>Prattle</a>（自分のプラットフォーム）</li> */}
@@ -39,7 +39,7 @@ export default function Updates() {
         </p>                     
         <AlignItems>
             <Button
-                onClick={() => { window.open('https://github.com/501A-Designs/DEIZU', "_blank") }}
+                onClick={() => { window.open('https://github.com/501A-Designs/deizu-site', "_blank") }}
                 icon={<MdCode/>}
             >
                 GitHubを見る
@@ -63,7 +63,7 @@ export default function Updates() {
         </ul> */}
         <h4>バックエンド</h4>
         <p>
-            Webとモバイル版は両方同じFirebaseをバックエンドで使用しております。
+            DeizuはFirebaseをバックエンドで使用しております。
         </p>
         <ul>
             <li>
@@ -74,7 +74,7 @@ export default function Updates() {
                 <li>Authentication：ログインシステム</li>
             </ul>
         </ul>
-        <p>バージョン情報については<a href="https://github.com/501A-Designs/DEIZU/releases">GitHubのリリース</a>でも確認することができます</p>
+        {/* <p>バージョン情報については<a href="https://github.com/501A-Designs/DEIZU/releases">GitHubのリリース</a>でも確認することができます</p> */}
     </BodyMargin>
   )
 }

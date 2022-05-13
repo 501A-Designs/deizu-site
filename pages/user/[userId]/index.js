@@ -4,7 +4,7 @@ import IconButton from '../../../lib/component/IconButton'
 
 import Banner from '../../../lib/component/Banner'
 
-import { MdAddCircle,MdPalette,MdOutlineExitToApp,MdOutlineSearch,MdClose,MdEditCalendar } from "react-icons/md";
+import { MdAddCircle,MdPalette,MdClose,MdEditCalendar } from "react-icons/md";
 import AlignItems from '../../../lib/style/AlignItems';
 import Container from '../../../lib/component/Container';
 import BodyMargin from '../../../lib/style/BodyMargin';

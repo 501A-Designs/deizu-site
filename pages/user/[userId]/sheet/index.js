@@ -1,7 +1,8 @@
 import React,{useState} from 'react'
 import Button from '../../../../lib/component/Button'
 import IconButton from '../../../../lib/component/IconButton'
-import { MdArrowBack,MdOutlineViewList,MdOutlineViewModule } from "react-icons/md";
+import { MdArrowBack,MdAddCircle } from "react-icons/md";
+
 
 import Container from '../../../../lib/component/Container'
 import Input from '../../../../lib/component/Input'
@@ -12,7 +13,7 @@ import { useRouter } from 'next/router'
 
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth,db } from '../../../../src/service/firebase'
-import { doc, setDoc,getDoc, serverTimestamp} from "firebase/firestore";
+import { doc, setDoc, serverTimestamp} from "firebase/firestore";
 import StaticScene from '../../../../lib/style/StaticScene'
 import { NextSeo } from 'next-seo';
 
@@ -64,7 +65,7 @@ export default function Index() {
                         </AlignItems>
                         <h3>新しい時間割を作成しよう</h3>
                         <p>
-                            新しい時間割表のタイトルは一度指定すると変更することはできないのでご了承ください。なお、今まで作った時間割と重複しないようなタイトルにしてください。
+                            新しい時間割表のタイトルは一度指定すると変更することはできないのでご了承ください。なお、今まで作った時間割と重複しないようなタイトルにしてください。時間割表のタイトルを入力すると、作成ボタンが表示されます。
                         </p>
                         {!loading ?
                             <Stack>
@@ -85,6 +86,7 @@ export default function Index() {
                                 />
                                 {sheetName &&
                                     <Button
+                                        icon={<MdAddCircle/>}
                                         width={'full'}
                                         onClick={(e)=> createScheduleSheet(e)}
                                     >
