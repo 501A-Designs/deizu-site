@@ -19,7 +19,8 @@ import { NextSeo } from 'next-seo';
 export default function Index() {
     const router = useRouter();
     const [sheetName, setSheetName] = useState('');
-    const [sheetImageUrl, setSheetImageUrl] = useState('');
+    const [sheetBackgroundImageUrl, setSheetBackgroundImageUrl] = useState('');
+    const [sheetBannerImageUrl, setSheetBannerImageUrl] = useState('');
     const [user] = useAuthState(auth);
 
     const [loading, setLoading] = useState(false)
@@ -34,7 +35,8 @@ export default function Index() {
                     [sheetName]: {
                         date: serverTimestamp(),
                         sharing: false,
-                        imageUrl: sheetImageUrl,
+                        backgroundImageUrl: sheetBackgroundImageUrl,
+                        bannerImageUrl: sheetBannerImageUrl,
                     }
                 },
             }, { merge: true }
@@ -69,19 +71,26 @@ export default function Index() {
                                 <Input
                                     value={sheetName}
                                     onChange={(e) => setSheetName(e.target.value)}
-                                    placeholder={'時間割タイトル'}
+                                    placeholder={'時間割タイトル　※必須'}
                                 />
                                 <Input
-                                    value={sheetImageUrl}
-                                    onChange={(e) =>setSheetImageUrl(e.target.value)}
-                                    placeholder={'画像URL　※任意'}
+                                    value={sheetBannerImageUrl}
+                                    onChange={(e) =>setSheetBannerImageUrl(e.target.value)}
+                                    placeholder={'バナー画像URL'}
                                 />
-                                <Button
-                                    width={'full'}
-                                    onClick={(e)=> createScheduleSheet(e)}
-                                >
-                                    新規作成
-                                </Button>
+                                <Input
+                                    value={sheetBackgroundImageUrl}
+                                    onChange={(e) =>setSheetBackgroundImageUrl(e.target.value)}
+                                    placeholder={'背景画像URL'}
+                                />
+                                {sheetName &&
+                                    <Button
+                                        width={'full'}
+                                        onClick={(e)=> createScheduleSheet(e)}
+                                    >
+                                        新規作成
+                                    </Button>
+                                }
                             </Stack>:
                             <h3>作成中・・・</h3>
                         }

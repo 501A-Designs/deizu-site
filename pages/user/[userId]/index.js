@@ -4,7 +4,7 @@ import IconButton from '../../../lib/component/IconButton'
 
 import Banner from '../../../lib/component/Banner'
 
-import { MdAddCircle,MdPalette,MdOutlineExitToApp,MdOutlineSearch,MdClose,MdCloudOff } from "react-icons/md";
+import { MdAddCircle,MdPalette,MdOutlineExitToApp,MdOutlineSearch,MdClose,MdEditCalendar } from "react-icons/md";
 import AlignItems from '../../../lib/style/AlignItems';
 import Container from '../../../lib/component/Container';
 import BodyMargin from '../../../lib/style/BodyMargin';
@@ -64,7 +64,7 @@ function IndivisualUser() {
         Object.keys(sheetObject).map(sheetName => {
           sheetMetaDataArray.push({
             sheetName: sheetName,
-            imageUrl:doc.data().sheets[sheetName].imageUrl,
+            bannerImageUrl:doc.data().sheets[sheetName].bannerImageUrl,
             sharing:doc.data().sheets[sheetName].sharing,
             date:doc.data().sheets[sheetName].date,
           })
@@ -219,7 +219,7 @@ function IndivisualUser() {
                           {sheetMetaData.map((prop) =>
                             <SheetButton
                               key={prop.sheetName}
-                              imageSource={prop.imageUrl}
+                              imageSource={prop.bannerImageUrl}
                               onClick={() =>{
                                 setLoadSheet(true);
                                 router.push(`/user/${user.uid}/sheet/${prop.sheetName}`);
@@ -246,7 +246,7 @@ function IndivisualUser() {
                             </Banner>
                             <AlignItems style={{height: '30vh', justifyContent: 'center'}}>
                               <AlignItems style={{justifyContent: 'center', flexDirection: 'column'}}>
-                                <span style={{fontSize: '2em',color: 'var(--system3)'}}><MdCloudOff/></span>
+                                <span style={{fontSize: '2em',color: 'var(--system3)'}}><MdEditCalendar/></span>
                                 <h3 style={{color: 'var(--system3)'}}>時間割表が作成されていません</h3>
                                 <AlignItems>
                                   <Button

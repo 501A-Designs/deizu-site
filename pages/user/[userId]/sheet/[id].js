@@ -54,10 +54,13 @@ function IndivisualSheet() {
 
   const cellVerticalLocation =['a', 'b', 'c', 'd', 'e', 'f'];
   const timeCellLocation = [1,2,3,4,5,6,7]
-  const [sheetData, setSheetData] = useState()
-  const [sheetCellsData, setSheetCellsData] = useState()
-  const [sheetTimeData, setSheetTimeData] = useState()
-  const [sheetImageUrl, setSheetImageUrl] = useState()
+  const [sheetData, setSheetData] = useState();
+  const [sheetCellsData, setSheetCellsData] = useState();
+  const [sheetTimeData, setSheetTimeData] = useState();
+
+  const [sheetBannerImageUrl, setSheetBannerImageUrl] = useState();
+  const [sheetBackgroundImageUrl, setSheetBackgroundImageUrl] = useState();
+
   const [shareSheetState, setShareSheetState] = useState()
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [dataSheetId, setDataSheetId] = useState()
@@ -83,7 +86,9 @@ function IndivisualSheet() {
         setSheetData(thisSheet);
         setSheetCellsData(thisSheet.cells);
         setSheetTimeData(thisSheet.time);
-        setSheetImageUrl(thisSheet.imageUrl);
+        setSheetBannerImageUrl(thisSheet.bannerImageUrl);
+        setSheetBackgroundImageUrl(thisSheet.backgroundImageUrl);
+
         setShareSheetState(thisSheet.sharing);
         setDataSheetId(thisSheet.dataSheetId);
         fetchDataSheet(thisSheet.dataSheetId);
@@ -299,7 +304,6 @@ function IndivisualSheet() {
               subjectCellColor = {subjectCellColor}
               subjectCellDescription = {subjectCellDescription}
             />
-
             {dataSheetName &&             
               <>
                 <h4 style={{textAlign: 'center', marginBottom:'0'}}>「{dataSheetName}」データシートより</h4>
@@ -488,7 +492,7 @@ function IndivisualSheet() {
           style = {{
             textAlign:'center',
             fontSize:'0.6em',
-            color:'var(--txtColor0)'
+            color: 'var(--system3)'
           }}
         >
           最終変更時：{sheetData.date.toDate().toDateString()}
@@ -512,7 +516,13 @@ function IndivisualSheet() {
   }
   const saveSheetImageUrl = async() =>{
     const docRef = doc(db, "users", user.uid);
-    await setDoc(docRef, {sheets:{[sheetName]:{imageUrl:sheetImageUrl}}}, { merge: true });    
+    await setDoc(docRef, {
+      sheets:{[sheetName]:
+        {
+          bannerImageUrl:sheetBannerImageUrl,
+          backgroundImageUrl:sheetBackgroundImageUrl,
+        }
+      }}, { merge: true });    
   }
   const shareSheet = async(prop) => {
     setShareSheetState(prop)
@@ -527,7 +537,7 @@ function IndivisualSheet() {
   function Editor() {
     return (
       <BodyMargin>
-        <ImageContainer style={{marginBottom:'1.5em'}} src={sheetImageUrl}>
+        <ImageContainer style={{marginBottom:'1.5em'}} src={sheetBannerImageUrl}>
           <AlignItems style={{justifyContent: 'space-between'}}>
             {!viewOnly ?
               <AlignItems>
@@ -582,7 +592,15 @@ function IndivisualSheet() {
   
   const [modalSection, setModalSection] = useState(0);
   return (
-    <>
+    <div
+      style={{
+        margin:0,
+        padding:0,
+        backgroundImage:`url(${sheetBackgroundImageUrl})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}
+    >
       <NextSeo
         title={sheetName}
         description={"DEIZUで作成した時間割表"}
@@ -617,7 +635,7 @@ function IndivisualSheet() {
             leftIcon={<MdImage/>}
             rightIcon={<MdArrowForwardIos/>}
           >
-            バナー画像を追加
+            画像を編集・追加
           </SectionButton>
           <SectionButton
             onClick={()=>setModalSection(3)}
@@ -674,13 +692,18 @@ function IndivisualSheet() {
           }
           {modalSection === 2 && 
             <>
-              <h3>バナー画像</h3>
-              <p>インターネット上にある画像URLを追加するとバナー画像として追加されます。</p>
+              <h3>画像を追加・編集</h3>
+              <p>インターネット上にある画像URLを追加するとバナー画像・背景画像として追加されます。</p>
               <Stack>
                 <Input
-                  placeholder={'画像URL'}
-                  value={sheetImageUrl}
-                  onChange={(e)=>setSheetImageUrl(e.target.value)}
+                  placeholder={'バナー画像URL'}
+                  value={sheetBannerImageUrl}
+                  onChange={(e)=>setSheetBannerImageUrl(e.target.value)}
+                />
+                <Input
+                  placeholder={'背景画像URL'}
+                  value={sheetBackgroundImageUrl}
+                  onChange={(e)=>setSheetBackgroundImageUrl(e.target.value)}
                 />
                 <Button onClick={()=>saveSheetImageUrl()} width={"full"}>保存</Button>
               </Stack>
@@ -769,7 +792,7 @@ function IndivisualSheet() {
           }
         </>
       }
-    </>
+    </div>
   )
 }
 

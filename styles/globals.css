@@ -14,6 +14,10 @@
 	--txtColor1: white;
 }
 
+::placeholder {
+	color: var(--system3);
+	font-size: 1.1em;
+}
 
 html,
 body {
