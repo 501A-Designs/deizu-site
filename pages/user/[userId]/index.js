@@ -38,39 +38,45 @@ import { NextSeo } from 'next-seo';
 function IndivisualUser() {
   const router = useRouter();
   const userId = router.query.userId;
-  
+
   const [user, loading] = useAuthState(auth);
-  // const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
   const [loadSheet, setLoadSheet] = useState(false);
-  const [theme, setTheme] = useState([]);
-  const [themeColor, setThemeColor] = useState([]);
+  const [theme, setTheme] = useState(themeData[0].value);
+  const [themeColor, setThemeColor] = useState(themeColorData[0].value);
   const [userImageUrl, setUserImageUrl] = useState('');
-  const [sheetTitle, setSheetTitle] = useState();
+  const [sheetTitle, setSheetTitle] = useState([]);
   const [sheetMetaData, setSheetMetaData] = useState([]);
   
-  useEffect(() => {
-    if (user) {      
-      const docRef = doc(db, "users", user.uid);
-      getDoc(docRef).then((doc) => {
-        setUserImageUrl(doc.data().url ? doc.data().url:'');
-        setThemeColor(doc.data().themeColor ? doc.data().themeColor:themeColorData[0].value);
-        setTheme(doc.data().theme ? doc.data().theme:themeData[0].value);
-        setSheetTitle(Object.keys(doc.data().sheets));
+  const fetchData = async () => {
+    const docRef = doc(db, "users", user.uid);
+    const docSnapshot = await getDoc(docRef);
+    if (docSnapshot.exists()) {
+      let doc = docSnapshot;
+      setUserImageUrl(doc.data().url ? doc.data().url:'');
+      setThemeColor(doc.data().themeColor ? doc.data().themeColor:themeColorData[0].value);
+      setTheme(doc.data().theme ? doc.data().theme:themeData[0].value);
+      setSheetTitle(Object.keys(doc.data().sheets));
 
-        let sheetMetaDataArray = [];
-        const sheetObject = doc.data().sheets
-        if (Object.keys(doc.data().sheets).length > 0) {
-          Object.keys(sheetObject).map(sheetName => {
-            sheetMetaDataArray.push({
-              sheetName: sheetName,
-              imageUrl:doc.data().sheets[sheetName].imageUrl,
-              sharing:doc.data().sheets[sheetName].sharing,
-              date:doc.data().sheets[sheetName].date,
-            })
+      let sheetMetaDataArray = [];
+      const sheetObject = doc.data().sheets;
+      
+      if (Object.keys(doc.data().sheets).length > 0) {
+        Object.keys(sheetObject).map(sheetName => {
+          sheetMetaDataArray.push({
+            sheetName: sheetName,
+            imageUrl:doc.data().sheets[sheetName].imageUrl,
+            sharing:doc.data().sheets[sheetName].sharing,
+            date:doc.data().sheets[sheetName].date,
           })
-          setSheetMetaData(sheetMetaDataArray)
-        }
-      })
+        })
+        setSheetMetaData(sheetMetaDataArray)
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (user) {
+      fetchData()
     }
   },[user])
 
@@ -192,72 +198,72 @@ function IndivisualUser() {
                         データシートを閲覧
                       </Button> */}
                     </Stack>
-                      <Container>
-                        {sheetTitle && 
-                          <>
-                            {sheetTitle.length > 0 && 
-                              <AlignItems style={{justifyContent: 'space-between', marginBottom: '1em'}}>
-                                <h1>Dashboard</h1>
-                                <Button
-                                  onClick={() => router.push(`/user/${user.uid}/sheet`)}
-                                  icon={<MdAddCircle/>}
+                    <Container>
+                      {sheetTitle && 
+                        <>
+                          {sheetTitle.length > 0 && 
+                            <AlignItems style={{justifyContent: 'space-between', marginBottom: '1em'}}>
+                              <h1>Dashboard</h1>
+                              <Button
+                                onClick={() => router.push(`/user/${user.uid}/sheet`)}
+                                icon={<MdAddCircle/>}
+                                >
+                                時間割作成
+                              </Button>
+                            </AlignItems>
+                          }
+                        </>
+                      }
+                      {sheetTitle && 
+                        <Stack>
+                          {sheetMetaData.map((prop) =>
+                            <SheetButton
+                              key={prop.sheetName}
+                              imageSource={prop.imageUrl}
+                              onClick={() =>{
+                                setLoadSheet(true);
+                                router.push(`/user/${user.uid}/sheet/${prop.sheetName}`);
+                              }}
+                              sharing={prop.sharing}
+                              date={prop.date.toDate().toDateString()}
+                            >
+                              {prop.sheetName}
+                            </SheetButton>
+                          )}
+                        </Stack>
+                      }
+                      {
+                        sheetTitle &&
+                        <>
+                          {sheetTitle.length <= 0 ?
+                            <>
+                            <Banner type="tutorial">
+                              <ol>
+                                <li>時間割表を作成</li>
+                                <li>科目や時間を入力する</li>
+                                <li>友達や家族と共有！</li>
+                              </ol>
+                            </Banner>
+                            <AlignItems style={{height: '30vh', justifyContent: 'center'}}>
+                              <AlignItems style={{justifyContent: 'center', flexDirection: 'column'}}>
+                                <span style={{fontSize: '2em',color: 'var(--system3)'}}><MdCloudOff/></span>
+                                <h3 style={{color: 'var(--system3)'}}>時間割表が作成されていません</h3>
+                                <AlignItems>
+                                  <Button
+                                    onClick={() => router.push(`/user/${user.uid}/sheet`)}
+                                    icon={<MdAddCircle/>}
                                   >
-                                  時間割作成
-                                </Button>
-                              </AlignItems>
-                            }
-                          </>
-                        }
-                        {sheetTitle && 
-                          <Stack>
-                            {sheetMetaData.map((prop) =>
-                              <SheetButton
-                                key={prop.sheetName}
-                                imageSource={prop.imageUrl}
-                                onClick={() =>{
-                                  setLoadSheet(true);
-                                  router.push(`/user/${user.uid}/sheet/${prop.sheetName}`);
-                                }}
-                                sharing={prop.sharing}
-                                date={prop.date.toDate().toDateString()}
-                              >
-                                {prop.sheetName}
-                              </SheetButton>
-                            )}
-                          </Stack>
-                        }
-                        {
-                          sheetTitle &&
-                          <>
-                            {sheetTitle.length <= 0 ?
-                              <>
-                              <Banner type="tutorial">
-                                <ol>
-                                  <li>時間割表を作成</li>
-                                  <li>科目や時間を入力する</li>
-                                  <li>友達や家族と共有！</li>
-                                </ol>
-                              </Banner>
-                              <AlignItems style={{height: '30vh', justifyContent: 'center'}}>
-                                <AlignItems style={{justifyContent: 'center', flexDirection: 'column'}}>
-                                  <span style={{fontSize: '2em',color: 'var(--system3)'}}><MdCloudOff/></span>
-                                  <h3 style={{color: 'var(--system3)'}}>時間割表が作成されていません</h3>
-                                  <AlignItems>
-                                    <Button
-                                      onClick={() => router.push(`/user/${user.uid}/sheet`)}
-                                      icon={<MdAddCircle/>}
-                                    >
-                                      時間割作成
-                                    </Button>
-                                  </AlignItems>
+                                    時間割作成
+                                  </Button>
                                 </AlignItems>
                               </AlignItems>
-                              </>:
-                              <p style={{textAlign:'center',color: 'var(--system3)'}}>時間表合計：{sheetTitle.length}枚</p>
-                            }
-                          </>
-                        }
-                      </Container>
+                            </AlignItems>
+                            </>:
+                            <p style={{textAlign:'center',color: 'var(--system3)'}}>時間表合計：{sheetTitle.length}枚</p>
+                          }
+                        </>
+                      }
+                    </Container>
                   </section>
                 </BodyMargin>
               }
