@@ -26,7 +26,7 @@ export default function Updates() {
             <ul>
                 <li><a href='https://zenn.dev/501a' target='_blank' rel="noreferrer">501AのZenn</a></li>
                 <ul>
-                    {/* <li><a href='https://'>v2.0.0の記事</a></li> */}
+                    <li><a href='https://zenn.dev/501a/articles/480a9c3b3715ca'>v2.0.0の記事：「時間割表を作成するサイトをバージョンアップ！」</a></li>
                     <li><a href='https://zenn.dev/501a/articles/1772f7ce5aa384'>v1.0.0の記事：「時間割表を作成するサイトを作ってみた」</a></li>
                 </ul>
                 <li><a href='https://twitter.com/Design501A' target='_blank' rel="noreferrer">501AのTwitter</a></li>
@@ -53,7 +53,7 @@ export default function Updates() {
         </AlignItems>
         <br/>
         <h3>テクノロジースタック</h3>
-        <h4>ウェブプラットフォーム</h4>
+        <h4>フロントエンドフレームワーク</h4>
         <ul>
             <li>Next JS</li>
         </ul>

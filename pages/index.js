@@ -15,11 +15,22 @@ import TextPreview from '../lib/component/TextPreview'
 import Stack from '../lib/style/Stack'
 import {isMobile} from 'react-device-detect';
 import appIcon from '../public/deizuAppIconUpdated.png'
+// import appScreenshot from '../public/deizu-screenshot.png'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 
+import {BrowserMockup} from 'react-mockup'
+import 'react-mockup/dist/index.css'
+
 export default function Home() {
   let router = useRouter();
+  const frameStyle={
+    backdropFilter: 'blur(16px)',
+    background:'radial-gradient(86.36% 107.55% at 6.49% 12.32%,rgba(255, 255, 255, 0.5) 0%,rgba(255, 255, 255, 0.5) 100%)',
+    border:'1px solid rgba(228, 228, 228, 0.3)',
+    padding:'20px',
+    borderRadius:'20px',
+  }
 
   return (
     <div className={'container'}>
@@ -27,16 +38,29 @@ export default function Home() {
         title="Deizu"
         description="時間割表を作成するアプリ"
       />
-        <div className={'sidePadding responsiveFullHeight'} style={{display:'flex',justifyContent: 'center'}}>
+        <div className={'sidePadding'} style={{display:'flex',justifyContent: 'center'}}>
           <AlignItems style={{flexDirection:'column', justifyContent: 'center'}}>
-            <AlignItems>
+            <AlignItems style={{marginTop:'8em'}}>
               <Image src={appIcon} width={100} height={100}/>
             </AlignItems>
             <p>時間割作成、履修の記録を効率的に。</p>
-            <MdArrowDownward/>
+            <BrowserMockup
+              src='deizu-screenshot.png'
+              type="mac"
+              windowControlPosition="left"
+              angleX="1deg"
+              angleY="0deg"
+              accentColor="white"
+              urlValue="deizu.vercel.app"
+              // shadow="none"
+              // border="none"
+              color="black"
+              frameStyle={frameStyle}
+            />
+            {/* <MdArrowDownward/> */}
           </AlignItems>
         </div>
-        <hr/>
+        {/* <hr/> */}
         <div className={'grid-1fr-1fr sidePadding responsiveFullHeight'}>
           <AlignItems style={{justifyContent: 'center'}}>
             <div>
