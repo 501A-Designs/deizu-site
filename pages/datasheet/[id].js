@@ -23,15 +23,15 @@ import Stack from '../../lib/style/Stack';
 
 import DataGrid from 'react-data-grid';
 import ColorButton from '../../lib/component/ColorButton';
-// Modal.setAppElement('#yourAppElement');
-import {isMobile} from 'react-device-detect';
 
+import {isMobile} from 'react-device-detect';
 import { toast } from 'react-toastify';
 
 function IndivisualSheet() {
   const router = useRouter();
-  const [dataSheetData, setDataSheetData] = useState()
   const dataSheetId = router.query.id;
+
+  const [dataSheetData, setDataSheetData] = useState()
   const [rowState, setRowState] = useState([])
   
   const fetchData = () => {
@@ -47,7 +47,7 @@ function IndivisualSheet() {
     fetchData()
   }, []);
 
-  const [user, loading, error] = useAuthState(auth);
+  const [user] = useAuthState(auth);
 
   const columns = [
     { key: 'subjectName', name: '科目名', editable: true },

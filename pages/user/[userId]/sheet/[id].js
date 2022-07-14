@@ -1,5 +1,7 @@
 import React,{useEffect, useState} from 'react'
-import {MdHomeFilled,MdAddCircle, MdSettings,MdClose,MdLink,MdLinkOff,MdDelete,MdPerson,MdCalendarViewMonth,MdCalendarViewWeek,MdOutlineMediation,MdArrowForwardIos,MdPeopleAlt,MdImage,MdDangerous,MdInfo,MdArrowBack } from "react-icons/md";
+import LoadingBar from 'react-top-loading-bar'
+
+import {MdHomeFilled,MdAddCircle, MdSettings,MdClose,MdLink,MdLinkOff,MdDelete,MdPerson,MdCalendarViewMonth,MdCalendarViewWeek,MdOutlineMediation,MdArrowForwardIos,MdPeopleAlt,MdImage,MdDangerous,MdInfo,MdArrowBack, MdDonutLarge } from "react-icons/md";
 
 import { NextSeo } from 'next-seo';
 
@@ -21,8 +23,10 @@ import ColorButton from '../../../../lib/component/ColorButton';
 import { useRouter } from 'next/router'
 
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { useDocument } from 'react-firebase-hooks/firestore';
+
 import { auth,db,root } from "../../../../src/service/firebase"
-import { doc, getDoc,setDoc,serverTimestamp, updateDoc, deleteField } from "firebase/firestore";
+import { doc, getDoc,setDoc,serverTimestamp, updateDoc, deleteField,collection, getDocs } from "firebase/firestore";
 
 Modal.setAppElement('#__next');
 import Modal from 'react-modal';
@@ -36,16 +40,16 @@ import { modalStyle } from '../../../../lib/style/modalStyle'
 import { scheduleCellId } from '../../../../lib/data/scheduleCellId'
 import { buttonColor } from '../../../../lib/data/buttonColor'
 
-import Head from 'next/head';
 import Container from '../../../../lib/component/Container';
 import ImageContainer from '../../../../lib/component/ImageContainer';
 import SectionButton from '../../../../lib/component/SectionButton';
-import ModalSection from '../../../../lib/style/ModalSection';
 import TextPreview from '../../../../lib/component/TextPreview';
 import DayOfWeek from '../../../../lib/schedule/DayOfWeek';
+import LargeImageButton from '../../../../lib/component/LargeImageButton';
 
 
 function IndivisualSheet() {
+  const [progress, setProgress] = useState(0)
   const router = useRouter();
 
   // const sheetName = router.query.id;
@@ -65,44 +69,40 @@ function IndivisualSheet() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [dataSheetId, setDataSheetId] = useState()
   const [dataSheet, setDataSheet] = useState()
-  const [dataSheetName, setDataSheetName] = useState()
-  const [theme, setTheme] = useState();
-  const [themeColor, setThemeColor] = useState();
+  const [dataSheetName, setDataSheetName] = useState();
+  
   const [viewOnly, setViewOnly] = useState(true);
 
-  const [user] = useAuthState(auth);
-
+  const [user] = useAuthState(auth);      
+  const [userSheetObject] = useDocument(doc(db, `users/${sheetOwnerId && sheetOwnerId}`));
+  const thisSheet = userSheetObject && userSheetObject.data().sheets[sheetName && sheetName];
+      
   useEffect(() => {
-    if (sheetOwnerId) {      
-      const docRef = doc(db, "users", sheetOwnerId);
-      getDoc(docRef).then((doc) => {
-        if (!doc.data().sheets[sheetName]) {
-          router.push('/app')
-        }
-        setThemeColor(doc.data().themeColor);
-        setTheme(doc.data().theme);
-  
-        const thisSheet = doc.data().sheets[sheetName];
-        setSheetData(thisSheet);
-        setSheetCellsData(thisSheet.cells);
-        setSheetTimeData(thisSheet.time);
-        setSheetBannerImageUrl(thisSheet.bannerImageUrl);
-        setSheetBackgroundImageUrl(thisSheet.backgroundImageUrl);
+    setProgress(30)
+    if (userSheetObject) {
+      setSheetData(thisSheet);
+      setSheetCellsData(thisSheet && thisSheet.cells);
+      setSheetTimeData(thisSheet && thisSheet.time);
+      setSheetBannerImageUrl(thisSheet && thisSheet.bannerImageUrl);
+      setSheetBackgroundImageUrl(thisSheet && thisSheet.backgroundImageUrl);
+      setShareSheetState(thisSheet && thisSheet.sharing);
+      setDataSheetId(thisSheet && thisSheet.dataSheetId);
 
-        setShareSheetState(thisSheet.sharing);
-        setDataSheetId(thisSheet.dataSheetId);
-        fetchDataSheet(thisSheet.dataSheetId);
-      })
+      root?.style.setProperty("--r5", userSheetObject && userSheetObject.data().theme[0]);
+      root?.style.setProperty("--r10", userSheetObject && userSheetObject.data().theme[1]);
+      for (let index = 0; index < 4; index++) {
+        root?.style.setProperty(`--system${index}`, userSheetObject && userSheetObject.data().themeColor[index]);
+      }
+      root?.style.setProperty("--txtColor0", userSheetObject && userSheetObject.data().themeColor[4]);
+      root?.style.setProperty("--txtColor1", userSheetObject && userSheetObject.data().themeColor[5]);
     }
-  },[sheetOwnerId])
-
-  useEffect(() => {
     if (user) {
       if(sheetOwnerId === user.uid){
         setViewOnly(false);
       }
     }
-  },[user])
+    setProgress(100)
+  },[sheetOwnerId, userSheetObject])
   
   const fetchDataSheet = (prop) =>{
     if (prop) {
@@ -118,45 +118,6 @@ function IndivisualSheet() {
       console.log("removed");
     }
   }
-
-  // const fetchData = () => {
-  //   const docRef = doc(db, "users", sheetOwnerId);
-  //   getDoc(docRef).then((doc) => {
-  //     if (!doc.data().sheets[sheetName]) {
-  //       router.push('/app')
-  //     }
-  //     setThemeColor(doc.data().themeColor);
-  //     setTheme(doc.data().theme);
-
-  //     const thisSheet = doc.data().sheets[sheetName];
-  //     setSheetData(thisSheet);
-  //     setSheetCellsData(thisSheet.cells);
-  //     setSheetTimeData(thisSheet.time);
-  //     setSheetImageUrl(thisSheet.imageUrl);
-  //     setShareSheetState(thisSheet.sharing);
-  //     setDataSheetId(thisSheet.dataSheetId);
-  //     fetchDataSheet(thisSheet.dataSheetId);
-  //   })
-  // }
-
-  useEffect(() => {
-    if (theme) {
-      root?.style.setProperty("--r5", theme[0]);
-      root?.style.setProperty("--r10", theme[1]);
-    }
-    if (themeColor) {        
-      root?.style.setProperty("--system0", themeColor[0]);
-      root?.style.setProperty("--system1", themeColor[1]);
-      root?.style.setProperty("--system2", themeColor[2]);
-      root?.style.setProperty("--system3", themeColor[3]);
-      root?.style.setProperty("--txtColor0", themeColor[4]);
-      root?.style.setProperty("--txtColor1", themeColor[5]);
-    }
-  },[themeColor, theme])
-  
-  // useEffect(() => {
-  //   fetchData()
-  // }, []);
 
   const [listViewState, setListViewState] = useState(false)
   const listView = (prop) => {
@@ -495,7 +456,7 @@ function IndivisualSheet() {
             color: 'var(--system3)'
           }}
         >
-          最終変更時：{sheetData.date.toDate().toDateString()}
+          {/* 最終変更時：{sheetData && sheetData.date.toDate().toDateString()} */}
         </p>
       </>
     )
@@ -533,6 +494,27 @@ function IndivisualSheet() {
     navigator.clipboard.writeText(`${prop} `);
     toast(`${message}がコピーされました。`);
   }
+
+
+    // Datasheet fetching
+    const [allDataSheetData, setAllDataSheetData] = useState()
+
+    const fetchDataSheetData = async () => {
+      const collectionRef = collection(db, "sheets");
+      const querySnapshot = await getDocs(collectionRef);
+      let sheetDataArray = [];
+      querySnapshot.forEach((doc) => {
+        console.log(doc.id)
+        sheetDataArray.push(
+          {
+            dataSheetId: doc.id,
+            dataSheetData: doc.data(),
+          }
+          );
+        })
+        setAllDataSheetData(sheetDataArray);
+    }
+
   
   function Editor() {
     return (
@@ -605,9 +587,6 @@ function IndivisualSheet() {
         title={sheetName}
         description={"DEIZUで作成した時間割表"}
       />
-      {/* <Head>
-        <title>{sheetName}</title>
-      </Head> */}
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
@@ -671,11 +650,42 @@ function IndivisualSheet() {
             <>
               <AlignItems style={{justifyContent: 'space-between'}}>
                 <h3 className={'scaleFontLarge'}>データシートを繋げる</h3>
-                <Button onClick={()=>router.push(`/datasheet`)}>データシートを探す</Button>
+                {/* <Button onClick={()=>router.push(`/datasheet`)}>データシートを探す</Button> */}
+                <Button onClick={()=>fetchDataSheetData()}>
+                  データシート一覧を表示
+                </Button>
               </AlignItems>
-              <p>データシートを繋げることで科目を時間割表に入力する作業がより早まります。</p>
+              <AlignItems style={{overflowX:'scroll', padding:'1em'}}>
+                {
+                  allDataSheetData && allDataSheetData.map((prop) =>{
+                    return (
+                      <LargeImageButton
+                        displayAddButton={true}
+                        key={prop}
+                        dataSheetId={prop.dataSheetId}
+                        dataSheetName={prop.dataSheetData.dataSheetName}
+                        imageSource={prop.dataSheetData.dataSheetImageUrl}
+                        subtitle={prop.dataSheetData.dataSheetDescription}
+                        onClick={() => router.push(`/datasheet/${prop.dataSheetId}`)}
+                        addDataSheetOnClick={()=>
+                          setDataSheetId(prop.dataSheetId)
+                        }
+                      >
+                        {prop.dataSheetData.dataSheetName}
+                      </LargeImageButton>
+                    )
+                  })
+                }
+              </AlignItems>
+              <p>
+                データシートを繋げることで科目を時間割表に入力する作業がより早まります。
+              </p>
               <Stack>
-                {dataSheetName && <TextPreview style={{textAlign: 'center'}}>「{dataSheetName}」のデータシートに繋がっています</TextPreview>}
+                {dataSheetName && 
+                  <TextPreview style={{textAlign: 'center'}}>
+                    「{dataSheetName}」のデータシートに繋がっています
+                  </TextPreview>
+                }
                 <Input
                   placeholder={'データシートID'}
                   value={dataSheetId}
@@ -769,6 +779,13 @@ function IndivisualSheet() {
         </Stack>
         }
       </Modal>
+      <LoadingBar
+        color='var(--system3)'
+        progress={progress}
+        onLoaderFinished={() => setProgress(0)}
+        waitingTime={300}
+      />
+
       {!sheetData ? <StaticScene type="loading"/>:
         <>
           {user ? 

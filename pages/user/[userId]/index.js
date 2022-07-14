@@ -4,7 +4,7 @@ import IconButton from '../../../lib/component/IconButton'
 
 import Banner from '../../../lib/component/Banner'
 
-import { MdAddCircle,MdPalette,MdClose,MdEditCalendar } from "react-icons/md";
+import { MdAddCircle,MdPalette,MdClose,MdEditCalendar,MdImage,MdStyle } from "react-icons/md";
 import AlignItems from '../../../lib/style/AlignItems';
 import Container from '../../../lib/component/Container';
 import BodyMargin from '../../../lib/style/BodyMargin';
@@ -34,6 +34,7 @@ import Input from '../../../lib/component/Input';
 
 import {isMobile} from 'react-device-detect';
 import { NextSeo } from 'next-seo';
+import TabIconButton from '../../../lib/component/TabIconButton';
 
 function IndivisualUser() {
   const router = useRouter();
@@ -112,6 +113,8 @@ function IndivisualUser() {
     closeModal()
   }
 
+  const [modalSection, setModalSection] = useState(1);
+
   return (
     <>
       {user &&
@@ -132,32 +135,73 @@ function IndivisualUser() {
                     <h2>見た目の設定</h2>
                     <IconButton icon={<MdClose/>} onClick={() =>closeModal()}>閉じる</IconButton>
                   </AlignItems>
-                  <h3>背景画像</h3>
-                  <Stack>
-                    <Input
-                      value={userImageUrl}
-                      onChange={(e)=>setUserImageUrl(e.target.value)}
-                      placeholder={'画像URL'}
-                    />
-                  </Stack>
-                  <h3>テーマ</h3>
                   <Stack grid={'1fr 1fr 1fr'}>
-                    {themeData.map((prop)=>{
-                      return <ImageButton key={prop} onClick={()=>setTheme(prop.value)}>{prop.name}</ImageButton>
-                    })}
+                    <TabIconButton
+                      tabId={1}
+                      sectionState={modalSection}
+                      name="背景画像"
+                      type="icon"
+                      onClick={()=>setModalSection(1)}
+                    >
+                      <MdImage/>
+                    </TabIconButton>
+                    <TabIconButton
+                      tabId={2}
+                      sectionState={modalSection}
+                      name="テーマ"
+                      type="icon"
+                      onClick={()=>setModalSection(2)}
+                    >
+                      <MdStyle/>
+                    </TabIconButton>
+                    <TabIconButton
+                      tabId={3}
+                      sectionState={modalSection}
+                      name="色"
+                      type="icon"
+                      onClick={()=>setModalSection(3)}
+                    >
+                      <MdPalette/>
+                    </TabIconButton>
                   </Stack>
-                  <h3>色</h3>
-                  <Stack grid={isMobile ? '1fr 1fr':'1fr 1fr 1fr 1fr'}>
-                    {themeColorData.map((prop)=>{
-                      return <ImageButton key={prop} onClick={()=>setThemeColor(prop.value)}>{prop.name}</ImageButton>
-                    })}
+                  <Stack>
+                    {modalSection === 1 &&
+                      <Stack>
+                        {userImageUrl && 
+                          <ImageContainer src={userImageUrl && userImageUrl}>
+                            <h2 style={{marginBottom:'0em'}}>あいうえお</h2>
+                            <p style={{marginTop:'0em'}}>テキストが見えやすい背景画像を選ぶと良いです。</p>
+                          </ImageContainer>
+                        }
+                        <Input
+                          value={userImageUrl}
+                          onChange={(e)=>setUserImageUrl(e.target.value)}
+                          placeholder={'画像URL'}
+                        />
+                      </Stack>
+                    }
+                    {modalSection === 2 &&
+                      <Stack grid={'1fr 1fr 1fr'}>
+                        {themeData.map((prop)=>{
+                          return <ImageButton key={prop} onClick={()=>setTheme(prop.value)}>{prop.name}</ImageButton>
+                        })}
+                      </Stack>
+                    }
+
+                    {modalSection === 3 &&
+                      <Stack grid={isMobile ? '1fr 1fr':'1fr 1fr 1fr 1fr'}>
+                        {themeColorData.map((prop)=>{
+                          return <ImageButton key={prop} onClick={()=>setThemeColor(prop.value)}>{prop.name}</ImageButton>
+                        })}
+                      </Stack>
+                    }
+                    <Button
+                      width="full"
+                      onClick={(e)=>saveThemeData(e)}
+                    >
+                      保存
+                    </Button>
                   </Stack>
-                  <Button
-                    width="full"
-                    onClick={(e)=>saveThemeData(e)}
-                  >
-                    保存
-                  </Button>
                 </Stack>
               </Modal>
               {!loadSheet &&

@@ -28,7 +28,7 @@ export default function Home() {
     backdropFilter: 'blur(16px)',
     background:'radial-gradient(86.36% 107.55% at 6.49% 12.32%,rgba(255, 255, 255, 0.5) 0%,rgba(255, 255, 255, 0.5) 100%)',
     border:'1px solid rgba(228, 228, 228, 0.3)',
-    padding:'20px',
+    padding:'15px',
     borderRadius:'20px',
   }
 
