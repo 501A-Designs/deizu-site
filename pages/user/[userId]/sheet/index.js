@@ -29,7 +29,7 @@ export default function Index() {
     const createScheduleSheet = async (e) =>{
         e.preventDefault();
         setLoading(true);
-        const docRef = doc(db, "users", user.uid);
+        const docRef = doc(db, `users/${user.uid}`);
         await setDoc(docRef,
             {
                 sheets:{

@@ -35,6 +35,7 @@ import Input from '../../../lib/component/Input';
 import {isMobile} from 'react-device-detect';
 import { NextSeo } from 'next-seo';
 import TabIconButton from '../../../lib/component/TabIconButton';
+import { useDocument } from 'react-firebase-hooks/firestore';
 
 function IndivisualUser() {
   const router = useRouter();
@@ -48,49 +49,39 @@ function IndivisualUser() {
   const [sheetTitle, setSheetTitle] = useState([]);
   const [sheetMetaData, setSheetMetaData] = useState([]);
   
-  const fetchData = async () => {
-    const docRef = doc(db, "users", user.uid);
-    const docSnapshot = await getDoc(docRef);
-    if (docSnapshot.exists()) {
-      let doc = docSnapshot;
-      setUserImageUrl(doc.data().url ? doc.data().url:'');
-      setThemeColor(doc.data().themeColor ? doc.data().themeColor:themeColorData[0].value);
-      setTheme(doc.data().theme ? doc.data().theme:themeData[0].value);
-      setSheetTitle(Object.keys(doc.data().sheets));
+  const [dashboardData] = useDocument(doc(db, `users/${user && user.uid}/`));
 
+  useEffect(() => {
+    if (dashboardData) {      
+      setUserImageUrl(dashboardData.data().url ? dashboardData.data().url:'');
+      setThemeColor(dashboardData.data().themeColor ? dashboardData.data().themeColor:themeColorData[0].value);
+      setTheme(dashboardData.data().theme ? dashboardData.data().theme:themeData[0].value);
+      setSheetTitle(Object.keys(dashboardData.data().sheets));
       let sheetMetaDataArray = [];
-      const sheetObject = doc.data().sheets;
-      
-      if (Object.keys(doc.data().sheets).length > 0) {
+      const sheetObject = dashboardData.data().sheets;
+      if (Object.keys(dashboardData.data().sheets).length > 0) {
         Object.keys(sheetObject).map(sheetName => {
           sheetMetaDataArray.push({
             sheetName: sheetName,
-            bannerImageUrl:doc.data().sheets[sheetName].bannerImageUrl,
-            sharing:doc.data().sheets[sheetName].sharing,
-            date:doc.data().sheets[sheetName].date,
+            bannerImageUrl:dashboardData.data().sheets[sheetName].bannerImageUrl,
+            sharing:dashboardData.data().sheets[sheetName].sharing,
+            date:dashboardData.data().sheets[sheetName].date,
           })
         })
         setSheetMetaData(sheetMetaDataArray)
       }
     }
-  }
-
-  useEffect(() => {
-    if (user) {
-      fetchData()
-    }
-  },[user])
+  },[user,dashboardData])
 
   useEffect(() => {
     if (theme) {
       root?.style.setProperty("--r5", theme[0]);
       root?.style.setProperty("--r10", theme[1]);
     }
-    if (themeColor) {        
-      root?.style.setProperty("--system0", themeColor[0]);
-      root?.style.setProperty("--system1", themeColor[1]);
-      root?.style.setProperty("--system2", themeColor[2]);
-      root?.style.setProperty("--system3", themeColor[3]);
+    if (themeColor) {
+      for (let index = 0; index < 4; index++) {
+        root?.style.setProperty(`--system${index}`, themeColor[index]);
+      }
       root?.style.setProperty("--txtColor0", themeColor[4]);
       root?.style.setProperty("--txtColor1", themeColor[5]);
     }
