@@ -180,7 +180,9 @@ function IndivisualSheet() {
                           )}
                         </Stack>
                       </Stack>
-                      <Button onClick={(e) => insertNewSubjectData(e)} width="full">追加</Button>
+                      {subjectNameInput && 
+                        <Button onClick={(e) => insertNewSubjectData(e)} width="full">追加</Button>
+                      }
                     </Stack>:
                     <Stack>
                       <h3>

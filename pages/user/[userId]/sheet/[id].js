@@ -592,18 +592,18 @@ function IndivisualSheet() {
         onRequestClose={closeModal}
         style={modalStyle}
       >
-        <AlignItems style={{justifyContent: 'space-between'}}>
+        <AlignItems style={{justifyContent: 'space-between',marginBottom: '0.5em'}}>
           <h2>設定</h2>
           <IconButton
-            onClick={()=>closeModal()}
             icon={<MdClose/>}
+            onClick={() =>　closeModal()}
           >
             閉じる
           </IconButton>
         </AlignItems>
         {modalSection === 0 && <>
           <SectionButton
-            onClick={()=>setModalSection(1)}
+            onClick={()=>{setModalSection(1);fetchDataSheetData();}}
             leftIcon={<MdOutlineMediation/>}
             rightIcon={<MdArrowForwardIos/>}
           >
@@ -634,7 +634,7 @@ function IndivisualSheet() {
             onClick={()=>router.push('/about')}
             leftIcon={<MdInfo/>}
           >
-            DEIZUについて
+            Deizuについて
           </SectionButton>
         </>}
 
@@ -650,33 +650,33 @@ function IndivisualSheet() {
             <>
               <AlignItems style={{justifyContent: 'space-between'}}>
                 <h3 className={'scaleFontLarge'}>データシートを繋げる</h3>
-                {/* <Button onClick={()=>router.push(`/datasheet`)}>データシートを探す</Button> */}
-                <Button onClick={()=>fetchDataSheetData()}>
-                  データシート一覧を表示
-                </Button>
+                <Button onClick={()=>router.push(`/datasheet`)}>データシートを探す</Button>
               </AlignItems>
-              <AlignItems style={{overflowX:'scroll', padding:'1em'}}>
-                {
-                  allDataSheetData && allDataSheetData.map((prop) =>{
-                    return (
-                      <LargeImageButton
-                        displayAddButton={true}
-                        key={prop}
-                        dataSheetId={prop.dataSheetId}
-                        dataSheetName={prop.dataSheetData.dataSheetName}
-                        imageSource={prop.dataSheetData.dataSheetImageUrl}
-                        subtitle={prop.dataSheetData.dataSheetDescription}
-                        onClick={() => router.push(`/datasheet/${prop.dataSheetId}`)}
-                        addDataSheetOnClick={()=>
-                          setDataSheetId(prop.dataSheetId)
-                        }
-                      >
-                        {prop.dataSheetData.dataSheetName}
-                      </LargeImageButton>
-                    )
-                  })
-                }
-              </AlignItems>
+              <div style={{overflowY:'scroll',height:'250px', padding:'0.5em'}}>
+                <Stack>
+                  {
+                    allDataSheetData && allDataSheetData.map((prop) =>{
+                      return (
+                        <LargeImageButton
+                          displayAddButton={true}
+                          key={prop}
+                          dataSheetId={prop.dataSheetId}
+                          dataSheetName={prop.dataSheetData.dataSheetName}
+                          imageSource={prop.dataSheetData.dataSheetImageUrl}
+                          subtitle={prop.dataSheetData.dataSheetDescription}
+                          onClick={() => router.push(`/datasheet/${prop.dataSheetId}`)}
+                          currentDataSheetId={dataSheetId}
+                          addDataSheetOnClick={()=>{
+                            setDataSheetId(prop.dataSheetId);
+                          }}
+                        >
+                          {prop.dataSheetData.dataSheetName}
+                        </LargeImageButton>
+                      )
+                    })
+                  }
+                </Stack>
+              </div>
               <p>
                 データシートを繋げることで科目を時間割表に入力する作業がより早まります。
               </p>
