@@ -9,11 +9,8 @@ import Button from '../../lib/component/Button';
 import IconButton from '../../lib/component/IconButton';
 
 import LargeImageButton from '../../lib/component/LargeImageButton';
-import Stack from '../../lib/style/Stack';
 import AlignItems from '../../lib/style/AlignItems';
 import { useRouter } from 'next/router'
-
-import {isMobile} from 'react-device-detect';
 
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth,db } from "../../src/service/firebase"
@@ -21,7 +18,7 @@ import Link from 'next/link';
 
 export default function Index() {
   const router = useRouter()
-  const [user, loading, error] = useAuthState(auth);
+  const [user] = useAuthState(auth);
 
   const [allSheetData, setAllSheetData] = useState()
 

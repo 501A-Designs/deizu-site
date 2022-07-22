@@ -3,18 +3,17 @@ import React from 'react'
 import BodyMargin from '../../lib/style/BodyMargin'
 
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth,db,root } from "../../src/service/firebase"
+import { auth, } from "../../src/service/firebase"
 import StaticScene from '../../lib/style/StaticScene';
 import Button from '../../lib/component/Button';
 import AlignItems from '../../lib/style/AlignItems';
-import Stack from '../../lib/style/Stack';
 
 import { MdOutlineExitToApp } from "react-icons/md";
 import { signOut } from 'firebase/auth'
 import { useRouter } from 'next/router';
 
 export default function Index() {
-  const [user, loading] = useAuthState(auth);
+  const [user] = useAuthState(auth);
   const router = useRouter();
 
   return (

@@ -13,7 +13,7 @@ import { useRouter } from 'next/router'
 import { useAuthState } from 'react-firebase-hooks/auth';
 
 import { auth,db,root } from "../../../src/service/firebase"
-import { doc, getDoc,　setDoc } from "firebase/firestore";
+import { doc,　setDoc } from "firebase/firestore";
 
 Modal.setAppElement('#__next');
 import Modal from 'react-modal';
@@ -315,13 +315,4 @@ function IndivisualUser() {
   )
 }
 
-// export async function getServerSideProps({ params }) {
-//     let userId = params.id;
-//     // let userId = params;
-
-//     return {
-//       props: { userId }
-//     }
-//   }
-  
 export default IndivisualUser

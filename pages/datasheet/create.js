@@ -33,7 +33,7 @@ export default function Create() {
         const docRef = await addDoc(collection(db, "sheets"), {
             dataSheet:[],
             dataSheetName:dataSheetName,
-            dataSheetImageUrl:dataSheetImageUrl ? dataSheetImageUrl :`https://avatars.dicebear.com/api/jdenticon/${dataSheetName}.svg`,
+            dataSheetImageUrl:dataSheetImageUrl ? dataSheetImageUrl :`https://avatars.dicebear.com/api/identicon/${dataSheetName}.svg`,
             dataSheetDescription:dataSheetDescription,
             ownerId:user.uid
         });
