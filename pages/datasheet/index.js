@@ -49,7 +49,8 @@ export default function Index() {
         title="データシート"
         description="時間割表を作成するアプリ"
       />
-      <AlignItems style={{
+      <AlignItems
+        style={{
           justifyContent: 'space-between',
         }}
       >
@@ -65,7 +66,10 @@ export default function Index() {
           <h1 style={{margin: 0,padding:0}} className={'scaleFontLarge'}>Datasheets</h1>
         </AlignItems>
         {user && 
-          <Button icon={<MdAddCircle/>} onClick={() => router.push('/datasheet/create')}>
+          <Button
+            icon={<MdAddCircle/>}
+            onClick={() => router.push('/datasheet/create')}
+          >
             新規作成
           </Button>
         }
@@ -75,7 +79,10 @@ export default function Index() {
         <br />
         データシートのIDをコピーし時間割表の設定から追加しよう！（使用法について、詳しくは<Link href={'/usage'}>こちら</Link>から。）
       </p>
-      <div className={'grid-1fr-1fr'} style={{gap: '0.5em'}}>
+      <div
+        className={'grid-1fr-1fr'}
+        style={{gap: '0.5em'}}
+      >
         {allSheetData && 
           allSheetData.map((prop) =>{
             return (

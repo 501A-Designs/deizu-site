@@ -67,9 +67,9 @@ function IndivisualSheet() {
 
   const [shareSheetState, setShareSheetState] = useState()
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [dataSheetId, setDataSheetId] = useState()
+  const [dataSheetId, setDataSheetId] = useState('')
   const [dataSheet, setDataSheet] = useState()
-  const [dataSheetName, setDataSheetName] = useState();
+  const [dataSheetName, setDataSheetName] = useState('');
   
   const [viewOnly, setViewOnly] = useState(true);
 
@@ -88,17 +88,22 @@ function IndivisualSheet() {
       setShareSheetState(thisSheet && thisSheet.sharing);
       setDataSheetId(thisSheet && thisSheet.dataSheetId);
 
-      root?.style.setProperty("--r5", userSheetObject && userSheetObject.data().theme[0]);
-      root?.style.setProperty("--r10", userSheetObject && userSheetObject.data().theme[1]);
-      for (let index = 0; index < 4; index++) {
-        root?.style.setProperty(`--system${index}`, userSheetObject && userSheetObject.data().themeColor[index]);
+      if (userSheetObject.data().theme) { 
+        root?.style.setProperty("--r5", userSheetObject.data().theme[0]);
+        root?.style.setProperty("--r10", userSheetObject.data().theme[1]);
       }
-      root?.style.setProperty("--txtColor0", userSheetObject && userSheetObject.data().themeColor[4]);
-      root?.style.setProperty("--txtColor1", userSheetObject && userSheetObject.data().themeColor[5]);
+      if (userSheetObject.data().themeColor) {        
+        for (let index = 0; index < 4; index++) {
+          root?.style.setProperty(`--system${index}`, userSheetObject.data().themeColor[index]);
+        }
+        root?.style.setProperty("--txtColor0", userSheetObject.data().themeColor[4]);
+        root?.style.setProperty("--txtColor1", userSheetObject.data().themeColor[5]);
+      }
     }
     if (user) {
       if(sheetOwnerId === user.uid){
         setViewOnly(false);
+        // thisSheet && thisSheet.dataSheetId !== '' && saveDataSheetId();
       }
     }
     setProgress(100)
@@ -291,17 +296,13 @@ function IndivisualSheet() {
             <AlignItems style={{justifyContent: 'center'}}>
               <ColorButton
                 color={'var(--system1'}
-                onClick={() => {
-                    setSubjectCellColor('');
-                }}
+                onClick={() => setSubjectCellColor('')}
               />
               {buttonColor.map((props)=>
                 <ColorButton
                   key={props}
                   color={props}
-                  onClick={() => {
-                      setSubjectCellColor(props);
-                  }}
+                  onClick={() => setSubjectCellColor(props)}
                 />
               )}
             </AlignItems>
@@ -406,7 +407,8 @@ function IndivisualSheet() {
               <Stack gap = {'0.2em'}>
                 {
                   timeCellLocation.map(cellNumber => {
-                    return <TimeCell
+                    return( 
+                      <TimeCell
                         onClick={()=>{
                           openTimeModal(cellNumber);
                           setModalTimeNumber(cellNumber);
@@ -415,6 +417,7 @@ function IndivisualSheet() {
                         sheetTimeData={sheetTimeData}
                         displayPeriod={cellNumber}
                       />
+                    )
                   })
                 }
               </Stack>
@@ -465,9 +468,7 @@ function IndivisualSheet() {
   // Modal related
   const closeModal = () => setModalIsOpen(false);
   const openModal = () => {
-    if (shareSheetState == undefined) {
-      setShareSheetState(false);
-    }
+    shareSheetState == undefined && setShareSheetState(false);
     setModalIsOpen(true)
   };
   const saveDataSheetId = async() =>{
@@ -495,25 +496,21 @@ function IndivisualSheet() {
     toast(`${message}がコピーされました。`);
   }
 
-
-    // Datasheet fetching
-    const [allDataSheetData, setAllDataSheetData] = useState()
-
-    const fetchDataSheetData = async () => {
-      const collectionRef = collection(db, "sheets");
-      const querySnapshot = await getDocs(collectionRef);
-      let sheetDataArray = [];
-      querySnapshot.forEach((doc) => {
-        console.log(doc.id)
-        sheetDataArray.push(
-          {
-            dataSheetId: doc.id,
-            dataSheetData: doc.data(),
-          }
-          );
-        })
-        setAllDataSheetData(sheetDataArray);
-    }
+  // Datasheet fetching
+  const [allDataSheetData, setAllDataSheetData] = useState();
+  const fetchDataSheetData = async () => {
+    const collectionRef = collection(db, "sheets");
+    const querySnapshot = await getDocs(collectionRef);
+    let sheetDataArray = [];
+    querySnapshot.forEach((doc) => {
+      console.log(doc.id)
+      sheetDataArray.push({
+        dataSheetId: doc.id,
+        dataSheetData: doc.data(),
+      });
+    })
+    setAllDataSheetData(sheetDataArray);
+  }
 
   
   function Editor() {

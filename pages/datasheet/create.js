@@ -24,8 +24,8 @@ export default function Create() {
     const [sheetLoading, setSheetLoading] = useState(false)
 
     const [dataSheetName, setDataSheetName] = useState('')
+    const [dataSheetImageUrl, setDataSheetImageUrl] = useState('')
     const [dataSheetDescription, setDataSheetDescription] = useState('')
-    const [dataSheetImageUrl, setDataSheetImageUrl] = useState()
 
     const createDataSheet = async (e) =>{
         e.preventDefault();
@@ -33,7 +33,7 @@ export default function Create() {
         const docRef = await addDoc(collection(db, "sheets"), {
             dataSheet:[],
             dataSheetName:dataSheetName,
-            dataSheetImageUrl:dataSheetImageUrl ? dataSheetImageUrl :`https://avatars.dicebear.com/api/identicon/${dataSheetName}.svg`,
+            dataSheetImageUrl:dataSheetImageUrl,
             dataSheetDescription:dataSheetDescription,
             ownerId:user.uid
         });

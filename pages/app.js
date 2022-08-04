@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Button from '../lib/component/Button';
@@ -13,10 +13,9 @@ import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { auth } from "../src/service/firebase"
 import { NextSeo } from 'next-seo';
 
-
 export default function App() {
     const router = useRouter()
-    const [user, loading, error] = useAuthState(auth);
+    const [user] = useAuthState(auth);
 
     const signInWithGoogle = () => {
         const provider = new GoogleAuthProvider();
@@ -33,9 +32,7 @@ export default function App() {
             const credential = GoogleAuthProvider.credentialFromError(error);
         });
     }
-    if (user) {
-        router.push(`/user/${user.uid}`)
-    }
+    user && router.push(`/user/${user.uid}`);
 
     return (
         <AlignItems style={{justifyContent: 'center'}}>
@@ -44,12 +41,8 @@ export default function App() {
                 description="Deizuのアカウントにログイン・新規登録"
             />
             <Container style={{marginTop:'2em', marginBottom:'2em', maxWidth:'600px'}}>
-                <Banner type="announce">
-                    <ul>
-                        <li>アプリケーションのサイトURLが変わりました（deizu-site.web.appはもう使用することはできません）</li>
-                        <li>2022年5月14日よりDeizuのv2.0.0が一般公開されました（過去のバージョン情報はGitHubから見れます）</li>
-                        <li>Zennにて開発に関する記事が再び投稿されました。</li>
-                    </ul>
+                <Banner type="caution">
+                    Deizuのv2.0.1以来時間割表を開けないエラーが出回っています。また、今後バグ等の告知は<Link href="https://forms.gle/XrqF7XsibpWtoK6bA"><a>こちら</a></Link>のグーグルフォームからご報告ください。
                 </Banner>
                 <h1>時間割表をすばやく作成</h1>
                 <strong>Deizuへようこそ！</strong>
