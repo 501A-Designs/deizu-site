@@ -4,7 +4,6 @@ import IconButton from '../../../lib/component/IconButton'
 
 import Banner from '../../../lib/component/Banner'
 
-import { MdAddCircle,MdPalette,MdClose,MdEditCalendar,MdImage,MdStyle } from "react-icons/md";
 import AlignItems from '../../../lib/style/AlignItems';
 import Container from '../../../lib/component/Container';
 import BodyMargin from '../../../lib/style/BodyMargin';
@@ -36,6 +35,8 @@ import {isMobile} from 'react-device-detect';
 import { NextSeo } from 'next-seo';
 import TabIconButton from '../../../lib/component/TabIconButton';
 import { useDocument } from 'react-firebase-hooks/firestore';
+import { FiCalendar, FiEdit2, FiImage, FiPlus, FiSmile } from 'react-icons/fi';
+import ModalHeader from '../../../lib/component/ModalHeader';
 
 function IndivisualUser() {
   const router = useRouter();
@@ -48,6 +49,7 @@ function IndivisualUser() {
   const [userImageUrl, setUserImageUrl] = useState('');
   const [sheetTitle, setSheetTitle] = useState([]);
   const [sheetMetaData, setSheetMetaData] = useState([]);
+  const [hovered, setHovered] = useState(false);
   
   const [dashboardData] = useDocument(doc(db, `users/${user && user.uid}/`));
 
@@ -74,10 +76,10 @@ function IndivisualUser() {
   },[user,dashboardData])
 
   useEffect(() => {
-    if (theme) {
-      root?.style.setProperty("--r5", theme[0]);
-      root?.style.setProperty("--r10", theme[1]);
-    }
+    // if (theme) {
+    //   root?.style.setProperty("--r5", theme[0]);
+    //   root?.style.setProperty("--r10", theme[1]);
+    // }
     if (themeColor) {
       for (let index = 0; index < 4; index++) {
         root?.style.setProperty(`--system${index}`, themeColor[index]);
@@ -122,10 +124,10 @@ function IndivisualUser() {
                 style={modalStyle}
               >
                 <Stack>
-                  <AlignItems style={{justifyContent: 'space-between'}}>
-                    <h2>見た目の設定</h2>
-                    <IconButton icon={<MdClose/>} onClick={() =>closeModal()}>閉じる</IconButton>
-                  </AlignItems>
+                  <ModalHeader
+                    header="見た目の設定"
+                    onClick={() =>closeModal()}
+                  />
                   <Stack grid={'1fr 1fr 1fr'}>
                     <TabIconButton
                       tabId={1}
@@ -134,17 +136,17 @@ function IndivisualUser() {
                       type="icon"
                       onClick={()=>setModalSection(1)}
                     >
-                      <MdImage/>
+                      <FiImage/>
                     </TabIconButton>
-                    <TabIconButton
+                    {/* <TabIconButton
                       tabId={2}
                       sectionState={modalSection}
                       name="テーマ"
                       type="icon"
                       onClick={()=>setModalSection(2)}
                     >
-                      <MdStyle/>
-                    </TabIconButton>
+                      </>
+                    </TabIconButton> */}
                     <TabIconButton
                       tabId={3}
                       sectionState={modalSection}
@@ -152,7 +154,7 @@ function IndivisualUser() {
                       type="icon"
                       onClick={()=>setModalSection(3)}
                     >
-                      <MdPalette/>
+                      <FiSmile/>
                     </TabIconButton>
                   </Stack>
                   <Stack>
@@ -199,7 +201,11 @@ function IndivisualUser() {
                 <BodyMargin>
                   <section className="grid-1fr-2fr">
                     <Stack>
-                      <ImageContainer src={userImageUrl && userImageUrl}>
+                      <ImageContainer
+                        src={userImageUrl && userImageUrl}
+                        onMouseEnter={()=>setHovered(true)}
+                        onMouseLeave={()=>setHovered(false)}
+                      >
                         <AlignItems style={{justifyContent: 'space-between'}}>
                           <AlignItems style={{gap: '1.5em'}}>
                             <img
@@ -210,20 +216,42 @@ function IndivisualUser() {
                                 cursor: 'pointer',
                                 border:'1px solid var(--system1)'
                               }}
+                              className={'profileImage'}
                               src={user.photoURL}
                               onClick={() => router.push('/user')}
                             />
                             <Stack gap={'0'}>
-                              <h1 style={{ margin: 0, padding: 0, fontSize: '1.5em'}}>{user.displayName.split(' ')[0]}</h1>
-                              <p style={{ margin: 0, padding: 0 }}>{moment().format("MMM Do dddd")}</p>
+                              <h1
+                                style={{
+                                  margin: 0,
+                                  padding: 0,
+                                  fontSize: '1.5em',
+                                }}
+                              >
+                                {user.displayName.split(' ')[0]}
+                              </h1>
+                              <p
+                                style={{
+                                  margin: 0,
+                                  padding: 0,
+                                }}
+                              >
+                                {moment().format("MMM Do dddd")}
+                              </p>
                             </Stack>
                           </AlignItems>
-                          <IconButton
-                            onClick={() => openModal()}
-                            icon={<MdPalette/>}
-                          >
-                            見た目の変更
-                          </IconButton>
+                          {
+                            hovered && 
+                            <div ref={parent}>
+                              <IconButton
+                                fill
+                                onClick={() => openModal()}
+                                icon={<FiEdit2/>}
+                              >
+                                見た目の変更
+                              </IconButton>
+                            </div>
+                          }
                         </AlignItems>
                       </ImageContainer>
                       {/* <Button
@@ -237,11 +265,15 @@ function IndivisualUser() {
                       {sheetTitle && 
                         <>
                           {sheetTitle.length > 0 && 
-                            <AlignItems style={{justifyContent: 'space-between', marginBottom: '1em'}}>
+                            <AlignItems
+                              style={{
+                                justifyContent: 'space-between', marginBottom: '1em'
+                              }}
+                            >
                               <h1>Dashboard</h1>
                               <Button
                                 onClick={() => router.push(`/user/${user.uid}/sheet`)}
-                                icon={<MdAddCircle/>}
+                                icon={<FiPlus/>}
                                 >
                                 時間割作成
                               </Button>
@@ -267,6 +299,8 @@ function IndivisualUser() {
                           )}
                         </Stack>
                       }
+
+
                       {
                         sheetTitle &&
                         <>
@@ -281,12 +315,19 @@ function IndivisualUser() {
                             </Banner>
                             <AlignItems style={{height: '30vh', justifyContent: 'center'}}>
                               <AlignItems style={{justifyContent: 'center', flexDirection: 'column'}}>
-                                <span style={{fontSize: '2em',color: 'var(--system3)'}}><MdEditCalendar/></span>
+                                <span
+                                  style={{
+                                    fontSize: '2em',
+                                    color: 'var(--system3)'
+                                  }}
+                                >
+                                  <FiCalendar/>
+                                </span>
                                 <h3 style={{color: 'var(--system3)'}}>時間割表が作成されていません</h3>
                                 <AlignItems>
                                   <Button
                                     onClick={() => router.push(`/user/${user.uid}/sheet`)}
-                                    icon={<MdAddCircle/>}
+                                    icon={<FiPlus/>}
                                   >
                                     時間割作成
                                   </Button>
@@ -294,7 +335,14 @@ function IndivisualUser() {
                               </AlignItems>
                             </AlignItems>
                             </>:
-                            <p style={{textAlign:'center',color: 'var(--system3)'}}>時間表合計：{sheetTitle.length}枚</p>
+                            <p
+                              style={{
+                                textAlign:'center',
+                                color: 'var(--system3)'
+                              }}
+                            >
+                              時間表合計：{sheetTitle.length}枚
+                            </p>
                           }
                         </>
                       }

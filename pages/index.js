@@ -13,13 +13,13 @@ import BodyMargin from '../lib/style/BodyMargin'
 import BlockList from '../lib/component/BlockList'
 import TextPreview from '../lib/component/TextPreview'
 import Stack from '../lib/style/Stack'
-import {isMobile} from 'react-device-detect';
+import {isBrowser, isMobile} from 'react-device-detect';
 import appIcon from '../public/deizuAppIconUpdated.png'
 // import appScreenshot from '../public/deizu-screenshot.png'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 
-import {BrowserMockup} from 'react-mockup'
+import {BrowserMockup, MobileMockup} from 'react-mockup'
 import 'react-mockup/dist/index.css'
 
 export default function Home() {
@@ -44,19 +44,34 @@ export default function Home() {
               <Image src={appIcon} width={100} height={100}/>
             </AlignItems>
             <p>時間割作成、履修の記録を効率的に。</p>
-            <BrowserMockup
-              src='deizu-screenshot.png'
-              type="mac"
-              windowControlPosition="left"
-              angleX="1deg"
-              angleY="0deg"
-              accentColor="white"
-              urlValue="deizu.vercel.app"
-              // shadow="none"
-              // border="none"
-              color="black"
-              frameStyle={frameStyle}
-            />
+            {isBrowser ?
+              <div
+                style={{
+                  width:'85%',
+                }}
+              >
+                <BrowserMockup
+                  src='deizu-screenshot.png'
+                  type="mac"
+                  windowControlPosition="left"
+                  angleX="1deg"
+                  angleY="0deg"
+                  accentColor="white"
+                  urlValue="deizu.vercel.app"
+                  // shadow="none"
+                  // border="none"
+                  color="black"
+                  frameStyle={frameStyle}
+                />
+              </div>:
+              <MobileMockup
+                size="1"
+                src="https://images.unsplash.com/photo-1574285013029-29296a71930e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dmVydGljYWx8ZW58MHx8MHx8&w=1000&q=80"
+                angleX="4deg"
+                angleY="0deg"
+                border="none"
+              />
+            }
             {/* <MdArrowDownward/> */}
           </AlignItems>
         </div>

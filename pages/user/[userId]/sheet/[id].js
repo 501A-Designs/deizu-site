@@ -1,10 +1,11 @@
-import React,{useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import LoadingBar from 'react-top-loading-bar'
 
 import {MdHomeFilled,MdAddCircle, MdSettings,MdClose,MdLink,MdLinkOff,MdDelete,MdPerson,MdCalendarViewMonth,MdCalendarViewWeek,MdOutlineMediation,MdArrowForwardIos,MdPeopleAlt,MdImage,MdDangerous,MdInfo,MdArrowBack } from "react-icons/md";
 
-import { NextSeo } from 'next-seo';
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 
+import { NextSeo } from 'next-seo';
 import {isMobile} from 'react-device-detect';
 
 import IconButton from '../../../../lib/component/IconButton'
@@ -46,6 +47,9 @@ import SectionButton from '../../../../lib/component/SectionButton';
 import TextPreview from '../../../../lib/component/TextPreview';
 import DayOfWeek from '../../../../lib/schedule/DayOfWeek';
 import LargeImageButton from '../../../../lib/component/LargeImageButton';
+import { FiAlertTriangle, FiChevronRight, FiCopy, FiDatabase, FiExternalLink, FiGrid, FiHome, FiImage, FiInfo, FiLayout, FiLink, FiLock, FiLogIn, FiPlus, FiSettings, FiTrash2, FiUsers } from 'react-icons/fi';
+import CloseButton from '../../../../lib/component/CloseButton';
+import ModalHeader from '../../../../lib/component/ModalHeader';
 
 
 function IndivisualSheet() {
@@ -76,6 +80,8 @@ function IndivisualSheet() {
   const [user] = useAuthState(auth);      
   const [userSheetObject] = useDocument(doc(db, `users/${sheetOwnerId && sheetOwnerId}`));
   const thisSheet = userSheetObject && userSheetObject.data().sheets[sheetName && sheetName];
+
+  const [parent] = useAutoAnimate()
       
   useEffect(() => {
     setProgress(30)
@@ -88,10 +94,10 @@ function IndivisualSheet() {
       setShareSheetState(thisSheet && thisSheet.sharing);
       setDataSheetId(thisSheet && thisSheet.dataSheetId);
 
-      if (userSheetObject.data().theme) { 
-        root?.style.setProperty("--r5", userSheetObject.data().theme[0]);
-        root?.style.setProperty("--r10", userSheetObject.data().theme[1]);
-      }
+      // if (userSheetObject.data().theme) { 
+      //   root?.style.setProperty("--r5", userSheetObject.data().theme[0]);
+      //   root?.style.setProperty("--r10", userSheetObject.data().theme[1]);
+      // }
       if (userSheetObject.data().themeColor) {        
         for (let index = 0; index < 4; index++) {
           root?.style.setProperty(`--system${index}`, userSheetObject.data().themeColor[index]);
@@ -100,12 +106,7 @@ function IndivisualSheet() {
         root?.style.setProperty("--txtColor1", userSheetObject.data().themeColor[5]);
       }
     }
-    if (user) {
-      if(sheetOwnerId === user.uid){
-        setViewOnly(false);
-        // thisSheet && thisSheet.dataSheetId !== '' && saveDataSheetId();
-      }
-    }
+    if (user && sheetOwnerId === user.uid) setViewOnly(false);
     setProgress(100)
   },[sheetOwnerId, userSheetObject])
   
@@ -125,9 +126,7 @@ function IndivisualSheet() {
   }
 
   const [listViewState, setListViewState] = useState(false)
-  const listView = (prop) => {
-    setListViewState(prop);
-  }
+  const listView = (prop) => setListViewState(prop);
 
   function ScheduleGrid() {
     let scheduleGridStyle = {
@@ -181,21 +180,21 @@ function IndivisualSheet() {
 
         const docRef = doc(db, "users", user.uid);
         await setDoc(docRef,
-            {
-              sheets:{
-                [sheetName]: {
-                  date: serverTimestamp(),
-                  cells:{
-                    [modalCellId]: {
-                      [modalCellId]: subjectCellName,
-                      [modalCellId + 'Link']: subjectCellLink,
-                      [modalCellId + 'Dscrp']: subjectCellDescription,
-                      [modalCellId + 'Color']: subjectCellColor
-                    }
+          {
+            sheets:{
+              [sheetName]: {
+                date: serverTimestamp(),
+                cells:{
+                  [modalCellId]: {
+                    [modalCellId]: subjectCellName,
+                    [modalCellId + 'Link']: subjectCellLink,
+                    [modalCellId + 'Dscrp']: subjectCellDescription,
+                    [modalCellId + 'Color']: subjectCellColor
                   }
                 }
-              },
-            }, { merge: true }
+              }
+            },
+          }, { merge: true }
         );
     }
 
@@ -342,9 +341,9 @@ function IndivisualSheet() {
               <IconButton icon={<MdClose/>} onClick={() =>closeTimeModal()}>閉じる</IconButton>
             </AlignItems>
             <AlignItems style={{justifyContent: 'center'}}>
-              <TextPreview>{timeStart ? timeStart:'開始時'}</TextPreview>
+              <TextPreview time>{timeStart ? timeStart:'開始時'}</TextPreview>
               <span>〜</span>
-              <TextPreview>{timeEnd ? timeEnd:'終了時'}</TextPreview>
+              <TextPreview time>{timeEnd ? timeEnd:'終了時'}</TextPreview>
             </AlignItems>
             <Stack>
               <Input
@@ -369,25 +368,29 @@ function IndivisualSheet() {
           </Stack>
         </Modal>
 
-        {!listViewState && 
-          <Stack
-            grid={
-              isMobile ? '1fr 1fr 1fr 1fr 1fr 1fr':'0.5fr 1.5fr 1.5fr 1.5fr 1.5fr 1.5fr 1.5fr'
-            }
-            style={{
-              marginBottom:'0.2em',
-              gap: '0.2em'
-            }}
-          >
-            {!isMobile && <div style={{width:'100%',minWidth:'46.47px'}}></div>}
-            <DayOfWeek day={1}/>
-            <DayOfWeek day={2}/>    
-            <DayOfWeek day={3}/>    
-            <DayOfWeek day={4}/>    
-            <DayOfWeek day={5}/>    
-            <DayOfWeek day={6}/>    
-          </Stack>
-        }
+        <div
+          ref={parent}
+        >
+          {!listViewState && 
+            <Stack
+              grid={
+                isMobile ? '1fr 1fr 1fr 1fr 1fr 1fr':'0.5fr 1.5fr 1.5fr 1.5fr 1.5fr 1.5fr 1.5fr'
+              }
+              style={{
+                marginBottom:'0.2em',
+                gap: '0.2em'
+              }}
+            >
+              {!isMobile && <div style={{width:'100%',minWidth:'46.47px'}}></div>}
+              <DayOfWeek day={1}/>
+              <DayOfWeek day={2}/>    
+              <DayOfWeek day={3}/>    
+              <DayOfWeek day={4}/>    
+              <DayOfWeek day={5}/>    
+              <DayOfWeek day={6}/>    
+            </Stack>
+          }
+        </div>
         <div className={listViewState && 'grid-1fr-3fr'}>
           {listViewState &&
             <Container>
@@ -402,6 +405,7 @@ function IndivisualSheet() {
               gridTemplateColumns:`${isMobile ? '1fr':'0.5fr 9fr'}`,
               gap: '0.2em'
             }}
+            ref={parent}
           >
             {!isMobile &&
               <Stack gap = {'0.2em'}>
@@ -422,6 +426,20 @@ function IndivisualSheet() {
                 }
               </Stack>
             }
+            {listViewState && moment().format('d') == 0 &&
+              <div
+                style={{
+                  height: '100%',
+                  backgroundColor:'var(--system1)',
+                  borderRadius: 'var(--borderRadius0) var(--borderRadius2) var(--borderRadius2) var(--borderRadius0)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <h3>日曜日は何もありません</h3>
+              </div>
+            }
             {listViewState ? 
               <Stack gap={'0.2em'}>
                 {scheduleCellId.filter(word => word.split('')[0] === cellVerticalLocation[moment().format('d')-1]).map(cellId =>
@@ -440,7 +458,7 @@ function IndivisualSheet() {
                 {scheduleCellId.map(cellId =>                
                   <SubjectCell
                     key={cellId}
-                    sheetCellsData = {sheetCellsData}
+                    sheetCellsData={sheetCellsData}
                     onClick={()=>{
                       openCellModal(cellId);
                       setModalCellId(cellId);
@@ -522,14 +540,14 @@ function IndivisualSheet() {
               <AlignItems>
                 <IconButton
                   onClick={() => router.push(`/user/${user.uid}/`)}
-                  icon={<MdHomeFilled/>}
+                  icon={<FiHome/>}
                 >
                   ダッシュボード
                 </IconButton>
                 {!isMobile &&                
                   <IconButton
                     onClick={() => router.push(`/user/${user.uid}/sheet`)}
-                    icon={<MdAddCircle/>}
+                    icon={<FiPlus/>}
                   >
                     新規作成
                   </IconButton>
@@ -537,7 +555,7 @@ function IndivisualSheet() {
               </AlignItems>:
               <IconButton
                 onClick={() => router.push('/app')}
-                icon={<MdPerson/>}
+                icon={<FiLogIn/>}
               >
                 アカウント作成
               </IconButton>
@@ -548,19 +566,39 @@ function IndivisualSheet() {
                 {!isMobile &&
                   <IconButton
                     onClick={()=>{listViewState ? listView(false):listView(true)}}
-                    icon={!listViewState ? <MdCalendarViewWeek/>:<MdCalendarViewMonth/>}
+                    icon={!listViewState ? <FiLayout/>:<FiGrid/>}
                   >
                     {!listViewState ? 'リスト表示':'グリッド表示'}
                   </IconButton>
                 }
                 <IconButton
                   onClick={()=>openModal()}
-                  icon={<MdSettings/>}
+                  icon={<FiSettings/>}
                 >
                   設定
                 </IconButton>
               </AlignItems>:
-              <p>閲覧中</p>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  userSelect: 'none',
+                  gap: '5px',
+                  borderRadius: 'var(--borderRadius2)',
+                  padding: '7px 10px',
+                  fontSize: '12px',
+                  outline: 'none',
+                  cursor: 'pointer',
+                  border: 'none',
+                  transition: '0.25s',
+                  color: 'var(--txtColor1)',
+                  backgroundColor: 'var(--system3)',
+                  border: '1px solid var(--system3)',
+                }}
+              >
+                閲覧中
+              </div>
             }
           </AlignItems>
         </ImageContainer>
@@ -589,192 +627,189 @@ function IndivisualSheet() {
         onRequestClose={closeModal}
         style={modalStyle}
       >
-        <AlignItems style={{justifyContent: 'space-between',marginBottom: '0.5em'}}>
-          <h2>設定</h2>
-          <IconButton
-            icon={<MdClose/>}
-            onClick={() =>　closeModal()}
-          >
-            閉じる
-          </IconButton>
-        </AlignItems>
-        {modalSection === 0 && <>
-          <SectionButton
-            onClick={()=>{setModalSection(1);fetchDataSheetData();}}
-            leftIcon={<MdOutlineMediation/>}
-            rightIcon={<MdArrowForwardIos/>}
-          >
-            データシートを繋げる
-          </SectionButton>
-          <SectionButton
-            onClick={()=>setModalSection(2)}
-            leftIcon={<MdImage/>}
-            rightIcon={<MdArrowForwardIos/>}
-          >
-            画像を編集・追加
-          </SectionButton>
-          <SectionButton
-            onClick={()=>setModalSection(3)}
-            leftIcon={<MdPeopleAlt/>}
-            rightIcon={<MdArrowForwardIos/>}
-          >
-            共有設定
-          </SectionButton>
-          <SectionButton
-            onClick={()=>setModalSection(4)}
-            leftIcon={<MdDangerous/>}
-            rightIcon={<MdArrowForwardIos/>}
-          >
-            デインジャーゾーン
-          </SectionButton>
-          <SectionButton
-            onClick={()=>router.push('/about')}
-            leftIcon={<MdInfo/>}
-          >
-            Deizuについて
-          </SectionButton>
-        </>}
+        <ModalHeader
+          header="設定"
+          onClick={() =>closeModal()}
+        />
 
-        {modalSection !== 0 &&
-        <Stack>
-          <SectionButton
-            onClick={()=>setModalSection(0)}
-            leftIcon={<MdArrowBack/>}
-          >
-            戻る
-          </SectionButton>
-          {modalSection === 1 && 
-            <>
-              <AlignItems style={{justifyContent: 'space-between'}}>
-                <h3 className={'scaleFontLarge'}>データシートを繋げる</h3>
-                <Button onClick={()=>router.push(`/datasheet`)}>データシートを探す</Button>
-              </AlignItems>
-              <div style={{overflowY:'scroll',height:'250px', padding:'0.5em'}}>
-                <Stack>
-                  {
-                    allDataSheetData && allDataSheetData.map((prop) =>{
-                      return (
-                        <LargeImageButton
-                          displayAddButton={true}
-                          key={prop}
-                          dataSheetId={prop.dataSheetId}
-                          dataSheetName={prop.dataSheetData.dataSheetName}
-                          imageSource={prop.dataSheetData.dataSheetImageUrl}
-                          subtitle={prop.dataSheetData.dataSheetDescription}
-                          onClick={() => router.push(`/datasheet/${prop.dataSheetId}`)}
-                          currentDataSheetId={dataSheetId}
-                          addDataSheetOnClick={()=>{
-                            setDataSheetId(prop.dataSheetId);
-                          }}
-                        >
-                          {prop.dataSheetData.dataSheetName}
-                        </LargeImageButton>
-                      )
-                    })
-                  }
-                </Stack>
-              </div>
-              <p>
-                データシートを繋げることで科目を時間割表に入力する作業がより早まります。
-              </p>
-              <Stack>
-                {dataSheetName && 
-                  <TextPreview style={{textAlign: 'center'}}>
-                    「{dataSheetName}」のデータシートに繋がっています
-                  </TextPreview>
-                }
-                <Input
-                  placeholder={'データシートID'}
-                  value={dataSheetId}
-                  onChange={(e)=>setDataSheetId(e.target.value)}
-                />
-                <Button
-                  onClick={()=>saveDataSheetId()}
-                  width={"full"}
-                >
-                  データシートを繋げる
-                </Button>
-              </Stack>
-            </>
-          }
-          {modalSection === 2 && 
-            <>
-              <h3>画像を追加・編集</h3>
-              <p>インターネット上にある画像URLを追加するとバナー画像・背景画像として追加されます。</p>
-              <Stack>
-                <Input
-                  placeholder={'バナー画像URL'}
-                  value={sheetBannerImageUrl}
-                  onChange={(e)=>setSheetBannerImageUrl(e.target.value)}
-                />
-                <Input
-                  placeholder={'背景画像URL'}
-                  value={sheetBackgroundImageUrl}
-                  onChange={(e)=>setSheetBackgroundImageUrl(e.target.value)}
-                />
-                <Button onClick={()=>saveSheetImageUrl()} width={"full"}>保存</Button>
-              </Stack>
-            </>
-          }
-          {modalSection === 3 &&         
-            <>
-              <h3>共有設定</h3>
-              <p>
-                リンク共有を有効するとこのリンクにアクセスできる人は全て時間割を閲覧することができます。なお共有するとユーザー様がご指定しているテーマ・バナー画像等も共有されるのでご了承下さい。
-              </p>
-              <AlignItems style={{justifyContent: 'space-between'}}>
-                <p>{shareSheetState ? ' 自分しか見えないようにする':'時間割の閲覧権限を与える'}</p>
-                <AlignItems>
-                  {shareSheetState ? <Button
-                    icon={<MdLinkOff/>}
-                    onClick={()=>shareSheet(false)}
-                  >
-                    ロック
-                  </Button>:
-                  <Button
-                    icon={<MdLink/>}
-                    onClick={()=>shareSheet(true)}
-                  >
-                    共有
-                  </Button>}
-                </AlignItems>
-              </AlignItems>
-              {shareSheetState &&
-                <Stack>
-                  <p>
-                    URLをコピーし他の人に送信することで時間割表を共有することができます。
-                  </p>
-                  <Button
-                    width={'full'}
-                    onClick={() => copyAlert(`deizu.vercel.app/user/${user.uid}/sheet/${sheetName}`,'時間割表のリンク')}
-                  >
-                    時間割表のリンクをコピー
-                  </Button>
-                </Stack>
-              }
-            </>
-          }
-          {modalSection === 4 &&         
-            <>
-              <h3>デインジャーゾーン</h3>
-              <AlignItems style={{justifyContent: 'space-between'}}>
-                <p>「{sheetName}」を消去</p>
-                <Button
-                  icon={<MdDelete />}
-                  onClick={async() => {
-                      if (window.confirm("今開いている時間割表を消去したいですか？一度消去すると復旧することはできません。")) {
-                        const docRef = doc(db, "users", user.uid);
-                        await updateDoc(docRef, {[`sheets.${sheetName}`]: deleteField()});
-                        router.push('/app');
+        <div ref={parent}>
+          {modalSection === 0 && <>
+            <SectionButton
+              onClick={()=>{setModalSection(1);fetchDataSheetData();}}
+              leftIcon={<FiDatabase/>}
+              rightIcon={<FiChevronRight/>}
+            >
+              データシートを繋げる
+            </SectionButton>
+            <SectionButton
+              onClick={()=>setModalSection(2)}
+              leftIcon={<FiImage/>}
+              rightIcon={<FiChevronRight/>}
+            >
+              画像を編集・追加
+            </SectionButton>
+            <SectionButton
+              onClick={()=>setModalSection(3)}
+              leftIcon={<FiUsers/>}
+              rightIcon={<FiChevronRight/>}
+            >
+              共有設定
+            </SectionButton>
+            <SectionButton
+              onClick={()=>setModalSection(4)}
+              leftIcon={<FiAlertTriangle/>}
+              rightIcon={<FiChevronRight/>}
+            >
+              デインジャーゾーン
+            </SectionButton>
+            <SectionButton
+              onClick={()=>router.push('/about')}
+              leftIcon={<FiInfo/>}
+              rightIcon={<FiExternalLink/>}
+            >
+              Deizuについて
+            </SectionButton>
+          </>}
+
+          {modalSection !== 0 &&
+            <Stack>
+              <SectionButton
+                onClick={()=>setModalSection(0)}
+                leftIcon={<MdArrowBack/>}
+              >
+                戻る
+              </SectionButton>
+              {modalSection === 1 && 
+                <>
+                  <div style={{overflowY:'scroll',height:'250px', padding:'0.5em'}}>
+                    <Stack>
+                      {
+                        allDataSheetData && allDataSheetData.map((prop) =>{
+                          return (
+                            <LargeImageButton
+                              displayAddButton={true}
+                              key={prop}
+                              dataSheetId={prop.dataSheetId}
+                              dataSheetName={prop.dataSheetData.dataSheetName}
+                              imageSource={prop.dataSheetData.dataSheetImageUrl}
+                              subtitle={prop.dataSheetData.dataSheetDescription}
+                              onClick={() => router.push(`/datasheet/${prop.dataSheetId}`)}
+                              currentDataSheetId={dataSheetId}
+                              addDataSheetOnClick={()=>{
+                                setDataSheetId(prop.dataSheetId);
+                              }}
+                            >
+                              {prop.dataSheetData.dataSheetName}
+                            </LargeImageButton>
+                          )
+                        })
                       }
+                    </Stack>
+                  </div>
+                  <p>
+                    データシートを繋げることで科目を時間割表に入力する作業がより早まります。
+                  </p>
+                  <Stack>
+                    {dataSheetName && 
+                      <TextPreview style={{textAlign: 'center'}}>
+                        「{dataSheetName}」のデータシートに繋がっています
+                      </TextPreview>
                     }
+                    <Input
+                      placeholder={'データシートID'}
+                      value={dataSheetId}
+                      onChange={(e)=>setDataSheetId(e.target.value)}
+                    />
+                    <Button
+                      onClick={()=>saveDataSheetId()}
+                      width={"full"}
+                    >
+                      データシートを繋げる
+                    </Button>
+                  </Stack>
+                </>
+              }
+              {modalSection === 2 && 
+                <>
+                  <h3>画像を追加・編集</h3>
+                  <p>インターネット上にある画像URLを追加するとバナー画像・背景画像として追加されます。</p>
+                  <Stack>
+                    <Input
+                      placeholder={'バナー画像URL'}
+                      value={sheetBannerImageUrl}
+                      onChange={(e)=>setSheetBannerImageUrl(e.target.value)}
+                    />
+                    <Input
+                      placeholder={'背景画像URL'}
+                      value={sheetBackgroundImageUrl}
+                      onChange={(e)=>setSheetBackgroundImageUrl(e.target.value)}
+                    />
+                    <Button onClick={()=>saveSheetImageUrl()} width={"full"}>保存</Button>
+                  </Stack>
+                </>
+              }
+              {modalSection === 3 &&         
+                <>
+                  <h3>共有設定</h3>
+                  <p>
+                    リンク共有を有効するとこのリンクにアクセスできる人は全て時間割を閲覧することができます。なお共有するとユーザー様がご指定しているテーマ・バナー画像等も共有されるのでご了承下さい。
+                  </p>
+                  <AlignItems style={{justifyContent: 'space-between'}}>
+                    <p>{shareSheetState ? ' 自分しか見えないようにする':'時間割の閲覧権限を与える'}</p>
+                    <AlignItems>
+                      {shareSheetState ? <Button
+                        icon={<FiLock/>}
+                        onClick={()=>shareSheet(false)}
+                      >
+                        ロック
+                      </Button>:
+                      <Button
+                        icon={<FiLink/>}
+                        onClick={()=>shareSheet(true)}
+                      >
+                        共有
+                      </Button>}
+                    </AlignItems>
+                  </AlignItems>
+                  {shareSheetState &&
+                    <Stack>
+                      <p>
+                        URLをコピーし他の人に送信することで時間割表を共有することができます。
+                      </p>
+                      <Button
+                        width={'full'}
+                        onClick={() => copyAlert(`deizu.vercel.app/user/${user.uid}/sheet/${sheetName}`,'時間割表のリンク')}
+                        icon={<FiCopy/>}
+                      >
+                        時間割表のリンクをコピー
+                      </Button>
+                    </Stack>
                   }
-                >時間割表を消去</Button>
-              </AlignItems>
-            </>
+                </>
+              }
+              {modalSection === 4 &&         
+                <>
+                  <h3>デインジャーゾーン</h3>
+                  <AlignItems style={{justifyContent: 'space-between'}}>
+                    <p>「{sheetName}」を消去</p>
+                    <Button
+                      icon={<FiTrash2 />}
+                      onClick={async() => {
+                          if (window.confirm("今開いている時間割表を消去したいですか？一度消去すると復旧することはできません。")) {
+                            const docRef = doc(db, "users", user.uid);
+                            await updateDoc(docRef, {[`sheets.${sheetName}`]: deleteField()});
+                            router.push('/app');
+                          }
+                        }
+                      }
+                    >時間割表を消去</Button>
+                  </AlignItems>
+                </>
+              }
+            </Stack>
           }
-        </Stack>
-        }
+        </div>
+
       </Modal>
       <LoadingBar
         color='var(--system3)'

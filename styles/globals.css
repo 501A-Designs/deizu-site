@@ -4,8 +4,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500&display=swap');
 
 :root {
-	--r5: 5px;
-	--r10: 10px;
+	/* --r5: 5px;
+	--r10: 10px; */
+	--borderRadius0: 5px;
+	--borderRadius1: 10px;
+	--borderRadius2: 20px;
 	--system0: white;
 	--system1: #ececec;
 	--system2: #dbdbdb;
@@ -47,7 +50,7 @@ hr {
 
 ::-webkit-scrollbar-thumb {
 	background: var(--system1);
-	border-radius: var(--r5);
+	border-radius: var(--borderRadius0);
 }
 
 ::-webkit-scrollbar-track {
@@ -170,6 +173,21 @@ a {
 	}
 }
 
+
+@keyframes slideInAni {
+	0% {
+		opacity: 0;
+		transform: translateY(0px) translateX(-50%);
+	}
+	60%{
+		transform: translateY(-55%) translateX(-50%);
+	}
+}
+
+@keyframes fadeInAni {
+	0% {opacity: 0}
+}
+
 .mockupContainer {
 	animation: mockupContainerAni infinite 5s;
 	animation-direction: alternate;
@@ -182,4 +200,9 @@ a {
 	100% {
 		transform: perspective(200px) rotateX(5deg) rotateY(2deg);
 	}
+}
+
+.profileImage{transition:0.5s}
+.profileImage:hover{
+	opacity: 0.5;
 }

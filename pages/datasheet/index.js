@@ -1,6 +1,6 @@
 import React,{useState,useEffect} from 'react'
 import BodyMargin from '../../lib/style/BodyMargin'
-import { MdAddCircle,MdArrowBack } from "react-icons/md";
+import { FiPlus, FiArrowLeft } from "react-icons/fi";
 import { NextSeo } from 'next-seo';
 
 
@@ -56,7 +56,7 @@ export default function Index() {
       >
         <AlignItems gap={'1em'}>
           <IconButton
-            icon={<MdArrowBack/>}
+            icon={<FiArrowLeft/>}
             onClick={() =>{
               user ? router.push(`/user/${user.uid}`):router.push('/app')
             }}
@@ -67,7 +67,7 @@ export default function Index() {
         </AlignItems>
         {user && 
           <Button
-            icon={<MdAddCircle/>}
+            icon={<FiPlus/>}
             onClick={() => router.push('/datasheet/create')}
           >
             新規作成
