@@ -1,8 +1,8 @@
 import React,{useState} from 'react'
-import Button from '../../../../lib/component/Button'
-import IconButton from '../../../../lib/component/IconButton'
-import { MdArrowBack,MdAddCircle } from "react-icons/md";
 
+// Button Components
+import Button from '../../../../lib/button/Button'
+import IconButton from '../../../../lib/button/IconButton'
 
 import Container from '../../../../lib/component/Container'
 import Input from '../../../../lib/component/Input'
@@ -10,12 +10,12 @@ import AlignItems from '../../../../lib/style/AlignItems'
 import Stack from '../../../../lib/style/Stack'
 
 import { useRouter } from 'next/router'
-
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth,db } from '../../../../src/service/firebase'
 import { doc, setDoc, serverTimestamp} from "firebase/firestore";
 import StaticScene from '../../../../lib/style/StaticScene'
 import { NextSeo } from 'next-seo';
+import { FiArrowLeft, FiPlus } from 'react-icons/fi';
 
 export default function Index() {
     const router = useRouter();
@@ -60,10 +60,17 @@ export default function Index() {
                 >
                     <Container style={{maxWidth:'600px'}}>
                         <AlignItems gap={'1em'}>
-                            <IconButton icon={<MdArrowBack/>} onClick={() =>router.push(`/user/${user.uid}/`)}>戻る</IconButton>
-                            <h1 style={{margin: 0,padding:0}}>新規作成</h1>
+                            <IconButton
+                                fill
+                                icon={<FiArrowLeft/>}
+                                onClick={() =>
+                                    router.push(`/user/${user.uid}/`)
+                                }
+                            >
+                                戻る
+                            </IconButton>
+                            <h2 style={{margin: 0,padding:0}}>新規作成</h2>
                         </AlignItems>
-                        <h3>新しい時間割を作成しよう</h3>
                         <p>
                             新しい時間割表のタイトルは一度指定すると変更することはできないのでご了承ください。なお、今まで作った時間割と重複しないようなタイトルにしてください。時間割表のタイトルを入力すると、作成ボタンが表示されます。
                         </p>
@@ -86,7 +93,7 @@ export default function Index() {
                                 />
                                 {sheetName &&
                                     <Button
-                                        icon={<MdAddCircle/>}
+                                        icon={<FiPlus/>}
                                         width={'full'}
                                         onClick={(e)=> createScheduleSheet(e)}
                                     >

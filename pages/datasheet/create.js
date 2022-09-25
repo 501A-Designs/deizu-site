@@ -1,8 +1,8 @@
 import React,{useState} from 'react'
-import Button from '../../lib/component/Button'
-import IconButton from '../../lib/component/IconButton'
 
-import { MdArrowBack,MdAddCircle } from "react-icons/md";
+// Button Component
+import Button from '../../lib/button/Button'
+import IconButton from '../../lib/button/IconButton'
 
 import Container from '../../lib/component/Container'
 import Input from '../../lib/component/Input'
@@ -17,6 +17,7 @@ import { auth,db } from "../../src/service/firebase"
 
 import { useRouter } from 'next/router'
 import { NextSeo } from 'next-seo';
+import { FiArrowLeft, FiPlus } from 'react-icons/fi';
 
 export default function Create() {
     const router = useRouter();
@@ -50,10 +51,17 @@ export default function Create() {
                 <AlignItems style={{justifyContent: 'center', height: '100vh'}}>
                     <Container style={{maxWidth:'600px'}}>
                         <AlignItems gap={'1em'}>
-                            <IconButton icon={<MdArrowBack/>} onClick={() =>router.push('/datasheet')}>戻る</IconButton>
-                            <h1 style={{margin: 0,padding:0}}>新規作成</h1>
+                            <IconButton
+                                fill
+                                icon={<FiArrowLeft/>}
+                                onClick={() =>
+                                    router.push('/datasheet')
+                                }
+                            >
+                                戻る
+                            </IconButton>
+                            <h2 style={{margin: 0,padding:0}}>新規作成</h2>
                         </AlignItems>
-                        <h3>新しいデータシートを作成しよう</h3>
                         <p>
                             新しいデータシートのタイトルは一度指定すると変更することはできないのでご了承ください。また、何も入力しない場合画像が自動生成されるのでご了承下さい。
                         </p>
@@ -76,7 +84,7 @@ export default function Create() {
                                 />
                                 {dataSheetName && 
                                     <Button
-                                        icon={<MdAddCircle/>}
+                                        icon={<FiPlus/>}
                                         width={'full'}
                                         onClick={(e)=> createDataSheet(e)}
                                     >

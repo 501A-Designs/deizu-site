@@ -2,17 +2,14 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { NextSeo } from 'next-seo';
 
+import Button from '../lib/button/Button'
 import Footer from '../lib/component/Footer'
 import Container from '../lib/component/Container'
 
 import { MdOutlineOpenInBrowser, MdCode,MdArrowDownward } from "react-icons/md";
-import Button from '../lib/component/Button'
 import AlignItems from '../lib/style/AlignItems'
-import GradientText from '../lib/component/GradientText'
-import BodyMargin from '../lib/style/BodyMargin'
 import BlockList from '../lib/component/BlockList'
-import TextPreview from '../lib/component/TextPreview'
-import Stack from '../lib/style/Stack'
+
 import {isBrowser, isMobile} from 'react-device-detect';
 import appIcon from '../public/deizuAppIconUpdated.png'
 // import appScreenshot from '../public/deizu-screenshot.png'

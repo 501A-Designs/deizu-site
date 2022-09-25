@@ -2,10 +2,11 @@ import { NextSeo } from 'next-seo'
 import React from 'react'
 import BodyMargin from '../../lib/style/BodyMargin'
 
+import Button from '../../lib/button/Button';
+
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, } from "../../src/service/firebase"
 import StaticScene from '../../lib/style/StaticScene';
-import Button from '../../lib/component/Button';
 import AlignItems from '../../lib/style/AlignItems';
 
 import { MdOutlineExitToApp } from "react-icons/md";

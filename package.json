@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@formkit/auto-animate": "^1.0.0-beta.3",
+    "@radix-ui/react-popover": "1.0.0",
+    "@stitches/react": "^1.2.8",
     "@types/node": "^17.0.23",
     "@types/react": "^18.0.3",
     "firebase": "^9.6.11",
@@ -28,8 +30,7 @@
     "react-mockup": "^1.2.2",
     "react-modal": "^3.14.4",
     "react-toastify": "^8.2.0",
-    "react-top-loading-bar": "^2.1.0",
-    "styled-components": "^5.3.5"
+    "react-top-loading-bar": "^2.1.0"
   },
   "devDependencies": {
     "eslint": "8.13.0",

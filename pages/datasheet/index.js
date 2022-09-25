@@ -5,10 +5,12 @@ import { NextSeo } from 'next-seo';
 
 
 import { collection, getDocs } from "firebase/firestore";
-import Button from '../../lib/component/Button';
-import IconButton from '../../lib/component/IconButton';
 
-import LargeImageButton from '../../lib/component/LargeImageButton';
+// Button Component
+import Button from '../../lib/button/Button';
+import IconButton from '../../lib/button/IconButton';
+import LargeImageButton from '../../lib/button/LargeImageButton';
+
 import AlignItems from '../../lib/style/AlignItems';
 import { useRouter } from 'next/router'
 

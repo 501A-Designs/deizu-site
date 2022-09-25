@@ -1,14 +1,21 @@
 import React, {useEffect, useState} from 'react'
 import LoadingBar from 'react-top-loading-bar'
 
-import {MdHomeFilled,MdAddCircle, MdSettings,MdClose,MdLink,MdLinkOff,MdDelete,MdPerson,MdCalendarViewMonth,MdCalendarViewWeek,MdOutlineMediation,MdArrowForwardIos,MdPeopleAlt,MdImage,MdDangerous,MdInfo,MdArrowBack } from "react-icons/md";
+import {MdArrowBack } from "react-icons/md";
 
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 import { NextSeo } from 'next-seo';
 import {isMobile} from 'react-device-detect';
 
-import IconButton from '../../../../lib/component/IconButton'
+// Button Components
+import Button from '../../../../lib/button/Button';
+import IconButton from '../../../../lib/button/IconButton'
+import ColorButton from '../../../../lib/button/ColorButton';
+import SectionButton from '../../../../lib/button/SectionButton';
+import LargeImageButton from '../../../../lib/button/LargeImageButton';
+import CloseButton from '../../../../lib/button/CloseButton';
+
 import AlignItems from '../../../../lib/style/AlignItems';
 import BodyMargin from '../../../../lib/style/BodyMargin';
 import StaticScene from '../../../../lib/style/StaticScene';
@@ -18,8 +25,6 @@ import SubjectCell from '../../../../lib/schedule/SubjectCell'
 import TimeCell from '../../../../lib/schedule/TimeCell'
 import Input from '../../../../lib/component/Input';
 import MockupCell from '../../../../lib/component/MockupCell';
-import Button from '../../../../lib/component/Button';
-import ColorButton from '../../../../lib/component/ColorButton';
 
 import { useRouter } from 'next/router'
 
@@ -43,12 +48,9 @@ import { buttonColor } from '../../../../lib/data/buttonColor'
 
 import Container from '../../../../lib/component/Container';
 import ImageContainer from '../../../../lib/component/ImageContainer';
-import SectionButton from '../../../../lib/component/SectionButton';
 import TextPreview from '../../../../lib/component/TextPreview';
 import DayOfWeek from '../../../../lib/schedule/DayOfWeek';
-import LargeImageButton from '../../../../lib/component/LargeImageButton';
 import { FiAlertTriangle, FiChevronRight, FiCopy, FiDatabase, FiExternalLink, FiGrid, FiHome, FiImage, FiInfo, FiLayout, FiLink, FiLock, FiLogIn, FiPlus, FiSettings, FiTrash2, FiUsers } from 'react-icons/fi';
-import CloseButton from '../../../../lib/component/CloseButton';
 import ModalHeader from '../../../../lib/component/ModalHeader';
 
 
@@ -259,10 +261,12 @@ function IndivisualSheet() {
           onRequestClose={closeCellModal}
           style={modalStyle}
         >
-          <Stack gap={'1em'}>
-            <AlignItems style={{justifyContent: 'right'}}>
-              <IconButton icon={<MdClose/>} onClick={() =>closeCellModal()}>閉じる</IconButton>
-            </AlignItems>
+          <Stack gap={'1em'} style={{paddingTop:'1em'}}>
+            {isMobile &&
+              <AlignItems style={{justifyContent: 'right'}}>
+                <CloseButton onClick={() =>closeCellModal()}/>
+              </AlignItems>
+            }
             <MockupCell
               subjectCellName = {subjectCellName}
               subjectCellLink = {subjectCellLink}
@@ -336,10 +340,14 @@ function IndivisualSheet() {
           onRequestClose={closeTimeModal}
           style={modalStyle}
         >
-          <Stack gap={'1em'}>
-            <AlignItems style={{justifyContent: 'right'}}>
-              <IconButton icon={<MdClose/>} onClick={() =>closeTimeModal()}>閉じる</IconButton>
-            </AlignItems>
+          <Stack gap={'1em'} style={{paddingTop:'1em'}}>
+            {isMobile && 
+              <AlignItems style={{justifyContent: 'right'}}>
+                <CloseButton
+                  onClick={() =>closeTimeModal()}
+                />
+              </AlignItems>
+            }
             <AlignItems style={{justifyContent: 'center'}}>
               <TextPreview time>{timeStart ? timeStart:'開始時'}</TextPreview>
               <span>〜</span>

@@ -2,7 +2,10 @@ import React,{useEffect, useState} from 'react'
 import { MdArrowBack,MdOutlineViewList,MdOutlineViewModule,MdContentCopy } from "react-icons/md";
 import { NextSeo } from 'next-seo';
 
-import IconButton from '../../lib/component/IconButton'
+import Button from '../../lib/button/Button';
+import IconButton from '../../lib/button/IconButton'
+import ColorButton from '../../lib/button/ColorButton';
+
 import AlignItems from '../../lib/style/AlignItems';
 import Container from '../../lib/component/Container';
 import BodyMargin from '../../lib/style/BodyMargin';
@@ -17,12 +20,10 @@ import { doc, getDoc,setDoc,arrayUnion } from "firebase/firestore";
 
 import { buttonColor } from '../../lib/data/buttonColor'
 
-import Button from '../../lib/component/Button';
 import Input from '../../lib/component/Input';
 import Stack from '../../lib/style/Stack';
 
 import DataGrid from 'react-data-grid';
-import ColorButton from '../../lib/component/ColorButton';
 
 import {isMobile} from 'react-device-detect';
 import { toast } from 'react-toastify';

@@ -1,7 +1,10 @@
 import Link from 'next/link'
 import React from 'react'
-import Button from '../lib/component/Button'
-import IconButton from '../lib/component/IconButton'
+
+// Button Components
+import Button from '../lib/button/Button'
+import IconButton from '../lib/button/IconButton'
+
 import Container from '../lib/component/Container'
 import TextPreview from '../lib/component/TextPreview'
 import AlignItems from '../lib/style/AlignItems'

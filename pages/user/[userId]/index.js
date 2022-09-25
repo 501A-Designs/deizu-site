@@ -1,6 +1,11 @@
 import React,{useState,useEffect} from 'react'
-import Button from '../../../lib/component/Button'
-import IconButton from '../../../lib/component/IconButton'
+
+// Button Component
+import Button from '../../../lib/button/Button'
+import IconButton from '../../../lib/button/IconButton'
+import ImageButton from '../../../lib/button/ImageButton';
+import SheetButton from '../../../lib/button/SheetButton';
+import TabIconButton from '../../../lib/button/TabIconButton';
 
 import Banner from '../../../lib/component/Banner'
 
@@ -12,12 +17,12 @@ import { useRouter } from 'next/router'
 import { useAuthState } from 'react-firebase-hooks/auth';
 
 import { auth,db,root } from "../../../src/service/firebase"
-import { doc,　setDoc } from "firebase/firestore";
+import { doc,　getDoc,　setDoc } from "firebase/firestore";
 
 Modal.setAppElement('#__next');
 import Modal from 'react-modal';
 import { modalStyle } from '../../../lib/style/modalStyle'
-import { themeData, themeColorData } from '../../../lib/data/themeData'
+import { themeColorData } from '../../../lib/data/themeData'
 
 import StaticScene from '../../../lib/style/StaticScene';
 
@@ -25,18 +30,18 @@ import moment from 'moment';
 import 'moment/locale/ja';
 
 import Stack from '../../../lib/style/Stack';
-import ImageButton from '../../../lib/component/ImageButton';
-import SheetButton from '../../../lib/component/SheetButton';
 
 import ImageContainer from '../../../lib/component/ImageContainer';
 import Input from '../../../lib/component/Input';
 
-import {isMobile} from 'react-device-detect';
+import {isBrowser, isMobile} from 'react-device-detect';
 import { NextSeo } from 'next-seo';
-import TabIconButton from '../../../lib/component/TabIconButton';
 import { useDocument } from 'react-firebase-hooks/firestore';
 import { FiCalendar, FiEdit2, FiImage, FiPlus, FiSmile } from 'react-icons/fi';
 import ModalHeader from '../../../lib/component/ModalHeader';
+
+import { Popover, PopoverContent, PopoverTrigger } from '../../../lib/component/Popover'
+import SectionButton from '../../../lib/button/SectionButton';
 
 function IndivisualUser() {
   const router = useRouter();
@@ -44,42 +49,64 @@ function IndivisualUser() {
 
   const [user, loading] = useAuthState(auth);
   const [loadSheet, setLoadSheet] = useState(false);
-  const [theme, setTheme] = useState(themeData[0].value);
   const [themeColor, setThemeColor] = useState(themeColorData[0].value);
   const [userImageUrl, setUserImageUrl] = useState('');
   const [sheetTitle, setSheetTitle] = useState([]);
   const [sheetMetaData, setSheetMetaData] = useState([]);
   const [hovered, setHovered] = useState(false);
   
-  const [dashboardData] = useDocument(doc(db, `users/${user && user.uid}/`));
+  // const [dashboardData] = useDocument(doc(db, `users/${user && user.uid}/`));
+  const fetchData = async () => {
+    const docRef = doc(db, "users", user.uid);
+    const docSnapshot = await getDoc(docRef);
+    if (docSnapshot.exists()) {
+      let doc = docSnapshot;
+      setUserImageUrl(doc.data().url ? doc.data().url:'');
+      setThemeColor(doc.data().themeColor ? doc.data().themeColor:themeColorData[0].value);
+      setSheetTitle(Object.keys(doc.data().sheets));
 
-  useEffect(() => {
-    if (dashboardData) {      
-      setUserImageUrl(dashboardData.data().url ? dashboardData.data().url:'');
-      setThemeColor(dashboardData.data().themeColor ? dashboardData.data().themeColor:themeColorData[0].value);
-      setTheme(dashboardData.data().theme ? dashboardData.data().theme:themeData[0].value);
-      setSheetTitle(Object.keys(dashboardData.data().sheets));
       let sheetMetaDataArray = [];
-      const sheetObject = dashboardData.data().sheets;
-      if (Object.keys(dashboardData.data().sheets).length > 0) {
+      const sheetObject = doc.data().sheets;
+
+      if (Object.keys(doc.data().sheets).length > 0) {
         Object.keys(sheetObject).map(sheetName => {
           sheetMetaDataArray.push({
             sheetName: sheetName,
-            bannerImageUrl:dashboardData.data().sheets[sheetName].bannerImageUrl,
-            sharing:dashboardData.data().sheets[sheetName].sharing,
-            date:dashboardData.data().sheets[sheetName].date,
+            bannerImageUrl:doc.data().sheets[sheetName].bannerImageUrl,
+            sharing:doc.data().sheets[sheetName].sharing,
+            date:doc.data().sheets[sheetName].date,
           })
         })
         setSheetMetaData(sheetMetaDataArray)
       }
     }
-  },[user,dashboardData])
+  }
 
   useEffect(() => {
-    // if (theme) {
-    //   root?.style.setProperty("--r5", theme[0]);
-    //   root?.style.setProperty("--r10", theme[1]);
+    // if (dashboardData) {
+    //   setUserImageUrl(dashboardData.data().url ? dashboardData.data().url:'');
+    //   setThemeColor(dashboardData.data().themeColor ? dashboardData.data().themeColor:themeColorData[0].value);
+    //   setSheetTitle(Object.keys(dashboardData.data().sheets));
+    //   let sheetMetaDataArray = [];
+    //   const sheetObject = dashboardData.data().sheets;
+    //   if (Object.keys(dashboardData.data().sheets).length > 0) {
+    //     Object.keys(sheetObject).map(sheetName => {
+    //       sheetMetaDataArray.push({
+    //         sheetName: sheetName,
+    //         bannerImageUrl:dashboardData.data().sheets[sheetName].bannerImageUrl,
+    //         sharing:dashboardData.data().sheets[sheetName].sharing,
+    //         date:dashboardData.data().sheets[sheetName].date,
+    //       })
+    //     })
+    //     setSheetMetaData(sheetMetaDataArray)
+    //   }
     // }
+    if (user) {
+      fetchData()
+    }
+  },[user])
+
+  useEffect(() => {
     if (themeColor) {
       for (let index = 0; index < 4; index++) {
         root?.style.setProperty(`--system${index}`, themeColor[index]);
@@ -87,7 +114,7 @@ function IndivisualUser() {
       root?.style.setProperty("--txtColor0", themeColor[4]);
       root?.style.setProperty("--txtColor1", themeColor[5]);
     }
-  },[themeColor, theme])
+  },[themeColor])
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const openModal = () => setModalIsOpen(true);
@@ -97,16 +124,15 @@ function IndivisualUser() {
     e.preventDefault();
     const docRef = doc(db, "users", user.uid);
     await setDoc(docRef,
-        {
-          theme: theme,
-          themeColor: themeColor,
-          url:userImageUrl
-        }, { merge: true }
+      {
+        themeColor: themeColor,
+        url:userImageUrl
+      }, { merge: true }
     );
     closeModal()
   }
 
-  const [modalSection, setModalSection] = useState(1);
+  const [modalSection, setModalSection] = useState(0);
 
   return (
     <>
@@ -128,36 +154,31 @@ function IndivisualUser() {
                     header="見た目の設定"
                     onClick={() =>closeModal()}
                   />
-                  <Stack grid={'1fr 1fr 1fr'}>
-                    <TabIconButton
-                      tabId={1}
-                      sectionState={modalSection}
-                      name="背景画像"
-                      type="icon"
-                      onClick={()=>setModalSection(1)}
-                    >
-                      <FiImage/>
-                    </TabIconButton>
-                    {/* <TabIconButton
-                      tabId={2}
-                      sectionState={modalSection}
-                      name="テーマ"
-                      type="icon"
-                      onClick={()=>setModalSection(2)}
-                    >
-                      </>
-                    </TabIconButton> */}
-                    <TabIconButton
-                      tabId={3}
-                      sectionState={modalSection}
-                      name="色"
-                      type="icon"
-                      onClick={()=>setModalSection(3)}
-                    >
-                      <FiSmile/>
-                    </TabIconButton>
-                  </Stack>
+                  {modalSection === 0 && 
+                    <Stack>
+                      <SectionButton
+                        icon={<FiImage/>}
+                        onClick={()=>setModalSection(1)}
+                      >
+                        背景画像の設定
+                      </SectionButton>
+                      <SectionButton
+                        icon={<FiSmile/>}
+                        onClick={()=>setModalSection(2)}
+                      >
+                        配色
+                      </SectionButton>
+                    </Stack>
+                  }
                   <Stack>
+                    {modalSection !== 0 &&
+                      <SectionButton
+                        icon={<FiSmile/>}
+                        onClick={()=>setModalSection(0)}
+                      >
+                        戻る
+                      </SectionButton>
+                    }
                     {modalSection === 1 &&
                       <Stack>
                         {userImageUrl && 
@@ -174,26 +195,20 @@ function IndivisualUser() {
                       </Stack>
                     }
                     {modalSection === 2 &&
-                      <Stack grid={'1fr 1fr 1fr'}>
-                        {themeData.map((prop)=>{
-                          return <ImageButton key={prop} onClick={()=>setTheme(prop.value)}>{prop.name}</ImageButton>
-                        })}
-                      </Stack>
-                    }
-
-                    {modalSection === 3 &&
                       <Stack grid={isMobile ? '1fr 1fr':'1fr 1fr 1fr 1fr'}>
                         {themeColorData.map((prop)=>{
                           return <ImageButton key={prop} onClick={()=>setThemeColor(prop.value)}>{prop.name}</ImageButton>
                         })}
                       </Stack>
                     }
-                    <Button
-                      width="full"
-                      onClick={(e)=>saveThemeData(e)}
-                    >
-                      保存
-                    </Button>
+                    {modalSection !== 0 &&
+                      <Button
+                        width="full"
+                        onClick={(e)=>saveThemeData(e)}
+                      >
+                        保存
+                      </Button>
+                    }
                   </Stack>
                 </Stack>
               </Modal>
@@ -240,7 +255,7 @@ function IndivisualUser() {
                               </p>
                             </Stack>
                           </AlignItems>
-                          {
+                          {/* {
                             hovered && 
                             <div ref={parent}>
                               <IconButton
@@ -251,7 +266,7 @@ function IndivisualUser() {
                                 見た目の変更
                               </IconButton>
                             </div>
-                          }
+                          } */}
                         </AlignItems>
                       </ImageContainer>
                       {/* <Button
@@ -267,10 +282,11 @@ function IndivisualUser() {
                           {sheetTitle.length > 0 && 
                             <AlignItems
                               style={{
-                                justifyContent: 'space-between', marginBottom: '1em'
+                                justifyContent: `${isBrowser ? 'space-between':'center'}`,
+                                marginBottom: '1em'
                               }}
                             >
-                              <h1>Dashboard</h1>
+                              {isBrowser && <h1>Dashboard</h1>}
                               <Button
                                 onClick={() => router.push(`/user/${user.uid}/sheet`)}
                                 icon={<FiPlus/>}

@@ -1,4 +1,5 @@
 import Head from 'next/head'
+
 import Footer from '../lib/component/Footer'
 import Banner from '../lib/component/Banner';
 import BodyMargin from '../lib/style/BodyMargin';

@@ -1,7 +1,9 @@
 import React from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import Button from '../lib/component/Button';
+
+import Button from '../lib/button/Button';
+
 import AlignItems from '../lib/style/AlignItems';
 import { MdPerson, MdDescription } from 'react-icons/md';
 import Container from '../lib/component/Container';
