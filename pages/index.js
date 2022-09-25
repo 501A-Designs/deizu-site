@@ -63,7 +63,7 @@ export default function Home() {
               </div>:
               <MobileMockup
                 size="1"
-                src="https://images.unsplash.com/photo-1574285013029-29296a71930e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dmVydGljYWx8ZW58MHx8MHx8&w=1000&q=80"
+                src="deizu-mobile-screenshot.png"
                 angleX="4deg"
                 angleY="0deg"
                 border="none"

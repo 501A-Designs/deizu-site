@@ -568,7 +568,7 @@ function IndivisualSheet() {
                 アカウント作成
               </IconButton>
             }
-            <h1 className={'scaleFontLarge'}>{sheetName}</h1>
+            <h1 className={'scaleFontLarge'} style={{filter: 'invert(100%)', mixBlendMode: 'exclusion'}}>{sheetName}</h1>
             {!viewOnly ?
               <AlignItems>
                 {!isMobile &&
@@ -752,7 +752,15 @@ function IndivisualSheet() {
                       value={sheetBackgroundImageUrl}
                       onChange={(e)=>setSheetBackgroundImageUrl(e.target.value)}
                     />
-                    <Button onClick={()=>saveSheetImageUrl()} width={"full"}>保存</Button>
+                    <Button
+                      onClick={()=>{
+                        saveSheetImageUrl()
+                        closeModal()
+                      }}
+                      width={"full"}
+                    >
+                      保存
+                    </Button>
                   </Stack>
                 </>
               }
