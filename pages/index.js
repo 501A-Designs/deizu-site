@@ -6,11 +6,10 @@ import Button from '../lib/button/Button'
 import Footer from '../lib/component/Footer'
 import Container from '../lib/component/Container'
 
-import { MdOutlineOpenInBrowser, MdCode,MdArrowDownward } from "react-icons/md";
 import AlignItems from '../lib/style/AlignItems'
 import BlockList from '../lib/component/BlockList'
 
-import {isBrowser, isMobile} from 'react-device-detect';
+import {isBrowser} from 'react-device-detect';
 import appIcon from '../public/deizuAppIconUpdated.png'
 // import appScreenshot from '../public/deizu-screenshot.png'
 import { useRouter } from 'next/router'
@@ -18,6 +17,7 @@ import Link from 'next/link'
 
 import {BrowserMockup, MobileMockup} from 'react-mockup'
 import 'react-mockup/dist/index.css'
+import { FiArrowUpCircle } from 'react-icons/fi';
 
 export default function Home() {
   let router = useRouter();
@@ -138,7 +138,7 @@ export default function Home() {
                 <p>Next.Js等のモダンなウェブテクノロジーで構成された時間割作成アプリケーション。バックエンドではFirebaseを使用し、充実したユーザーエクスピリエンスとデザインを兼ね備えた唯一無二な時間割表作成プラットフォームです。</p>
                 <Button
                   onClick={() =>router.push('/app')}
-                  icon={<MdOutlineOpenInBrowser/>}
+                  icon={<FiArrowUpCircle/>}
                 >
                   Webアプリを開く
                 </Button>

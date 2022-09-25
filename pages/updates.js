@@ -6,13 +6,11 @@ import Button from '../lib/button/Button'
 import IconButton from '../lib/button/IconButton'
 
 import Container from '../lib/component/Container'
-import TextPreview from '../lib/component/TextPreview'
 import AlignItems from '../lib/style/AlignItems'
 import BodyMargin from '../lib/style/BodyMargin'
-import Stack from '../lib/style/Stack'
 
-import { MdHomeFilled,MdCode, MdPerson } from "react-icons/md";
 import { useRouter } from 'next/router'
+import { FiCode, FiHome, FiUser } from 'react-icons/fi'
 
 export default function Updates() {
     const router = useRouter();
@@ -20,10 +18,18 @@ export default function Updates() {
   return (
     <BodyMargin>
         <AlignItems gap={'1em'}>
-            <IconButton icon={<MdHomeFilled/>} onClick={() => router.push('/')}>メインメイン</IconButton>
+            <IconButton
+                fill
+                icon={<FiHome/>}
+                onClick={() => router.push('/')}
+            >
+                メインメイン
+            </IconButton>
             <h1 className="scaleFontLarge">Deizuの開発状況</h1>
         </AlignItems>
-        <p>Deizuは私（501A）が手掛けて作成した時間割表作成プラットフォームです。</p>
+        <p>
+            Deizuは私（501A）が手掛けて作成した時間割表作成プラットフォームです。
+        </p>
         <Container style={{marginBottom:'1.5em'}}>
             <h4>他のプラットフォームでもDeizuの開発について書かれています：</h4>
             <ul>
@@ -43,13 +49,13 @@ export default function Updates() {
         <AlignItems>
             <Button
                 onClick={() => { window.open('https://github.com/501A-Designs/deizu-site', "_blank") }}
-                icon={<MdCode/>}
+                icon={<FiCode/>}
             >
                 GitHubを見る
             </Button>
             <Button
                 onClick={() => { window.open('https://501a.netlify.app', "_blank") }}
-                icon={<MdPerson/>}
+                icon={<FiUser/>}
             >
                 開発者のサイト
             </Button>
@@ -77,7 +83,7 @@ export default function Updates() {
                 <li>Authentication：ログインシステム</li>
             </ul>
         </ul>
-        {/* <p>バージョン情報については<a href="https://github.com/501A-Designs/DEIZU/releases">GitHubのリリース</a>でも確認することができます</p> */}
+        <p>旧バージョン情報については<a href="https://github.com/501A-Designs/DEIZU/releases">こちらから</a>。また最新のバージョン情報については<a href="https://github.com/501A-Designs/DEIZU/releases">こちら</a>から確認することができます。</p>
     </BodyMargin>
   )
 }

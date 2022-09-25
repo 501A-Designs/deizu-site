@@ -14,6 +14,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { auth } from "../src/service/firebase"
 import { NextSeo } from 'next-seo';
+import { FiFileText, FiLogIn } from 'react-icons/fi';
 
 export default function App() {
     const router = useRouter()
@@ -43,13 +44,14 @@ export default function App() {
                 description="Deizuのアカウントにログイン・新規登録"
             />
             <Container style={{marginTop:'2em', marginBottom:'2em', maxWidth:'600px'}}>
-                <Banner type="caution">
-                    Deizuのv2.0.1以来時間割表を開けないエラーが出回っています。また、今後バグ等の告知は<Link href="https://forms.gle/XrqF7XsibpWtoK6bA"><a>こちら</a></Link>のグーグルフォームからご報告ください。
-                </Banner>
+                {/* Announce, Caution, Tutorial */}
+                {/* <Banner type="announce">
+                    Deizuのv2.0.3以来時間割表を開けないエラーが出回っています。また、今後バグ等の告知は<Link href="https://forms.gle/XrqF7XsibpWtoK6bA"><a>こちら</a></Link>のグーグルフォームからご報告ください。
+                </Banner> */}
                 <h1>時間割表をすばやく作成</h1>
                 <strong>Deizuへようこそ！</strong>
                 <p>
-                    時間割表の作りづらさを改善しようと考えられ開発されたソフトです。シンプルなデザインを活用し誰もが簡単にそして満足できるような時間割作成に望めます！なお、登録される前は<Link href="/about">プライバシーポリシー</Link>を読むようお願い致します。
+                    時間割表の作りづらさを改善しようと考えられ開発されたソフトです。シンプルなデザインを活用し誰もが簡単にそして満足できるような時間割作成に望めます！なお、登録される前は必ず<Link href="/about">プライバシーポリシー</Link>を読むようお願い致します。
                 </p>
                 <div style={{
                     display: 'grid',
@@ -61,14 +63,14 @@ export default function App() {
                     <Button
                         onClick={signInWithGoogle}
                         width='full'
-                        icon={<MdPerson/>}
+                        icon={<FiLogIn/>}
                     >
                         Googleでログイン
                     </Button>
                     <Button
                         width='full'
                         onClick={() => router.push('/')}
-                        icon={<MdDescription/>}
+                        icon={<FiFileText/>}
                     >
                         サイトについて
                     </Button>
