@@ -3,9 +3,7 @@ import React,{useState,useEffect} from 'react'
 // Button Component
 import Button from '../../../lib/button/Button'
 import IconButton from '../../../lib/button/IconButton'
-import ImageButton from '../../../lib/button/ImageButton';
 import SheetButton from '../../../lib/button/SheetButton';
-import TabIconButton from '../../../lib/button/TabIconButton';
 
 import Banner from '../../../lib/component/Banner'
 
@@ -37,11 +35,11 @@ import Input from '../../../lib/component/Input';
 import {isBrowser, isMobile} from 'react-device-detect';
 import { NextSeo } from 'next-seo';
 import { useDocument } from 'react-firebase-hooks/firestore';
-import { FiCalendar, FiEdit2, FiImage, FiPlus, FiSmile } from 'react-icons/fi';
+import { FiCalendar, FiChevronLeft, FiChevronRight, FiEdit2, FiImage, FiPlus, FiSmile } from 'react-icons/fi';
 import ModalHeader from '../../../lib/component/ModalHeader';
 
-import { Popover, PopoverContent, PopoverTrigger } from '../../../lib/component/Popover'
 import SectionButton from '../../../lib/button/SectionButton';
+import ThemeButton from '../../../lib/button/ThemeButton';
 
 function IndivisualUser() {
   const router = useRouter();
@@ -82,6 +80,7 @@ function IndivisualUser() {
     }
   }
 
+
   useEffect(() => {
     // if (dashboardData) {
     //   setUserImageUrl(dashboardData.data().url ? dashboardData.data().url:'');
@@ -108,6 +107,7 @@ function IndivisualUser() {
 
   useEffect(() => {
     if (themeColor) {
+      console.log(themeColor)
       for (let index = 0; index < 4; index++) {
         root?.style.setProperty(`--system${index}`, themeColor[index]);
       }
@@ -157,13 +157,15 @@ function IndivisualUser() {
                   {modalSection === 0 && 
                     <Stack>
                       <SectionButton
-                        icon={<FiImage/>}
+                        leftIcon={<FiImage/>}
+                        rightIcon={<FiChevronRight/>}
                         onClick={()=>setModalSection(1)}
                       >
                         背景画像の設定
                       </SectionButton>
                       <SectionButton
-                        icon={<FiSmile/>}
+                        leftIcon={<FiSmile/>}
+                        rightIcon={<FiChevronRight/>}
                         onClick={()=>setModalSection(2)}
                       >
                         配色
@@ -173,7 +175,7 @@ function IndivisualUser() {
                   <Stack>
                     {modalSection !== 0 &&
                       <SectionButton
-                        icon={<FiSmile/>}
+                        leftIcon={<FiChevronLeft/>}
                         onClick={()=>setModalSection(0)}
                       >
                         戻る
@@ -195,9 +197,18 @@ function IndivisualUser() {
                       </Stack>
                     }
                     {modalSection === 2 &&
-                      <Stack grid={isMobile ? '1fr 1fr':'1fr 1fr 1fr 1fr'}>
+                      <Stack grid={'1fr 1fr'}>
                         {themeColorData.map((prop)=>{
-                          return <ImageButton key={prop} onClick={()=>setThemeColor(prop.value)}>{prop.name}</ImageButton>
+                          return (
+                            <ThemeButton
+                              key={prop.name}
+                              data={prop.value}
+                              currentTheme={themeColor}
+                              onClick={()=>setThemeColor(prop.value)}
+                            >
+                              {prop.name}
+                            </ThemeButton>
+                          )
                         })}
                       </Stack>
                     }
@@ -255,7 +266,7 @@ function IndivisualUser() {
                               </p>
                             </Stack>
                           </AlignItems>
-                          {/* {
+                          {
                             hovered && 
                             <div ref={parent}>
                               <IconButton
@@ -266,7 +277,7 @@ function IndivisualUser() {
                                 見た目の変更
                               </IconButton>
                             </div>
-                          } */}
+                          }
                         </AlignItems>
                       </ImageContainer>
                       {/* <Button
