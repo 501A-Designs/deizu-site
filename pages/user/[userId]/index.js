@@ -40,6 +40,7 @@ import ModalHeader from '../../../lib/component/ModalHeader';
 
 import SectionButton from '../../../lib/button/SectionButton';
 import ThemeButton from '../../../lib/button/ThemeButton';
+import Image from 'next/image';
 
 function IndivisualUser() {
   const router = useRouter();
@@ -81,29 +82,7 @@ function IndivisualUser() {
   }
 
 
-  useEffect(() => {
-    // if (dashboardData) {
-    //   setUserImageUrl(dashboardData.data().url ? dashboardData.data().url:'');
-    //   setThemeColor(dashboardData.data().themeColor ? dashboardData.data().themeColor:themeColorData[0].value);
-    //   setSheetTitle(Object.keys(dashboardData.data().sheets));
-    //   let sheetMetaDataArray = [];
-    //   const sheetObject = dashboardData.data().sheets;
-    //   if (Object.keys(dashboardData.data().sheets).length > 0) {
-    //     Object.keys(sheetObject).map(sheetName => {
-    //       sheetMetaDataArray.push({
-    //         sheetName: sheetName,
-    //         bannerImageUrl:dashboardData.data().sheets[sheetName].bannerImageUrl,
-    //         sharing:dashboardData.data().sheets[sheetName].sharing,
-    //         date:dashboardData.data().sheets[sheetName].date,
-    //       })
-    //     })
-    //     setSheetMetaData(sheetMetaDataArray)
-    //   }
-    // }
-    if (user) {
-      fetchData()
-    }
-  },[user])
+  useEffect(() => {user && fetchData()},[user]);
 
   useEffect(() => {
     if (themeColor) {
@@ -234,13 +213,13 @@ function IndivisualUser() {
                       >
                         <AlignItems style={{justifyContent: 'space-between'}}>
                           <AlignItems style={{gap: '1.5em'}}>
-                            <img
+                            <Image
+                              width='60px'
+                              height='60px'
                               style={{
-                                width: '3.5em',
-                                height: '3.5em',
                                 borderRadius:50,
                                 cursor: 'pointer',
-                                border:'1px solid var(--system1)'
+                                border:'1px solid var(--system1)',
                               }}
                               className={'profileImage'}
                               src={user.photoURL}

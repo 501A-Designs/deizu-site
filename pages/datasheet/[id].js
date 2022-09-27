@@ -27,6 +27,7 @@ import DataGrid from 'react-data-grid';
 
 import {isMobile} from 'react-device-detect';
 import { toast } from 'react-toastify';
+import { FiArrowLeft } from 'react-icons/fi';
 
 function IndivisualSheet() {
   const router = useRouter();
@@ -43,25 +44,17 @@ function IndivisualSheet() {
     })
     console.log('test')
   }
-  // fetchData()
+
   useEffect(() => {
     fetchData()
-  }, []);
+  },[]);
 
   const [user] = useAuthState(auth);
-
-  const columns = [
-    { key: 'subjectName', name: '科目名', editable: true },
-    { key: 'subjectDescription', name: '科目概要', editable: true },
-    { key: 'subjectLink', name: 'URLリンク', editable: true },
-    { key: 'subjectColor', name: '科目の色', editable: true },
-  ];
 
   const [subjectNameInput, setSubjectNameInput] = useState('')
   const [subjectLinkInput, setSubjectLinkInput] = useState('')
   const [subjectDescriptionInput, setSubjectDescriptionInput] = useState('')
   const [subjectColorInput, setSubjectColorInput] = useState('')
-  const [dataSheetCellView, setDataSheetCellView] = useState(true)
 
   const insertNewSubjectData = async (e) => {
     e.preventDefault();
@@ -116,24 +109,19 @@ function IndivisualSheet() {
                   justifyContent: 'space-between'
                 }}
               >
-                <AlignItems>
+                <AlignItems gap={'1em'}>
                   <IconButton
-                    icon={<MdArrowBack/>}
+                    fill
+                    icon={<FiArrowLeft/>}
                     onClick={()=>router.push('/datasheet')}
                   >
                     戻る
                   </IconButton>
+                  <h1>{dataSheetData.dataSheetName}</h1>
                 </AlignItems>
-                <AlignItems style={{flexDirection:'column', justifyContent: 'center'}}>
-                  <h1 style={{margin:0,padding:0,textAlign: 'center'}}>{dataSheetData.dataSheetName}</h1>
-                  <p style={{margin:0,padding:0,textAlign: 'center'}}>{dataSheetData.dataSheetDescription}</p>
-                </AlignItems>
-                <IconButton
-                  icon={dataSheetCellView ? <MdOutlineViewList/>:<MdOutlineViewModule/>}
-                  onClick={()=>{dataSheetCellView ? setDataSheetCellView(false):setDataSheetCellView(true)}}
-                >
-                  表示
-                </IconButton>
+                <p>
+                  {dataSheetData.dataSheetDescription}
+                </p>
               </AlignItems>
               <div className="grid-1fr-2fr">
                 <Container>
@@ -182,7 +170,11 @@ function IndivisualSheet() {
                         </Stack>
                       </Stack>
                       {subjectNameInput && 
-                        <Button onClick={(e) => insertNewSubjectData(e)} width="full">追加</Button>
+                        <Button
+                          onClick={(e) => insertNewSubjectData(e)} width="full"
+                        >
+                          追加
+                        </Button>
                       }
                     </Stack>:
                     <Stack>
@@ -194,34 +186,29 @@ function IndivisualSheet() {
                     </Stack>
                   }
                 </Container>
-                {dataSheetCellView ?
-                  <div style={{display: 'grid', gridTemplateColumns:`${isMobile ? '1fr 1fr':'1fr 1fr 1fr'}`, height: 'fit-content',gap: '0.5em'}}>
-                    {rowState && 
-                      rowState.map(props =>{
-                        return <MockupCell
-                          key={props}
-                          margin={0}
-                          width={'100%'}
-                          padding={'none'}
-                          subjectCellName = {props.subjectName}
-                          subjectCellLink = {props.subjectLink}
-                          subjectCellColor = {props.subjectColor}
-                          subjectCellDescription = {props.subjectDescription}
-                        />
-                      })
-                    }
-                  </div>:
-                  <>            
-                    {rowState && <DataGrid
-                      columns={columns}
-                      rows={rowState}
-                      style={{
-                        userSelect:'text',
-                        borderRadius:'var(--r10)',
-                      }}
-                    />}
-                  </>
-                }
+                <div
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns:`${isMobile ? '1fr 1fr':'1fr 1fr 1fr'}`,
+                    height: 'fit-content',
+                    gap: '0.5em'
+                  }}
+                >
+                  {rowState && 
+                    rowState.map(props =>{
+                      return <MockupCell
+                        key={props}
+                        margin={0}
+                        width={'100%'}
+                        padding={'none'}
+                        subjectCellName = {props.subjectName}
+                        subjectCellLink = {props.subjectLink}
+                        subjectCellColor = {props.subjectColor}
+                        subjectCellDescription = {props.subjectDescription}
+                      />
+                    })
+                  }
+                </div>
               </div>
             </BodyMargin>:
             <StaticScene type="notLoggedIn"/>

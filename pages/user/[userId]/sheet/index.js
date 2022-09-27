@@ -95,6 +95,7 @@ export default function Index() {
                                         時間割表のタイトルがの後ろにバナー画像を表示することができます。なお、指定する際には正規な画像URLを入力する必要がございます：
                                     </p>
                                     <img
+                                        alt={'Banner Image'}
                                         style={{
                                             border: '1px solid var(--system0)',
                                             borderRadius: 'var(--borderRadius1)',
@@ -112,6 +113,7 @@ export default function Index() {
                                         時間割表の後ろには背景画像を表示することができます。なお、指定する際にはバナー画像と同様、正規な画像URLを入力する必要がございます：
                                     </p>
                                     <img
+                                        alt={'Background Image'}
                                         style={{
                                             border: '1px solid var(--system0)',
                                             borderRadius: 'var(--borderRadius1)',

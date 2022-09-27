@@ -58,6 +58,7 @@ export default function Index() {
       >
         <AlignItems gap={'1em'}>
           <IconButton
+            fill
             icon={<FiArrowLeft/>}
             onClick={() =>{
               user ? router.push(`/user/${user.uid}`):router.push('/app')
