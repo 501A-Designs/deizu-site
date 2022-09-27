@@ -17,7 +17,7 @@ import StaticScene from '../../../../lib/style/StaticScene'
 import { NextSeo } from 'next-seo';
 import { FiArrowLeft, FiArrowRightCircle, FiPlus } from 'react-icons/fi';
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { InfinitySpin } from 'react-loader-spinner'
+import { InfinitySpin } from 'react-loader-spinner';
 
 export default function Index() {
     const router = useRouter();
