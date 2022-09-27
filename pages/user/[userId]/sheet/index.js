@@ -17,7 +17,7 @@ import StaticScene from '../../../../lib/style/StaticScene'
 import { NextSeo } from 'next-seo';
 import { FiArrowLeft, FiArrowRightCircle, FiPlus } from 'react-icons/fi';
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { InfinitySpin } from 'react-loader-spinner';
+import { MoonLoader } from 'react-spinners'
 
 export default function Index() {
     const router = useRouter();
@@ -186,9 +186,10 @@ export default function Index() {
                                         <AlignItems
                                             style={{justifyContent: 'center'}}
                                         >
-                                            <InfinitySpin 
-                                                width='200'
+                                            <MoonLoader
+                                                size={40}
                                                 color="var(--system3)"
+                                                loading={loading}
                                             />
                                         </AlignItems>
                                     }
