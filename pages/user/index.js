@@ -9,9 +9,9 @@ import { auth, } from "../../src/service/firebase"
 import StaticScene from '../../lib/style/StaticScene';
 import AlignItems from '../../lib/style/AlignItems';
 
-import { MdOutlineExitToApp } from "react-icons/md";
 import { signOut } from 'firebase/auth'
 import { useRouter } from 'next/router';
+import { FiLogOut } from 'react-icons/fi';
 
 export default function Index() {
   const [user] = useAuthState(auth);
@@ -44,7 +44,7 @@ export default function Index() {
               <h1>{user.displayName}</h1>
               <p style={{marginTop:0}}>{user.email}</p>
               <Button
-                icon={<MdOutlineExitToApp/>}
+                icon={<FiLogOut/>}
                 onClick={()=> {
                   signOut(auth);
                   router.push('/app')

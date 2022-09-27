@@ -83,7 +83,9 @@ export default function Updates() {
                 <li>Authentication：ログインシステム</li>
             </ul>
         </ul>
-        <p>旧バージョン情報については<a href="https://github.com/501A-Designs/DEIZU/releases">こちらから</a>。また最新のバージョン情報については<a href="https://github.com/501A-Designs/DEIZU/releases">こちら</a>から確認することができます。</p>
+        <p>
+            旧バージョン情報については<a href="https://github.com/501A-Designs/DEIZU/releases">こちらから</a>。また最新のバージョン情報については<a href="https://github.com/501A-Designs/deizu-site/releases">こちら</a>から確認することができます。
+        </p>
     </BodyMargin>
   )
 }

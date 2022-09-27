@@ -83,7 +83,6 @@ function IndivisualSheet() {
   const [userSheetObject] = useDocument(doc(db, `users/${sheetOwnerId && sheetOwnerId}`));
   const thisSheet = userSheetObject && userSheetObject.data().sheets[sheetName && sheetName];
 
-  const [parent] = useAutoAnimate()
       
   useEffect(() => {
     setProgress(30)
@@ -298,7 +297,7 @@ function IndivisualSheet() {
             }
             <AlignItems style={{justifyContent: 'center'}}>
               <ColorButton
-                color={'var(--system1'}
+                color={'var(--system1)'}
                 onClick={() => setSubjectCellColor('')}
               />
               {buttonColor.map((props)=>
@@ -547,6 +546,7 @@ function IndivisualSheet() {
             {!viewOnly ?
               <AlignItems>
                 <IconButton
+                  fill
                   onClick={() => router.push(`/user/${user.uid}/`)}
                   icon={<FiHome/>}
                 >
@@ -554,6 +554,7 @@ function IndivisualSheet() {
                 </IconButton>
                 {!isMobile &&                
                   <IconButton
+                    fill
                     onClick={() => router.push(`/user/${user.uid}/sheet`)}
                     icon={<FiPlus/>}
                   >
@@ -562,17 +563,27 @@ function IndivisualSheet() {
                 }
               </AlignItems>:
               <IconButton
+                fill
                 onClick={() => router.push('/app')}
                 icon={<FiLogIn/>}
               >
                 アカウント作成
               </IconButton>
             }
-            <h1 className={'scaleFontLarge'} style={{filter: 'invert(100%)', mixBlendMode: 'exclusion'}}>{sheetName}</h1>
+            <h1
+              className={'scaleFontLarge'}
+              style={{
+                color: 'var(--txtColor0)',
+                textShadow: '0px 0px 15px var(--system1)',
+              }}
+            >
+              {sheetName}
+            </h1>
             {!viewOnly ?
               <AlignItems>
                 {!isMobile &&
                   <IconButton
+                    fill
                     onClick={()=>{listViewState ? listView(false):listView(true)}}
                     icon={!listViewState ? <FiLayout/>:<FiGrid/>}
                   >
@@ -580,6 +591,7 @@ function IndivisualSheet() {
                   </IconButton>
                 }
                 <IconButton
+                  fill
                   onClick={()=>openModal()}
                   icon={<FiSettings/>}
                 >
@@ -616,6 +628,8 @@ function IndivisualSheet() {
   }
   
   const [modalSection, setModalSection] = useState(0);
+  const [parent] = useAutoAnimate();
+
   return (
     <div
       style={{
@@ -640,10 +654,12 @@ function IndivisualSheet() {
           onClick={() =>closeModal()}
         />
 
-        <div ref={parent}>
           {modalSection === 0 && <>
             <SectionButton
-              onClick={()=>{setModalSection(1);fetchDataSheetData();}}
+              onClick={()=>{
+                setModalSection(1);
+                fetchDataSheetData();
+              }}
               leftIcon={<FiDatabase/>}
               rightIcon={<FiChevronRight/>}
             >
@@ -687,144 +703,145 @@ function IndivisualSheet() {
               >
                 戻る
               </SectionButton>
-              {modalSection === 1 && 
-                <>
-                  <div style={{overflowY:'scroll',height:'250px', padding:'0.5em'}}>
+              <div ref={parent}>
+                {modalSection === 1 && 
+                  <>
+                    <div style={{overflowY:'scroll',height:'250px', padding:'0.5em'}}>
+                      <Stack>
+                        {
+                          allDataSheetData && allDataSheetData.map((prop) =>{
+                            return (
+                              <LargeImageButton
+                                displayAddButton={true}
+                                key={prop}
+                                dataSheetId={prop.dataSheetId}
+                                dataSheetName={prop.dataSheetData.dataSheetName}
+                                imageSource={prop.dataSheetData.dataSheetImageUrl}
+                                subtitle={prop.dataSheetData.dataSheetDescription}
+                                onClick={() => router.push(`/datasheet/${prop.dataSheetId}`)}
+                                currentDataSheetId={dataSheetId}
+                                addDataSheetOnClick={()=>{
+                                  setDataSheetId(prop.dataSheetId);
+                                }}
+                              >
+                                {prop.dataSheetData.dataSheetName}
+                              </LargeImageButton>
+                            )
+                          })
+                        }
+                      </Stack>
+                    </div>
+                    <p>
+                      データシートを繋げることで科目を時間割表に入力する作業がより早まります。
+                    </p>
                     <Stack>
-                      {
-                        allDataSheetData && allDataSheetData.map((prop) =>{
-                          return (
-                            <LargeImageButton
-                              displayAddButton={true}
-                              key={prop}
-                              dataSheetId={prop.dataSheetId}
-                              dataSheetName={prop.dataSheetData.dataSheetName}
-                              imageSource={prop.dataSheetData.dataSheetImageUrl}
-                              subtitle={prop.dataSheetData.dataSheetDescription}
-                              onClick={() => router.push(`/datasheet/${prop.dataSheetId}`)}
-                              currentDataSheetId={dataSheetId}
-                              addDataSheetOnClick={()=>{
-                                setDataSheetId(prop.dataSheetId);
-                              }}
-                            >
-                              {prop.dataSheetData.dataSheetName}
-                            </LargeImageButton>
-                          )
-                        })
+                      {dataSheetName && 
+                        <TextPreview style={{textAlign: 'center'}}>
+                          「{dataSheetName}」のデータシートに繋がっています
+                        </TextPreview>
                       }
-                    </Stack>
-                  </div>
-                  <p>
-                    データシートを繋げることで科目を時間割表に入力する作業がより早まります。
-                  </p>
-                  <Stack>
-                    {dataSheetName && 
-                      <TextPreview style={{textAlign: 'center'}}>
-                        「{dataSheetName}」のデータシートに繋がっています
-                      </TextPreview>
-                    }
-                    <Input
-                      placeholder={'データシートID'}
-                      value={dataSheetId}
-                      onChange={(e)=>setDataSheetId(e.target.value)}
-                    />
-                    <Button
-                      onClick={()=>saveDataSheetId()}
-                      width={"full"}
-                    >
-                      データシートを繋げる
-                    </Button>
-                  </Stack>
-                </>
-              }
-              {modalSection === 2 && 
-                <>
-                  <h3>画像を追加・編集</h3>
-                  <p>インターネット上にある画像URLを追加するとバナー画像・背景画像として追加されます。</p>
-                  <Stack>
-                    <Input
-                      placeholder={'バナー画像URL'}
-                      value={sheetBannerImageUrl}
-                      onChange={(e)=>setSheetBannerImageUrl(e.target.value)}
-                    />
-                    <Input
-                      placeholder={'背景画像URL'}
-                      value={sheetBackgroundImageUrl}
-                      onChange={(e)=>setSheetBackgroundImageUrl(e.target.value)}
-                    />
-                    <Button
-                      onClick={()=>{
-                        saveSheetImageUrl()
-                        closeModal()
-                      }}
-                      width={"full"}
-                    >
-                      保存
-                    </Button>
-                  </Stack>
-                </>
-              }
-              {modalSection === 3 &&         
-                <>
-                  <h3>共有設定</h3>
-                  <p>
-                    リンク共有を有効するとこのリンクにアクセスできる人は全て時間割を閲覧することができます。なお共有するとユーザー様がご指定しているテーマ・バナー画像等も共有されるのでご了承下さい。
-                  </p>
-                  <AlignItems style={{justifyContent: 'space-between'}}>
-                    <p>{shareSheetState ? ' 自分しか見えないようにする':'時間割の閲覧権限を与える'}</p>
-                    <AlignItems>
-                      {shareSheetState ? <Button
-                        icon={<FiLock/>}
-                        onClick={()=>shareSheet(false)}
-                      >
-                        ロック
-                      </Button>:
+                      <Input
+                        placeholder={'データシートID'}
+                        value={dataSheetId}
+                        onChange={(e)=>setDataSheetId(e.target.value)}
+                      />
                       <Button
-                        icon={<FiLink/>}
-                        onClick={()=>shareSheet(true)}
+                        onClick={()=>saveDataSheetId()}
+                        width={"full"}
                       >
-                        共有
-                      </Button>}
-                    </AlignItems>
-                  </AlignItems>
-                  {shareSheetState &&
-                    <Stack>
-                      <p>
-                        URLをコピーし他の人に送信することで時間割表を共有することができます。
-                      </p>
-                      <Button
-                        width={'full'}
-                        onClick={() => copyAlert(`deizu.vercel.app/user/${user.uid}/sheet/${sheetName}`,'時間割表のリンク')}
-                        icon={<FiCopy/>}
-                      >
-                        時間割表のリンクをコピー
+                        データシートを繋げる
                       </Button>
                     </Stack>
-                  }
-                </>
-              }
-              {modalSection === 4 &&         
-                <>
-                  <h3>デインジャーゾーン</h3>
-                  <AlignItems style={{justifyContent: 'space-between'}}>
-                    <p>「{sheetName}」を消去</p>
-                    <Button
-                      icon={<FiTrash2 />}
-                      onClick={async() => {
-                          if (window.confirm("今開いている時間割表を消去したいですか？一度消去すると復旧することはできません。")) {
-                            const docRef = doc(db, "users", user.uid);
-                            await updateDoc(docRef, {[`sheets.${sheetName}`]: deleteField()});
-                            router.push('/app');
+                  </>
+                }
+                {modalSection === 2 && 
+                  <>
+                    <h3>画像を追加・編集</h3>
+                    <p>インターネット上にある画像URLを追加するとバナー画像・背景画像として追加されます。</p>
+                    <Stack>
+                      <Input
+                        placeholder={'バナー画像URL'}
+                        value={sheetBannerImageUrl}
+                        onChange={(e)=>setSheetBannerImageUrl(e.target.value)}
+                      />
+                      <Input
+                        placeholder={'背景画像URL'}
+                        value={sheetBackgroundImageUrl}
+                        onChange={(e)=>setSheetBackgroundImageUrl(e.target.value)}
+                      />
+                      <Button
+                        onClick={()=>{
+                          saveSheetImageUrl()
+                          closeModal()
+                        }}
+                        width={"full"}
+                      >
+                        保存
+                      </Button>
+                    </Stack>
+                  </>
+                }
+                {modalSection === 3 &&         
+                  <>
+                    <h3>共有設定</h3>
+                    <p>
+                      リンク共有を有効するとこのリンクにアクセスできる人は全て時間割を閲覧することができます。なお共有するとユーザー様がご指定しているテーマ・バナー画像等も共有されるのでご了承下さい。
+                    </p>
+                    <AlignItems style={{justifyContent: 'space-between'}}>
+                      <p>{shareSheetState ? ' 自分しか見えないようにする':'時間割の閲覧権限を与える'}</p>
+                      <AlignItems>
+                        {shareSheetState ? <Button
+                          icon={<FiLock/>}
+                          onClick={()=>shareSheet(false)}
+                        >
+                          ロック
+                        </Button>:
+                        <Button
+                          icon={<FiLink/>}
+                          onClick={()=>shareSheet(true)}
+                        >
+                          共有
+                        </Button>}
+                      </AlignItems>
+                    </AlignItems>
+                    {shareSheetState &&
+                      <Stack>
+                        <p>
+                          URLをコピーし他の人に送信することで時間割表を共有することができます。
+                        </p>
+                        <Button
+                          width={'full'}
+                          onClick={() => copyAlert(`deizu.vercel.app/user/${user.uid}/sheet/${sheetName}`,'時間割表のリンク')}
+                          icon={<FiCopy/>}
+                        >
+                          時間割表のリンクをコピー
+                        </Button>
+                      </Stack>
+                    }
+                  </>
+                }
+                {modalSection === 4 &&         
+                  <>
+                    <h3>デインジャーゾーン</h3>
+                    <AlignItems style={{justifyContent: 'space-between'}}>
+                      <p>「{sheetName}」を消去</p>
+                      <Button
+                        icon={<FiTrash2 />}
+                        onClick={async() => {
+                            if (window.confirm("今開いている時間割表を消去したいですか？一度消去すると復旧することはできません。")) {
+                              const docRef = doc(db, "users", user.uid);
+                              await updateDoc(docRef, {[`sheets.${sheetName}`]: deleteField()});
+                              router.push('/app');
+                            }
                           }
                         }
-                      }
-                    >時間割表を消去</Button>
-                  </AlignItems>
-                </>
-              }
+                      >時間割表を消去</Button>
+                    </AlignItems>
+                  </>
+                }
+              </div>
             </Stack>
           }
-        </div>
 
       </Modal>
       <LoadingBar
