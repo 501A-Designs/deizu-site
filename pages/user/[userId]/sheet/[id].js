@@ -52,6 +52,8 @@ import TextPreview from '../../../../lib/component/TextPreview';
 import DayOfWeek from '../../../../lib/schedule/DayOfWeek';
 import { FiAlertTriangle, FiChevronRight, FiCopy, FiDatabase, FiExternalLink, FiGrid, FiHome, FiImage, FiInfo, FiLayout, FiLink, FiLock, FiLogIn, FiPlus, FiSettings, FiTrash2, FiUsers } from 'react-icons/fi';
 import ModalHeader from '../../../../lib/component/ModalHeader';
+import { styled } from '@stitches/react';
+import ImageSelect from '../../../../lib/button/ImageSelect';
 
 
 function IndivisualSheet() {
@@ -127,7 +129,6 @@ function IndivisualSheet() {
   }
 
   const [listViewState, setListViewState] = useState(false)
-  const listView = (prop) => setListViewState(prop);
 
   function ScheduleGrid() {
     let scheduleGridStyle = {
@@ -584,7 +585,7 @@ function IndivisualSheet() {
                 {!isMobile &&
                   <IconButton
                     fill
-                    onClick={()=>{listViewState ? listView(false):listView(true)}}
+                    onClick={()=>{listViewState ? setListViewState(false):setListViewState(true)}}
                     icon={!listViewState ? <FiLayout/>:<FiGrid/>}
                   >
                     {!listViewState ? 'リスト表示':'グリッド表示'}
@@ -628,6 +629,7 @@ function IndivisualSheet() {
   }
   
   const [modalSection, setModalSection] = useState(0);
+  const [selectCustomize, setSelectCustomize] = useState('banner');
   const [parent] = useAutoAnimate();
 
   return (
@@ -758,17 +760,35 @@ function IndivisualSheet() {
                   <>
                     <h3>画像を追加・編集</h3>
                     <p>インターネット上にある画像URLを追加するとバナー画像・背景画像として追加されます。</p>
-                    <Stack>
-                      <Input
-                        placeholder={'バナー画像URL'}
-                        value={sheetBannerImageUrl}
-                        onChange={(e)=>setSheetBannerImageUrl(e.target.value)}
+                    <Stack grid={isMobile ? '1fr':'1fr 1fr'} gap={'0.2em'}>
+                      <ImageSelect
+                        src="/banner.png"
+                        alt="Banner image"
+                        selected={selectCustomize === 'banner'}
+                        onClick={()=>setSelectCustomize('banner')}
                       />
-                      <Input
-                        placeholder={'背景画像URL'}
-                        value={sheetBackgroundImageUrl}
-                        onChange={(e)=>setSheetBackgroundImageUrl(e.target.value)}
+                      <ImageSelect
+                        src="/background.png"
+                        alt="Background image"
+                        selected={selectCustomize === 'background'}
+                        onClick={()=>setSelectCustomize('background')}
                       />
+                    </Stack>
+                    <Stack style={{marginTop: '10px'}}>
+                      {selectCustomize === 'banner' &&
+                        <Input
+                          placeholder={'バナー画像URL'}
+                          value={sheetBannerImageUrl}
+                          onChange={(e)=>setSheetBannerImageUrl(e.target.value)}
+                        />
+                      }
+                      {selectCustomize === 'background' &&
+                        <Input
+                          placeholder={'背景画像URL'}
+                          value={sheetBackgroundImageUrl}
+                          onChange={(e)=>setSheetBackgroundImageUrl(e.target.value)}
+                        />
+                      }
                       <Button
                         onClick={()=>{
                           saveSheetImageUrl()

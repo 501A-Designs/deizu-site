@@ -21,7 +21,7 @@ import { FiArrowLeft, FiPlus } from 'react-icons/fi';
 
 export default function Create() {
     const router = useRouter();
-    const [user, loading, error] = useAuthState(auth);
+    const [user] = useAuthState(auth);
     const [sheetLoading, setSheetLoading] = useState(false)
 
     const [dataSheetName, setDataSheetName] = useState('')
