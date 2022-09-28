@@ -41,6 +41,7 @@ import ModalHeader from '../../../lib/component/ModalHeader';
 import SectionButton from '../../../lib/button/SectionButton';
 import ThemeButton from '../../../lib/button/ThemeButton';
 import Image from 'next/image';
+import { toast } from 'react-toastify';
 
 function IndivisualUser() {
   const router = useRouter();
@@ -108,7 +109,8 @@ function IndivisualUser() {
         url:userImageUrl
       }, { merge: true }
     );
-    closeModal()
+    closeModal();
+    toast('テーマ保存完了！');
   }
 
   const [modalSection, setModalSection] = useState(0);
@@ -259,12 +261,6 @@ function IndivisualUser() {
                           }
                         </AlignItems>
                       </ImageContainer>
-                      {/* <Button
-                        onClick={() => router.push(`/datasheet`)}
-                        icon={<MdOutlineSearch/>}
-                        >
-                        データシートを閲覧
-                      </Button> */}
                     </Stack>
                     <Container>
                       {sheetTitle && 
@@ -306,50 +302,49 @@ function IndivisualUser() {
                         </Stack>
                       }
 
-
                       {
                         sheetTitle &&
                         <>
-                          {sheetTitle.length <= 0 ?
-                            <>
-                            <Banner type="tutorial">
-                              <ol>
-                                <li>時間割表を作成</li>
-                                <li>科目や時間を入力する</li>
-                                <li>友達や家族と共有！</li>
-                              </ol>
-                            </Banner>
-                            <AlignItems style={{height: '30vh', justifyContent: 'center'}}>
-                              <AlignItems style={{justifyContent: 'center', flexDirection: 'column'}}>
-                                <span
-                                  style={{
-                                    fontSize: '2em',
-                                    color: 'var(--system3)'
-                                  }}
+                        {sheetTitle.length <= 0 ?
+                          <>
+                          <Banner type="tutorial">
+                            <ol>
+                              <li>時間割表を作成</li>
+                              <li>科目や時間を入力する</li>
+                              <li>友達や家族と共有！</li>
+                            </ol>
+                          </Banner>
+                          <AlignItems style={{height: '30vh', justifyContent: 'center'}}>
+                            <AlignItems style={{justifyContent: 'center', flexDirection: 'column'}}>
+                              <span
+                                style={{
+                                  fontSize: '2em',
+                                  color: 'var(--system3)'
+                                }}
+                              >
+                                <FiCalendar/>
+                              </span>
+                              <h3 style={{color: 'var(--system3)'}}>時間割表が作成されていません</h3>
+                              <AlignItems>
+                                <Button
+                                  onClick={() => router.push(`/user/${user.uid}/sheet`)}
+                                  icon={<FiPlus/>}
                                 >
-                                  <FiCalendar/>
-                                </span>
-                                <h3 style={{color: 'var(--system3)'}}>時間割表が作成されていません</h3>
-                                <AlignItems>
-                                  <Button
-                                    onClick={() => router.push(`/user/${user.uid}/sheet`)}
-                                    icon={<FiPlus/>}
-                                  >
-                                    時間割作成
-                                  </Button>
-                                </AlignItems>
+                                  時間割作成
+                                </Button>
                               </AlignItems>
                             </AlignItems>
-                            </>:
-                            <p
-                              style={{
-                                textAlign:'center',
-                                color: 'var(--system3)'
-                              }}
-                            >
-                              時間表合計：{sheetTitle.length}枚
-                            </p>
-                          }
+                          </AlignItems>
+                          </>:
+                          <p
+                            style={{
+                              textAlign:'center',
+                              color: 'var(--system3)'
+                            }}
+                          >
+                            時間表合計：{sheetTitle.length}枚
+                          </p>
+                        }
                         </>
                       }
                     </Container>

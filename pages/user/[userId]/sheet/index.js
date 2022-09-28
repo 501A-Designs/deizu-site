@@ -94,17 +94,19 @@ export default function Index() {
                                     <p>
                                         時間割表のタイトルがの後ろにバナー画像を表示することができます。なお、指定する際には正規な画像URLを入力する必要がございます：
                                     </p>
-                                    <img
-                                        alt={'Banner Image'}
-                                        style={{
-                                            border: '1px solid var(--system0)',
-                                            borderRadius: 'var(--borderRadius1)',
-                                            marginBottom:'0.5em'
-                                        }}
-                                        width={'100%'}
-                                        height={'100%'}
-                                        src={'/banner.png'}
-                                    />
+                                    <AlignItems style={{justifyContent: 'center'}}>
+                                        <img
+                                            alt={'Banner Image'}
+                                            style={{
+                                                border: '1px solid var(--system0)',
+                                                borderRadius: 'var(--borderRadius1)',
+                                                marginBottom:'0.5em'
+                                            }}
+                                            width={'85%'}
+                                            height={'85%'}
+                                            src={'/banner.png'}
+                                        />
+                                    </AlignItems>
                                 </div>
                             }
                             {section === 2 && !loading &&
@@ -112,17 +114,19 @@ export default function Index() {
                                     <p>
                                         時間割表の後ろには背景画像を表示することができます。なお、指定する際にはバナー画像と同様、正規な画像URLを入力する必要がございます：
                                     </p>
-                                    <img
-                                        alt={'Background Image'}
-                                        style={{
-                                            border: '1px solid var(--system0)',
-                                            borderRadius: 'var(--borderRadius1)',
-                                            marginBottom:'0.5em'
-                                        }}
-                                        width={'100%'}
-                                        height={'100%'}
-                                        src={'/background.png'}
-                                    />
+                                    <AlignItems style={{justifyContent: 'center'}}>
+                                        <img
+                                            alt={'Background Image'}
+                                            style={{
+                                                border: '1px solid var(--system0)',
+                                                borderRadius: 'var(--borderRadius1)',
+                                                marginBottom:'0.5em'
+                                            }}
+                                            width={'85%'}
+                                            height={'85%'}
+                                            src={'/background.png'}
+                                        />
+                                    </AlignItems>
                                 </div>
                             }
                         </div>

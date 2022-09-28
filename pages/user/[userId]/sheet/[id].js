@@ -54,6 +54,7 @@ import { FiAlertTriangle, FiChevronRight, FiCopy, FiDatabase, FiExternalLink, Fi
 import ModalHeader from '../../../../lib/component/ModalHeader';
 import { styled } from '@stitches/react';
 import ImageSelect from '../../../../lib/button/ImageSelect';
+import Notice from '../../../../lib/button/Notice';
 
 
 function IndivisualSheet() {
@@ -328,7 +329,10 @@ function IndivisualSheet() {
             </Stack>
             <Button
               width="full"
-              onClick={(e)=>saveSubjectData(e)}
+              onClick={(e)=>{
+                saveSubjectData(e);
+                // toast('保存完了！');
+              }}
             >
               保存
             </Button>
@@ -765,13 +769,17 @@ function IndivisualSheet() {
                         src="/banner.png"
                         alt="Banner image"
                         selected={selectCustomize === 'banner'}
-                        onClick={()=>setSelectCustomize('banner')}
+                        onClick={()=>{
+                          setSelectCustomize('banner');
+                        }}
                       />
                       <ImageSelect
                         src="/background.png"
                         alt="Background image"
                         selected={selectCustomize === 'background'}
-                        onClick={()=>setSelectCustomize('background')}
+                        onClick={()=>{
+                          setSelectCustomize('background');
+                        }}
                       />
                     </Stack>
                     <Stack style={{marginTop: '10px'}}>
@@ -791,8 +799,9 @@ function IndivisualSheet() {
                       }
                       <Button
                         onClick={()=>{
-                          saveSheetImageUrl()
-                          closeModal()
+                          saveSheetImageUrl();
+                          closeModal();
+                          toast('保存完了！');
                         }}
                         width={"full"}
                       >
