@@ -1,8 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@500;800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Klee+One&display=swap');
 
 
 :root {
@@ -27,7 +24,6 @@ html,
 body {
 	padding: 0;
 	margin: 0;
-	font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 	background-color: var(--system0);
 }
 h1,h2,h3,h4,h5,h6 {
@@ -72,16 +68,11 @@ hr {
 	gap: 2em;
 }
 *{
-	/* font-family: 'Klee One', cursive; */
-	font-family: 'Zen Kaku Gothic New', sans-serif;
+	font-family:'Lato', 'Zen Kaku Gothic New', sans-serif;
 	box-sizing: border-box;
 }
 a {
 	color: inherit;
-}
-
-.logoFont {
-	font-family: 'Raleway', sans-serif;
 }
 
 .grid-1fr-1fr,

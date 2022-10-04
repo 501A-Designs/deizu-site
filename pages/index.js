@@ -37,13 +37,14 @@ export default function Home() {
       />
         <div className={'sidePadding'} style={{display:'flex',justifyContent: 'center'}}>
           <AlignItems style={{flexDirection:'column', justifyContent: 'center'}}>
-            <AlignItems style={{marginTop:'8em'}}>
+            <AlignItems style={{marginTop:'8em'}} gap={'1em'}>
               <Image
                 src={appIcon}
-                width={100}
-                height={100}
+                width={50}
+                height={50}
                 alt={'Application Icon'}
               />
+              <h1 style={{fontWeight:'900'}}>Deizu</h1>
             </AlignItems>
             <p>時間割作成、履修の記録を効率的に。</p>
             {isBrowser ?
