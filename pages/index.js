@@ -35,19 +35,19 @@ export default function Home() {
         title="Deizu"
         description="時間割表を作成するアプリ"
         openGraph={{
-          url: 'deizu-og-image.png',
-          title: 'Open Graph Title',
-          description: 'Open Graph Description',
+          url: '/deizu-og-image.png',
+          title: 'Deizu',
+          description: '時間割表を作成するアプリ',
           images: [
             {
-              url: 'deizu-og-image.png',
+              url: '/deizu-og-image.png',
               width: 800,
               height: 600,
               alt: 'Og Image Alt',
               type: 'image/png',
             },
             {
-              url: 'deizu-og-image.png',
+              url: '/deizu-og-image.png',
               width: 900,
               height: 800,
               alt: 'Og Image Alt Second',
