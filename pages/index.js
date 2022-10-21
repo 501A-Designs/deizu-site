@@ -11,7 +11,6 @@ import BlockList from '../lib/component/BlockList'
 
 import {isBrowser} from 'react-device-detect';
 import appIcon from '../public/deizuAppIconUpdated.png'
-// import appScreenshot from '../public/deizu-screenshot.png'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 
@@ -43,14 +42,14 @@ export default function Home() {
               url: '/deizu-og-image.png',
               width: 800,
               height: 600,
-              alt: 'Og Image Alt',
+              alt: 'Deizu OG Image',
               type: 'image/png',
             },
             {
               url: '/deizu-og-image.png',
               width: 900,
               height: 800,
-              alt: 'Og Image Alt Second',
+              alt: 'Deizu OG Image',
               type: 'image/png',
             },
           ],
