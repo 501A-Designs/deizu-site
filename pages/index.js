@@ -34,9 +34,47 @@ export default function Home() {
       <NextSeo
         title="Deizu"
         description="時間割表を作成するアプリ"
+        openGraph={{
+          url: 'deizu-og-image.png',
+          title: 'Open Graph Title',
+          description: 'Open Graph Description',
+          images: [
+            {
+              url: 'deizu-og-image.png',
+              width: 800,
+              height: 600,
+              alt: 'Og Image Alt',
+              type: 'image/png',
+            },
+            {
+              url: 'deizu-og-image.png',
+              width: 900,
+              height: 800,
+              alt: 'Og Image Alt Second',
+              type: 'image/png',
+            },
+          ],
+          siteName: 'Deizu',
+        }}
+        twitter={{
+          handle: '@handle',
+          site: '@site',
+          cardType: 'summary_large_image',
+        }}
       />
-        <div className={'sidePadding'} style={{display:'flex',justifyContent: 'center'}}>
-          <AlignItems style={{flexDirection:'column', justifyContent: 'center'}}>
+        <div
+          className={'sidePadding'}
+          style={{
+            display:'flex',
+            justifyContent: 'center'
+          }}
+        >
+          <AlignItems
+            style={{
+              flexDirection:'column',
+              justifyContent: 'center'
+            }}
+          >
             <AlignItems style={{marginTop:'8em'}} gap={'1em'}>
               <Image
                 src={appIcon}
