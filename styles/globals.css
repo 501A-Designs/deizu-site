@@ -1,13 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500&display=swap');
 
-
 :root {
 	/* --r5: 5px;
 	--r10: 10px; */
-	--borderRadius0: 5px;
+	
+	/* --borderRadius0: 5px;
 	--borderRadius1: 10px;
-	--borderRadius2: 20px;
+	--borderRadius2: 20px; */
 	--system0: white;
 	--system1: #ececec;
 	--system2: #dbdbdb;
@@ -105,7 +105,6 @@ a {
 	.grid-1fr-3fr{
 		grid-template-columns: 1fr;
 	}
-	.bodyMargin{padding:5% 5%}
 }
 @media (min-width: 701px) and (max-width: 1000px) {
 	.responsiveFullHeight{
@@ -120,7 +119,6 @@ a {
 	.grid-1fr-3fr{
 		grid-template-columns: 1.5fr 3fr;
 	}
-	.bodyMargin{padding:3% 7%}
 }
 @media (min-width: 1001px) and (max-width: 1270px) {
 	.responsiveFullHeight{
@@ -135,7 +133,6 @@ a {
 	.grid-1fr-3fr{
 		grid-template-columns: 1fr 3fr;
 	}
-	.bodyMargin{padding:4% 10%}
 }
 @media (min-width: 1271px) {
 	.responsiveFullHeight{
@@ -150,7 +147,6 @@ a {
 	.grid-1fr-3fr{
 		grid-template-columns: 1fr 3fr;
 	}
-	.bodyMargin{padding:4% 15%}
 }
 
 .scaleUp{
