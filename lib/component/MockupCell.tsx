@@ -1,54 +1,60 @@
 import React from 'react'
+import { styled } from '../../stitches.config'
+
+const MockupCellStyled = styled('div',{
+    display: 'flex',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    alignItems: 'center',
+    color: '$textColor1',
+    borderRadius:'$2',
+    fontWeight: 'bold',
+    transition: '$speed1',
+    cursor: 'pointer'
+})
+
+const MockupCellNameStyled = styled('h4',{
+    textAlign: 'center',
+    width:'150px',
+})
+const MockupCellDescriptionStyled = styled('p',{
+    fontWeight: 'normal',
+    fontSize: '0.8em',
+    backgroundColor: '$system4',
+    color: '$textColor2',
+    borderRadius:'$1',
+    padding: '5px 10px',
+    width: 'fit-content',
+    margin: '5px'
+})
 
 export default function MockupCell(props) {
-    let subjectCellStyle ={
-        display: 'flex',
-        justifyContent: 'center',
-        flexDirection: 'column',
-        alignItems: 'center',
-        color: 'var(--txtColor0)',
-        borderRadius:'var(--borderRadius1)',
-        fontWeight: 'bold',
-        padding: `${props.padding ? props.padding :'0 5em'}`,
-        height: `${props.height ? props.height :'85px'}`,
-        width: `${props.width ? props.width:'fit-content'}`,
-        margin: `${props.margin ? props.margin :'auto'}`,
-        backgroundColor: `${props.subjectCellColor ? props.subjectCellColor:'var(--system1)'}`,
-        border:`1px solid ${props.subjectCellColor ? props.subjectCellColor:'var(--system1)'}`,
-        transition: '0.06s',
-        cursor: 'pointer'
-    }
-    let subjectCellNameStyle = {
-        textDecoration: `${props.subjectCellLink && 'underline dotted'}`,
-        textAlign: 'center',
-        width:'150px',
-        // text-decoration-style: wavy;
-    }
-    let subjectCellDescriptionStyle ={
-        fontWeight: 'normal',
-        backgroundColor: 'var(--system3)',
-        fontSize: '0.8em',
-        color: 'var(--txtColor1)',
-        borderRadius:'var(--borderRadius0)',
-        padding: '5px 10px',
-        width: 'fit-content',
-        margin: '5px'
-    }
 
     return (
-        <div key={props.key} style={Object.assign(subjectCellStyle,props.style)} className={'scaleUp'} onClick={props.onClick}>
-            <h4 
-                style={subjectCellNameStyle}
+        <MockupCellStyled
+            css={{
+                padding: `${props.padding ? props.padding :'0 5em'}`,
+                height: `${props.height ? props.height :'85px'}`,
+                width: `${props.width ? props.width:'fit-content'}`,
+                margin: `${props.margin ? props.margin :'auto'}`,
+                backgroundColor: `${props.subjectCellColor ? props.subjectCellColor:'var(--system1)'}`,
+                border:`1px solid ${props.subjectCellColor ? props.subjectCellColor:'var(--system1)'}`,
+            }}
+        >
+            <MockupCellNameStyled
                 onClick={() => {
                     props.subjectCellLink && window.open(props.subjectCellLink, "_blank")
                 }}
+                css={{
+                    textDecoration: `${props.subjectCellLink && 'underline dotted'}`,
+                }}
             >
                 {props.subjectCellName ? props.subjectCellName : '科目名'}
-            </h4>
+            </MockupCellNameStyled>
             {/* <a style={{fontSize: '10px', fontWeight: 'normal', overflow: 'auto'}}>{props.subjectCellLink}</a> */}
-            {props.subjectCellDescription && <p style={subjectCellDescriptionStyle}>
+            {props.subjectCellDescription && <MockupCellDescriptionStyled>
                 {props.subjectCellDescription}
-            </p>}
-        </div>
+            </MockupCellDescriptionStyled>}
+        </MockupCellStyled>
     )
 }

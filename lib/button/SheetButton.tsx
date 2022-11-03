@@ -23,6 +23,12 @@ const SheetButtonStyled = styled('div', {
   'time':{
     color:'$system4',
     fontSize:'0.8em',
+    '@bp1':{
+      display:'none'
+    },
+    '@bp2_':{
+      display:'block'
+    },
   },
   '&:hover':{
     backgroundColor:'$system2',
@@ -68,7 +74,7 @@ export default function SheetButton(props) {
             {props.sharing && <span title="リンク共有が有効されています"><FiUsers/></span>}
           </AlignItems>
         </AlignItems>
-        {props.date && <time>{props.date}</time>}
+        <time>{props.date}</time>
       </AlignItems>
     </SheetButtonStyled>
   )

@@ -32,20 +32,22 @@ export default function Index() {
   const createScheduleSheet = async (e:any) =>{
     e.preventDefault();
     setLoading(true);
-    const docRef = doc(db, `users/${user.uid}`);
-    await setDoc(docRef,
-      {
-        sheets:{
-          [sheetName]: {
-            date: serverTimestamp(),
-            sharing: false,
-            backgroundImageUrl: sheetBackgroundImageUrl,
-            bannerImageUrl: sheetBannerImageUrl,
-          }
-        },
-      }, { merge: true }
-    );
-    router.push(`/user/${user.uid}/sheet/${sheetName}`)
+    if (user) {      
+      const docRef = doc(db, `users/${user.uid}`);
+      await setDoc(docRef,
+        {
+          sheets:{
+            [sheetName]: {
+              date: serverTimestamp(),
+              sharing: false,
+              backgroundImageUrl: sheetBackgroundImageUrl,
+              bannerImageUrl: sheetBannerImageUrl,
+            }
+          },
+        }, { merge: true }
+      );
+      router.push(`/user/${user.uid}/sheet/${sheetName}`)
+    }
   }
 
   return (

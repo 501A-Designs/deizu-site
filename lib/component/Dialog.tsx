@@ -4,6 +4,7 @@ import * as DialogPrimitive from '@radix-ui/react-dialog';
 import Button from '../button/Button';
 import { FiX } from 'react-icons/fi';
 import { fadeIn, slideInButton } from '../ux/keyframes';
+import AlignItems from '../style/AlignItems';
 
 const StyledOverlay = styled(DialogPrimitive.Overlay, {
   background: `radial-gradient(
@@ -32,7 +33,7 @@ const StyledContent = styled(DialogPrimitive.Content, {
   width: '90vw',
   maxWidth: '450px',
   maxHeight: '85vh',
-  padding: 25,
+  padding: '$3',
   '@media (prefers-reduced-motion: no-preference)': {
     animation: `${slideInButton} 300ms cubic-bezier(0.16, 1, 0.3, 1)`,
   },
@@ -63,8 +64,10 @@ const StyledDescription = styled(DialogPrimitive.Description, {
 });
 
 interface DialogProps{
+  title:string,
   openButton:JSX.Element,
-  children:JSX.Element | JSX.Element[]
+  description?:string,
+  children:any
 }
 
 export default function Dialog(props:DialogProps){
@@ -74,20 +77,27 @@ export default function Dialog(props:DialogProps){
         {props.openButton}
       </DialogPrimitive.Trigger>
       <Content>
-        <DialogPrimitive.Close asChild>
-          <Button
-            size={'small'}
-            aria-label="Close"
-            icon={<FiX/>}
-          >
-            閉じる
-          </Button>
-        </DialogPrimitive.Close>
-
-        <StyledTitle>Edit profile</StyledTitle>
-        <StyledDescription>
-          Make changes to your profile here. Click save when you're done.
-        </StyledDescription>
+        <AlignItems
+          justifyContent={'spaceBetween'}
+          marginBottom={'medium'}
+        >
+          <StyledTitle>{props.title}</StyledTitle>
+          <DialogPrimitive.Close asChild>
+            <Button
+              size={'small'}
+              styleType={'noFill'}
+              aria-label="Close"
+              icon={<FiX/>}
+            >
+              閉じる
+            </Button>
+          </DialogPrimitive.Close>
+        </AlignItems>
+        {props.description &&
+          <StyledDescription>
+            {props.description}
+          </StyledDescription>
+        }
         {props.children}
       </Content>
     </DialogPrimitive.Root>

@@ -2,32 +2,23 @@ import React from 'react'
 import { styled } from '../../stitches.config'
 
 const MediaQueryStyled = styled('div',{
+  display:'block',
   variants:{
     hide:{
-      desktop:{
-        '#mobile':{
-          display:'block'
+      mobile:{
+        '@bp1':{
+          display:'none'
         },
-        '#desktop':{
-          '@bp3':{
-            display:'none'
-          },
-          '@bp4':{
-            display:'none'
-          }
+        '@bp2':{
+          display:'none'
         }
       },
-      mobile:{
-        '#mobile':{
-          '@bp1':{
-            display:'none'
-          },
-          '@bp2':{
-            display:'none'
-          }  
+      desktop:{
+        '@bp3':{
+          display:'none'
         },
-        '#desktop':{
-          display:'block'      
+        '@bp4':{
+          display:'none'
         }
       }
     }
@@ -37,8 +28,7 @@ const MediaQueryStyled = styled('div',{
 export default function MediaQuery({hide,children}:React.ComponentProps<typeof MediaQueryStyled>) {
   return (
     <MediaQueryStyled hide={hide}>
-      <div id='mobile'>{children}</div>
-      <div id='desktop'>{children}</div>
+      {children}
     </MediaQueryStyled>
   )
 }

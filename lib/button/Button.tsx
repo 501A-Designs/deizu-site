@@ -22,9 +22,9 @@ const ButtonStyled = styled('button', {
         border: '1px solid $system1',
       },
       noFill:{
-        color: '$textColor2',
-        backgroundColor: '$system3',
-        border: '1px solid $system2',
+        color: '$textColor1',
+        backgroundColor: '$system2',
+        border: '1px solid $system1',
       },
       outline:{
         color: '$textColor1',
@@ -35,14 +35,19 @@ const ButtonStyled = styled('button', {
     },
     size:{
       medium:{
-        fontSize:'small',
         padding: '10px 25px',
         '@bp1':{
-          padding: '5px 10px',
+          fontSize:'0.7em',
+          padding: '7px 12px',
         },
         '@bp2':{
+          fontSize:'0.8em',
           padding: '7px 15px',
         },
+        '@bp3_':{
+          fontSize:'0.9em',
+          padding: '7px 15px',
+        }
       },
       small:{
         fontSize:'medium',

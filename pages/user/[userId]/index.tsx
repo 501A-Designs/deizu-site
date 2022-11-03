@@ -13,9 +13,6 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth,db,root } from "../../../src/service/firebase"
 import { doc,　getDoc,　setDoc } from "firebase/firestore";
 
-Modal.setAppElement('#__next');
-import Modal from 'react-modal';
-import { modalStyle } from '../../../lib/style/modalStyle'
 import { themeColorData } from '../../../lib/data/themeData'
 
 import StaticScene from '../../../lib/style/StaticScene';
@@ -25,12 +22,11 @@ import 'moment/locale/ja';
 
 import Stack from '../../../lib/style/Stack';
 
-import ImageContainer from '../../../lib/component/ImageContainer';
+import ImageContainer from '../../../lib/pages/sheet/ImageContainer';
 import Input from '../../../lib/component/Input';
 
 import { NextSeo } from 'next-seo';
 import { FiChevronLeft, FiChevronRight, FiEdit2, FiImage, FiSave, FiSmile } from 'react-icons/fi';
-import ModalHeader from '../../../lib/component/ModalHeader';
 
 import SectionButton from '../../../lib/button/SectionButton';
 import ThemeButton from '../../../lib/button/ThemeButton';
@@ -59,10 +55,6 @@ function IndivisualUser() {
     }
   },[themeColor])
 
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const openModal = () => setModalIsOpen(true);
-  const closeModal = () => setModalIsOpen(false);
-
   const saveThemeData = async(e:any) => {
     e.preventDefault();
     const docRef = doc(db, "users", user.uid);
@@ -72,7 +64,6 @@ function IndivisualUser() {
         url:userImageUrl
       }, { merge: true }
     );
-    closeModal();
     toast('テーマ保存完了！');
   }
 
@@ -86,100 +77,8 @@ function IndivisualUser() {
             title={`ダッシュボード`}
             description={`${user.displayName.split(' ')[0]}さんのDeizuダッシュボード`}
           />
-          <Dialog
-            openButton={
-              <Button
-                size={'medium'}
-                icon={<FiSmile/>}
-              >
-                damn
-              </Button>
-            }
-          >
-            <p>bruh</p>
-          </Dialog>
           {user.uid == userId &&
             <>
-              <Modal
-                isOpen={modalIsOpen}
-                onRequestClose={closeModal}
-                style={modalStyle}
-              >
-                <Stack>
-                  <ModalHeader
-                    header="見た目の設定"
-                    onClick={() =>closeModal()}
-                  />
-                  {modalSection === 0 && 
-                    <Stack>
-                      <SectionButton
-                        leftIcon={<FiImage/>}
-                        rightIcon={<FiChevronRight/>}
-                        onClick={()=>setModalSection(1)}
-                      >
-                        背景画像の設定
-                      </SectionButton>
-                      <SectionButton
-                        leftIcon={<FiSmile/>}
-                        rightIcon={<FiChevronRight/>}
-                        onClick={()=>setModalSection(2)}
-                      >
-                        配色
-                      </SectionButton>
-                    </Stack>
-                  }
-                  <Stack>
-                    {modalSection !== 0 &&
-                      <SectionButton
-                        leftIcon={<FiChevronLeft/>}
-                        onClick={()=>setModalSection(0)}
-                      >
-                        戻る
-                      </SectionButton>
-                    }
-                    {modalSection === 1 &&
-                      <Stack>
-                        {userImageUrl && 
-                          <ImageContainer src={userImageUrl && userImageUrl}>
-                            <h2 style={{marginBottom:'0em'}}>あいうえお</h2>
-                            <p style={{marginTop:'0em'}}>テキストが見えやすい背景画像を選ぶと良いです。</p>
-                          </ImageContainer>
-                        }
-                        <Input
-                          fullWidth
-                          value={userImageUrl}
-                          onChange={(e:any)=>setUserImageUrl(e.target.value)}
-                          placeholder={'画像URL'}
-                        />
-                      </Stack>
-                    }
-                    {modalSection === 2 &&
-                      <Stack grid={'1fr 1fr'}>
-                        {themeColorData.map((prop)=>{
-                          return (
-                            <ThemeButton
-                              key={prop.name}
-                              data={prop.value}
-                              currentTheme={themeColor}
-                              onClick={()=>setThemeColor(prop.value)}
-                            >
-                              {prop.name}
-                            </ThemeButton>
-                          )
-                        })}
-                      </Stack>
-                    }
-                    {modalSection !== 0 &&
-                      <Button
-                        icon={<FiSave/>}
-                        onClick={(e)=>saveThemeData(e)}
-                      >
-                        保存
-                      </Button>
-                    }
-                  </Stack>
-                </Stack>
-              </Modal>
               {!loadSheet &&
                 <BodyMargin>
                   <section className="grid-1fr-2fr">
@@ -221,16 +120,92 @@ function IndivisualUser() {
                               </p>
                             </Stack>
                           </AlignItems>
-                          <Button
-                            icon={<FiEdit2/>}
-                            onClick={() => openModal()}
-                            size={'small'}
+                          <Dialog
+                            title={'見た目の設定'}
+                            openButton={
+                              <Button
+                                size={'small'}
+                                icon={<FiEdit2/>}
+                              >
+                                見た目の設定
+                              </Button>
+                            }
                           >
-                            見た目の変更
-                          </Button>
+                            <Stack>
+                              {modalSection === 0 && 
+                                <Stack>
+                                  <SectionButton
+                                    leftIcon={<FiImage/>}
+                                    rightIcon={<FiChevronRight/>}
+                                    onClick={()=>setModalSection(1)}
+                                  >
+                                    背景画像の設定
+                                  </SectionButton>
+                                  <SectionButton
+                                    leftIcon={<FiSmile/>}
+                                    rightIcon={<FiChevronRight/>}
+                                    onClick={()=>setModalSection(2)}
+                                  >
+                                    配色
+                                  </SectionButton>
+                                </Stack>
+                              }
+                              <Stack>
+                                {modalSection !== 0 &&
+                                  <SectionButton
+                                    leftIcon={<FiChevronLeft/>}
+                                    onClick={()=>setModalSection(0)}
+                                  >
+                                    戻る
+                                  </SectionButton>
+                                }
+                                {modalSection === 1 &&
+                                  <Stack>
+                                    {userImageUrl && 
+                                      <ImageContainer src={userImageUrl && userImageUrl}>
+                                        <h2 style={{marginBottom:'0em'}}>あいうえお</h2>
+                                        <p style={{marginTop:'0em'}}>テキストが見えやすい背景画像を選ぶと良いです。</p>
+                                      </ImageContainer>
+                                    }
+                                    <Input
+                                      fullWidth
+                                      value={userImageUrl}
+                                      onChange={(e:any)=>setUserImageUrl(e.target.value)}
+                                      placeholder={'画像URL'}
+                                    />
+                                  </Stack>
+                                }
+                                {modalSection === 2 &&
+                                  <Stack grid={'1fr 1fr'}>
+                                    {themeColorData.map((prop)=>{
+                                      return (
+                                        <ThemeButton
+                                          key={prop.name}
+                                          data={prop.value}
+                                          currentTheme={themeColor}
+                                          onClick={()=>setThemeColor(prop.value)}
+                                        >
+                                          {prop.name}
+                                        </ThemeButton>
+                                      )
+                                    })}
+                                  </Stack>
+                                }
+                                {modalSection !== 0 &&
+                                  <Button
+                                    icon={<FiSave/>}
+                                    onClick={(e)=>saveThemeData(e)}
+                                  >
+                                    保存
+                                  </Button>
+                                }
+                              </Stack>
+                            </Stack>
+                          </Dialog>
                         </AlignItems>
                       </ImageContainer>
                     </Stack>
+                    
                     <SheetContainer user={user}/>
                   </section>
                 </BodyMargin>

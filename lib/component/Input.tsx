@@ -6,9 +6,9 @@ const InputStyled = styled('input', {
   color: '$txtColor1',
   backgroundColor: '$system1',
   padding: '$2',
-  border: '1px solid $system2',
   borderRadius: '$2',
-  transition: '$2',
+  border: '1px solid $system2',
+  transition: '$speed2',
   variants:{
     fullWidth: {
       true:{
@@ -23,6 +23,7 @@ const InputStyled = styled('input', {
   },
   '&:focus':{
     boxShadow: '$light',
+    border: '1px solid $system2',
   }
 })
 
