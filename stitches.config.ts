@@ -20,9 +20,10 @@ export const { styled, css, config } = createStitches({
       4:'30px',
     },
     radii: {
-      1:'5px',
-      2:'10px',
+      1:'7px',
+      2:'12px',
       3:'20px',
+      rounded:'9999px',
     },
     shadows:{
       light:'0 3px 10px rgba(60, 60, 60, 0.12)',
@@ -30,9 +31,17 @@ export const { styled, css, config } = createStitches({
       heavy:'0 8px 30px rgba(0, 0, 0, 0.12)',
     },
     transitions:{
-      speed1: '0.5s',
-      speed2: '1s',
-      speed3: '1.5s',
+      speed1: '0.3s',
+      speed2: '0.8s',
+      speed3: '1.0s',
+    },
+    fontSizes:{
+      xxl:'1.5em',
+      xl:'1.1em',
+      l:'1em',
+      xm:'0.9em',
+      m:'0.8em',
+      s:'0.75em',
     }
   },
   media: {

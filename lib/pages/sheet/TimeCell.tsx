@@ -22,8 +22,7 @@ const TimeContainerStyled = styled('div', {
   },
   '&:hover':{
     transform:'scale(0.95)',
-    borderRadius: '$1',
-
+    
   }
 })
 

@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import {  FiArrowLeft, FiEye, FiAlertTriangle, FiChevronRight, FiCopy, FiDatabase, FiExternalLink, FiGrid, FiHome, FiImage, FiInfo, FiLayout, FiLink, FiLock, FiLogIn, FiPlus, FiSettings, FiTrash2, FiUsers } from 'react-icons/fi';
+import {  FiArrowLeft, FiEye, FiAlertTriangle, FiChevronRight, FiCopy, FiDatabase, FiExternalLink, FiGrid, FiHome, FiImage, FiInfo, FiLayout, FiLink, FiLock, FiLogIn, FiPlus, FiSettings, FiTrash2, FiUsers, FiGitBranch } from 'react-icons/fi';
 
 // Components
 import Stack from "../../style/Stack";
@@ -18,13 +18,32 @@ import 'moment/locale/ja';
 import moment from 'moment';
 
 // Firebase
-import { doc, getDoc,setDoc,serverTimestamp, updateDoc, deleteField,collection, getDocs } from "firebase/firestore";
+import { doc, updateDoc, deleteField,collection, getDocs, DocumentData } from "firebase/firestore";
 import { db } from "../../../src/service/firebase";
-import { EditorProps } from "../../data/types/types";
+import { useCollection } from "react-firebase-hooks/firestore";
+import LargeImageButton from "../../button/DataSheetButton";
+import Input from "../../component/Input";
+import TextPreview from "../../component/TextPreview";
+// import { SheetDataTypes } from "../../../pages/user/[userId]/sheet/[id]";
+
+export interface SheetDataTypes {
+  title:string,
+  cells:any,
+  date:any,
+  sharing:boolean,
+  location:string,
+  bannerImageUrl?:string,
+  backgroundImageUrl?:string,
+}
+
+export interface EditorProps {
+  user?:any,
+  viewOnly:boolean,
+  sheetData:SheetDataTypes | any,
+}
 
 export default function Editor(props:EditorProps) {
   const router = useRouter();
-  const [listViewState, setListViewState] = useState(false)
 
   const [modalSection, setModalSection] = useState(0);
   const [selectCustomize, setSelectCustomize] = useState('banner');
@@ -35,6 +54,7 @@ export default function Editor(props:EditorProps) {
   let user = props.user;
   let viewOnly = props.viewOnly;
   let sheetData = props.sheetData;
+
   useEffect(() => {
     setSheetBannerImageUrl(sheetData && sheetData.bannerImageUrl);
   }, [sheetData])
@@ -68,21 +88,8 @@ export default function Editor(props:EditorProps) {
   // }
 
   // Datasheet fetching
-  const [allDataSheetData, setAllDataSheetData] = useState();
-  const fetchDataSheetData = async () => {
-    const collectionRef = collection(db, "sheets");
-    const querySnapshot = await getDocs(collectionRef);
-    let sheetDataArray:Object[] = [];
-    querySnapshot.forEach((doc) => {
-      console.log(doc.id)
-      sheetDataArray.push({
-        dataSheetId: doc.id,
-        dataSheetData: doc.data(),
-      });
-    })
-    setAllDataSheetData(sheetDataArray);
-    console.log(allDataSheetData)
-  }
+  const [dataSheetData] = useCollection<DocumentData>(collection(db, "sheets"));
+  const [dataSheetId, setDataSheetId] = useState('')
 
   return (
     <BodyMargin>
@@ -137,14 +144,12 @@ export default function Editor(props:EditorProps) {
                 <MediaQuery hide={'mobile'}>
                   <Button
                     size={'small'}
-                    icon={!listViewState ? <FiLayout/>:<FiGrid/>}
-                    onClick={()=>{
-                      listViewState ? 
-                      setListViewState(false):
-                      setListViewState(true)
-                    }}
+                    icon={<FiLayout/>}
+                    // onClick={()=>{
+                    // }}
                   >
-                    {!listViewState ? 'リスト表示':'グリッド表示'}
+                    hello
+                    {/* {!listViewState ? 'リスト表示':'グリッド表示'} */}
                   </Button>
                 </MediaQuery>
 
@@ -163,7 +168,6 @@ export default function Editor(props:EditorProps) {
                     <SectionButton
                       onClick={()=>{
                         setModalSection(1);
-                        fetchDataSheetData();
                       }}
                       leftIcon={<FiDatabase/>}
                       rightIcon={<FiChevronRight/>}
@@ -212,18 +216,20 @@ export default function Editor(props:EditorProps) {
                           <div style={{overflowY:'scroll',height:'250px', padding:'0.5em'}}>
                             <Stack>
                               {
-                                allDataSheetData && allDataSheetData.map((prop) =>{
+                                dataSheetData?.docs.map((datasheet) =>{
                                   return (
                                     <LargeImageButton
-                                      key={prop}
+                                      key={datasheet.id}
                                       displayAddButton={true}
-                                      dataSheetId={prop.dataSheetId}
+                                      dataSheetId={datasheet.id}
                                       currentDataSheetId={dataSheetId}
-                                      imageSource={prop.dataSheetData.dataSheetImageUrl}
-                                      subtitle={prop.dataSheetData.dataSheetDescription}
-                                      onClick={()=>setDataSheetId(prop.dataSheetId)}
+                                      imageSource={datasheet.data().dataSheetImageUrl}
+                                      subtitle={datasheet.data().dataSheetDescription}
+                                      onClick={()=>
+                                        setDataSheetId(datasheet.id)
+                                      }
                                     >
-                                      {prop.dataSheetData.dataSheetName}
+                                      {datasheet.data().dataSheetName}
                                     </LargeImageButton>
                                   )
                                 })
@@ -234,7 +240,7 @@ export default function Editor(props:EditorProps) {
                             データシートを繋げることで科目を時間割表に入力する作業がより早まります。
                           </p>
                           <Stack>
-                            {dataSheetName && 
+                            {sheetData.dataSheetId && 
                               <TextPreview style={{textAlign: 'center'}}>
                                 「{dataSheetName}」のデータシートに繋がっています
                               </TextPreview>
@@ -245,6 +251,7 @@ export default function Editor(props:EditorProps) {
                               onChange={(e)=>setDataSheetId(e.target.value)}
                             />
                             <Button
+                              icon={<FiGitBranch/>}
                               onClick={()=>saveDataSheetId()}
                             >
                               データシートを繋げる
@@ -256,7 +263,7 @@ export default function Editor(props:EditorProps) {
                         <>
                           <h3>画像を追加・編集</h3>
                           <p>インターネット上にある画像URLを追加するとバナー画像・背景画像として追加されます。</p>
-                          <Stack grid={isMobile ? '1fr':'1fr 1fr'} gap={'0.2em'}>
+                          <Stack grid={'1fr 1fr'}>
                             <ImageSelect
                               src="/banner.png"
                               alt="Banner image"
@@ -307,10 +314,10 @@ export default function Editor(props:EditorProps) {
                           <p>
                             リンク共有を有効するとこのリンクにアクセスできる人は全て時間割を閲覧することができます。なお共有するとユーザー様がご指定しているテーマ・バナー画像等も共有されるのでご了承下さい。
                           </p>
-                          <AlignItems style={{justifyContent: 'space-between'}}>
-                            <p>{shareSheetState ? ' 自分しか見えないようにする':'時間割の閲覧権限を与える'}</p>
+                          <AlignItems justifyContent={'spaceBetween'}>
+                            <p>{sheetData.sharing ? ' 自分しか見えないようにする':'時間割の閲覧権限を与える'}</p>
                             <AlignItems>
-                              {shareSheetState ? <Button
+                              {sheetData.sharing ? <Button
                                 icon={<FiLock/>}
                                 onClick={()=>shareSheet(false)}
                               >
@@ -324,7 +331,7 @@ export default function Editor(props:EditorProps) {
                               </Button>}
                             </AlignItems>
                           </AlignItems>
-                          {shareSheetState &&
+                          {sheetData.sharing &&
                             <Stack>
                               <p>
                                 URLをコピーし他の人に送信することで時間割表を共有することができます。
@@ -368,6 +375,7 @@ export default function Editor(props:EditorProps) {
         <SheetGrid
           sheetData={sheetData}
           viewOnly={viewOnly}
+          user={user}
         />
         <AlignItems
           justifyContent={'center'}
@@ -378,7 +386,7 @@ export default function Editor(props:EditorProps) {
           {!viewOnly ?
             <>
               <h5>
-                最終変更時：{sheetData.date.toDate().toDateString()}
+                {/* 最終変更時：{sheetData.date.toDate().toDateString()} */}
               </h5>
               <h4>
                 {moment().format('LT')}｜

@@ -10,7 +10,7 @@ const ColorButtonStyled = styled('button', {
     selected:{
       true:{
         $$shadowColor: '$system2',
-        boxShadow: '0 0 0 2px $$shadowColor',
+        boxShadow: '0 0 0 1px $$shadowColor',
         border:'2px solid $system1',
       },
       false:{

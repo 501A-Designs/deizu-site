@@ -57,10 +57,6 @@ hr {
 	height: 5px;
 	background-color: transparent;
 }
-.container {
-	min-height: 100vh;
-	padding: 0 0.5rem;
-}
 
 .alignItems {
 	display: flex;

@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Container from '../lib/component/Container';
 
-import Footer from '../lib/component/Footer'
+import NavFooter from '../lib/component/NavFooter'
 import BodyMargin from '../lib/style/BodyMargin';
 
 export default function About() {
@@ -68,7 +68,7 @@ export default function About() {
                     </div>
                 </div>
             </BodyMargin>
-            <Footer />
+            <NavFooter />
         </>
     )
 }

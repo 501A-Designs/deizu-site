@@ -7,7 +7,12 @@ import Button from '../button/Button'
 import Container from '../component/Container';
 import AlignItems from './AlignItems'
 
-export default function StaticScene({type}:{type:string}) {
+
+interface StaticSceneProps{
+  type: 'notLoggedIn'|'loading'|'accessDenied'|'noMobile'
+}
+
+export default function StaticScene({type}:StaticSceneProps) {
   const router = useRouter();
 
   return (
@@ -15,7 +20,7 @@ export default function StaticScene({type}:{type:string}) {
         minHeight={'100vh'}
         justifyContent={'center'}
       >
-        {type === 'notLoggedIn' &&
+        {type == 'notLoggedIn' &&
           <Container styleType={'transparent'}>
             <h1>:(</h1>
             <p>ログインする必要があります</p>
@@ -27,20 +32,20 @@ export default function StaticScene({type}:{type:string}) {
             </Button>
           </Container>
         }
-        {type === 'loading' &&
+        {type == 'loading' &&
           <MoonLoader
             size={30}
             loading={type === 'loading'}
             // color="var(--system3)"
           />
         }
-        {type === 'accessDenied' &&
+        {type == 'accessDenied' &&
           <Container styleType={'transparent'}>
             <h1>:P</h1>
             <p>本ページはアクセスすることができません</p>
           </Container>
         }
-        {type === 'noMobile' &&
+        {type == 'noMobile' &&
           <Container styleType={'transparent'}>
             <h1>:0</h1>
             <p>

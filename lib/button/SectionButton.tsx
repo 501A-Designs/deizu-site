@@ -21,6 +21,7 @@ const LeftIcon = styled('span', {
   color: '$textColor2',
   backgroundColor: '$system4',
   borderRadius: '$3',
+  boxShadow:'$medium',
   width:'40px',
   height:'40px',
   display: 'flex',
@@ -34,8 +35,12 @@ const RightIcon = styled('span', {
   paddingRight: '15px'
 })
 
-export default function SectionButton(props) {
+interface SectionButtonProps extends React.ComponentProps<typeof SectionButtonStyled>{
+  leftIcon:JSX.Element,
+  rightIcon?:JSX.Element,
+}
 
+export default function SectionButton(props:SectionButtonProps) {
   return (
     <SectionButtonStyled onClick={props.onClick}>
       <AlignItems gap={'medium'}>

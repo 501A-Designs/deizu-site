@@ -9,10 +9,10 @@ import { Router, useRouter } from 'next/router';
 
 const LargeImageButtonStyled = styled('div',{
   minWidth: '200px',
-  border:'1px solid var(--system1)',
-  borderRadius:'var(--borderRadius1)',
+  border:'1px solid $system2',
+  borderRadius:'$2',
   padding: '1em',
-  transition:'0.2s',
+  transition:'$speed1',
   cursor: 'pointer',
   backgroundColor:'$system2',
   '&:hover':{
@@ -21,7 +21,7 @@ const LargeImageButtonStyled = styled('div',{
 })
 // Nested Image
 const LargeImageButtonImageStyled = styled('div', {
-  borderRadius:'$borderRadius1',
+  borderRadius:'$2',
   width:'3.5em',
   height:'3.5em',
   background:'$system1',
@@ -31,9 +31,6 @@ const LargeImageButtonImageStyled = styled('div', {
       true:{
         objectFit: 'cover',
       },
-      // false:{
-      //   background:gradient(props.dataSheetId),
-      // }
     }
   }
 })
@@ -64,14 +61,14 @@ export default function LargeImageButton(props:LargeImageButtonProps) {
               backgroundImage:props.imageSource,
             }}
           />
-          <h3
+          <h4
             style={{
               padding: 0,
               margin: 0,
             }}
           >
             {props.children}
-          </h3>
+          </h4>
         </AlignItems>
         {props.displayAddButton && 
           <>

@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@formkit/auto-animate": "^1.0.0-beta.3",
+    "@radix-ui/react-alert-dialog": "^1.0.2",
+    "@radix-ui/react-context-menu": "^2.0.1",
     "@radix-ui/react-dialog": "^1.0.2",
     "@stitches/react": "^1.2.8",
     "@types/node": "^17.0.23",
@@ -35,6 +37,7 @@
     "react-top-loading-bar": "^2.1.0"
   },
   "devDependencies": {
+    "@types/random-gradient": "^0.0.0",
     "eslint": "8.13.0",
     "eslint-config-next": "12.1.5",
     "typescript": "^4.8.4"

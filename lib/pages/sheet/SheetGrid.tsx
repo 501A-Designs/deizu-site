@@ -5,6 +5,7 @@ import SubjectCell from "./SubjectCell";
 import TimeCell from "./TimeCell";
 import { scheduleCellId } from "../../data/scheduleCellId";
 import moment from 'moment';
+import { EditorProps } from "./Editor";
 
 
 const SheetGridStyled = styled('div',{
@@ -66,12 +67,9 @@ const SubjectCellGridStyled =  styled('div',{
   gap: '0.2em'
 })
 
-export default function SheetGrid(props) {
-
+export default function SheetGrid(props:EditorProps) {
   let sheetData = props.sheetData;
   let viewOnly = props.viewOnly;
-  // let sheetData = props.sheetData;
-
 
   const cellVerticalLocation:string[] =['a', 'b', 'c', 'd', 'e', 'f'];
   const dayOfWeek:string[] = ['月','火','水','木','金','土']
@@ -79,76 +77,58 @@ export default function SheetGrid(props) {
 
   const [modalCellId, setModalCellId] = useState('');
 
-  const openCellModal = (prop) => {
-    if (!viewOnly) {
-      if (sheetCellsData) {
-        if (sheetCellsData[prop]) {
-          setSubjectCellName(sheetCellsData[prop][prop])
-          setSubjectCellDescription(sheetCellsData[prop][prop+'Dscrp']);
-          setSubjectCellColor(sheetCellsData[prop][prop+'Color']);
-          setSubjectCellLink(sheetCellsData[prop][prop+'Link']);
-        }
-      }else{
-        setSubjectCellName('')
-        setSubjectCellDescription('');
-        setSubjectCellColor('');
-        setSubjectCellLink('');
-      }
-    }
-  };
-
   // TIME MODAL
-  const [timeModalIsOpen, setTimeModalIsOpen] = useState(false);
-  const [timeStart, setTimeStart] = useState('');
-  const [timeEnd, setTimeEnd] = useState('');
-  const [modalTimeNumber, setModalTimeNumber] = useState('');
+  // const [timeModalIsOpen, setTimeModalIsOpen] = useState(false);
+  // const [timeStart, setTimeStart] = useState('');
+  // const [timeEnd, setTimeEnd] = useState('');
+  // const [modalTimeNumber, setModalTimeNumber] = useState('');
 
-  const closeTimeModal = () => {
-    setTimeStart('')
-    setTimeEnd('');
-    setTimeModalIsOpen(false);
-  }
-  const openTimeModal = (prop) => {
-    if (!viewOnly) {
-      if (sheetTimeData) {
-        if (sheetTimeData[prop]) {
-          setTimeStart(sheetTimeData[prop].start);
-          setTimeEnd(sheetTimeData[prop].end)
-        }
-      }else{
-        setTimeStart('');
-        setTimeEnd('');
-      }
-      setTimeModalIsOpen(true);
-    }
-  }
-  const saveTimeData = async (e) => {
-    e.preventDefault();
-    let newObject = Object.assign({ ...sheetTimeData, 
-      [modalTimeNumber]: {
-        start: timeStart,
-        end: timeEnd,
-      } 
-    })
-    setSheetTimeData(newObject);
-    const docRef = doc(db, "users", user.uid);
-    await setDoc(docRef,
-        {
-          sheets:{
-            [sheetName]: {
-              date: serverTimestamp(),
-              time:{
-                [modalTimeNumber]: {
-                  start: timeStart,
-                  end: timeEnd,
-                }
-              }
-            }
-          },
-        }, { merge: true }
-    );
-    closeTimeModal();
-  }
+  // const closeTimeModal = () => {
+  //   setTimeStart('')
+  //   setTimeEnd('');
+  //   setTimeModalIsOpen(false);
+  // }
+  // const openTimeModal = (prop) => {
+  //   if (!viewOnly) {
+  //     if (sheetTimeData) {
+  //       if (sheetTimeData[prop]) {
+  //         setTimeStart(sheetTimeData[prop].start);
+  //         setTimeEnd(sheetTimeData[prop].end)
+  //       }
+  //     }else{
+  //       setTimeStart('');
+  //       setTimeEnd('');
+  //     }
+  //     setTimeModalIsOpen(true);
+  //   }
+  // }
+  // const saveTimeData = async (e) => {
+  //   e.preventDefault();
+  //   let newObject = Object.assign({ ...sheetTimeData, 
+  //     [modalTimeNumber]: {
+  //       start: timeStart,
+  //       end: timeEnd,
+  //     } 
+  //   })
+  //   setSheetTimeData(newObject);
+  //   const docRef = doc(db, "users", user.uid);
+  //   await setDoc(docRef,
+  //       {
+  //         sheets:{
+  //           [sheetName]: {
+  //             date: serverTimestamp(),
+  //             time:{
+  //               [modalTimeNumber]: {
+  //                 start: timeStart,
+  //                 end: timeEnd,
+  //               }
+  //             }
+  //           }
+  //         },
+  //       }, { merge: true }
+  //   );
+  //   closeTimeModal();
+  // }
 
   {/* <Modal
     isOpen={timeModalIsOpen}
@@ -209,14 +189,14 @@ export default function SheetGrid(props) {
         })}
       </DayOfWeekContainerStyled>
       
-      <TimeCellGridStyled gap={'0.2em'}>
+      <TimeCellGridStyled>
         {timeCellLocation.map(cellNumber => {
           return( 
             <TimeCell
-              onClick={()=>{
-                openTimeModal(cellNumber);
-                setModalTimeNumber(cellNumber);
-              }}
+              // onClick={()=>{
+              //   openTimeModal(cellNumber);
+              //   setModalTimeNumber(cellNumber);
+              // }}
               key={cellNumber}
               // sheetTimeData={sheetTimeData}
               displayPeriod={cellNumber}
@@ -229,13 +209,9 @@ export default function SheetGrid(props) {
           <SubjectCell
             key={cellId}
             viewOnly={viewOnly}
-            // sheetCellsData={sheetCellsData}
-            sheetCellsData={sheetData && sheetData.cells}
-            // onClick={()=>{
-            //   openCellModal(cellId);
-            //   setModalCellId(cellId);
-            // }}
+            cellData={sheetData && sheetData.cells && sheetData.cells[cellId]}
             cellId={cellId}
+            user={props.user}
           />
         )}
       </SubjectCellGridStyled>

@@ -4,15 +4,11 @@ import { styled } from '../../stitches.config';
 import AlignItems from '../style/AlignItems';
 
 const ButtonStyled = styled('button', {
-  borderRadius: '$2',
+  // fontSize:'$xm',
   userSelect: 'none',
   outline: 'none',
   cursor: 'pointer',
   transition: '$speed1',
-  '&:hover': {
-    boxShadow: '0 8px 10px var(--system1)',
-    transform:'scale(1.02)'
-  },
 
   variants:{
     styleType:{
@@ -20,55 +16,77 @@ const ButtonStyled = styled('button', {
         color: '$textColor2',
         backgroundColor: '$system4',
         border: '1px solid $system1',
+        '&:hover': {
+          boxShadow: '0 8px 10px var(--system1)',
+          transform:'scale(1.02)'
+        },
       },
       noFill:{
         color: '$textColor1',
         backgroundColor: '$system2',
         border: '1px solid $system1',
+        '&:hover': {
+          boxShadow: '0 8px 10px var(--system1)',
+          transform:'scale(1.02)'
+        },
       },
       outline:{
         color: '$textColor1',
         backgroundColor: '$system1',
-        border: '1px solid $system3',              
-        boxShadow: '0 0 2px $system2',
+        border: '1px solid $system3',
+        // boxShadow: '0 0 2px $system2',
+        '&:hover': {
+          color: '$textColor2',
+          backgroundColor: '$system4',
+          transform:'scale(1.02)'
+        },
       },
+      primary:{
+        color: '$textColor2',
+        backgroundColor: '$system4',
+        border: '1px solid $system1',
+        '&:hover': {
+          boxShadow: '0 8px 10px var(--system1)',
+          transform:'scale(1.02)'
+        },
+      }
     },
     size:{
+      extraLarge:{
+        padding: '$3',
+        fontSize:'$xxl',
+        'span':{
+          display:'none'
+        },
+      },
       medium:{
-        padding: '10px 25px',
-        '@bp1':{
-          fontSize:'0.7em',
-          padding: '7px 12px',
-        },
-        '@bp2':{
-          fontSize:'0.8em',
-          padding: '7px 15px',
-        },
-        '@bp3_':{
-          fontSize:'0.9em',
-          padding: '7px 15px',
-        }
+        padding: '$2 $3',
       },
       small:{
-        fontSize:'medium',
         padding: '8px',
         'span':{
           display:'none'
         },
-        '@bp1':{
-          padding: '5px',
-          fontSize: '15px',
-        },
-        '@bp2':{
-          padding: '7px',
-          fontSize: '14px',
-        },
+      },
+    },
+    shape:{
+      round:{
+        borderRadius: '$rounded',
+      },
+      standard:{
+        borderRadius: '$2',
       }
+    },
+    fullWidth:{
+      true:{
+        width:'100%'
+      },
     }
   },
   defaultVariants:{
     styleType:'fill',
-    size:'medium'
+    size:'medium',
+    shape:'standard'
   }
 })
 
@@ -82,6 +100,8 @@ export default function Button(props:ButtonProps) {
     <ButtonStyled
       styleType={props.styleType}
       size={props.size}
+      shape={props.shape}
+      fullWidth={props.fullWidth}
       title={props.children}
       onClick={props.onClick}
     >
@@ -90,9 +110,9 @@ export default function Button(props:ButtonProps) {
         justifyContent={'center'}
       >
         {props.icon}
-        <span>
-          {props.children}
-        </span>
+        {props.children &&
+          <span>{props.children}</span>
+        }
       </AlignItems>
     </ButtonStyled>
   )

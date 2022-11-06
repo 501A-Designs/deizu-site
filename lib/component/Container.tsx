@@ -46,7 +46,7 @@ interface ContainerProps extends React.ComponentProps<typeof ContainerStyled> {
   maxHeight?: string,
   marginBottom?: string,
   marginTop?: string,
-  children: JSX.Element | JSX.Element[],
+  // children: JSX.Element | JSX.Element[],
 }
 
 export default function Container(props:ContainerProps) {

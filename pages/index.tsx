@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { NextSeo } from 'next-seo';
 
 import Button from '../lib/button/Button'
-import Footer from '../lib/component/Footer'
+import NavFooter from '../lib/component/NavFooter'
 import Container from '../lib/component/Container'
 
 import AlignItems from '../lib/style/AlignItems'
@@ -16,6 +16,7 @@ import { FiArrowUpCircle } from 'react-icons/fi';
 import Stack from '../lib/style/Stack';
 import { styled } from '../stitches.config';
 import MockUp from '../lib/pages/landing/MockUp';
+import BodyMargin from '../lib/style/BodyMargin';
 
 export default function Home() {
   let router = useRouter();
@@ -29,7 +30,7 @@ export default function Home() {
   })
 
   return (
-    <div className={'container'}>
+    <BodyMargin>
       <NextSeo
         title="Deizu"
         description="時間割表を作成するアプリ"
@@ -165,7 +166,7 @@ export default function Home() {
           </Container>
         </AlignItems>
       </div>
-      <Footer />
-    </div >
+      <NavFooter />
+    </BodyMargin>
   )
 }

@@ -13,6 +13,7 @@ const AlignItemsStyled = styled('div',{
     justifyContent:{
       center:{justifyContent:'center'},
       spaceBetween:{justifyContent:'space-between'},
+      right:{justifyContent:'flex-end'}
     },
     gap:{
       small:{gap:'0.5em'},

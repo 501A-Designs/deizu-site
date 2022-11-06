@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import Footer from '../lib/component/Footer'
+import NavFooter from '../lib/component/NavFooter'
 import TextPreview from '../lib/component/TextPreview'
 import BodyMargin from '../lib/style/BodyMargin'
 
@@ -88,7 +88,7 @@ export default function Usage() {
                     </div>
                 </div>
             </BodyMargin>
-            <Footer/>
+            <NavFooter/>
         </>
     )
 }

@@ -1,5 +1,6 @@
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
 import moment from 'moment';
+import Router, { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 import { FiSave } from 'react-icons/fi';
 import { toast } from 'react-toastify';
@@ -14,6 +15,7 @@ import { buttonColor } from '../../data/buttonColor';
 import AlignItems from '../../style/AlignItems';
 import Stack from '../../style/Stack';
 
+
 const SubjectCellStyled= styled('div', {
   userSelect: 'none',
   display: 'flex',
@@ -23,12 +25,13 @@ const SubjectCellStyled= styled('div', {
   height: '85px',
   transition: '$speed1',
   cursor: 'pointer',
+  border:'1px solid $system1',
   '&:hover':{
     transform:'scale(0.95)',
-    borderRadius: '$2',
+    boxShadow:'$light',
+    border:'1px solid $system3',
+    // borderRadius: '$2',
   },
-
-  // Media Query
   '@bp1':{
     justifyContent: 'space-between',
   },
@@ -36,9 +39,7 @@ const SubjectCellStyled= styled('div', {
     justifyContent: 'center',
   },
 })
-
 const SubjectCellNameStyled = styled('h4', {
-  // textDecoration: `${subjectCellLink && 'underline dotted'}`,
   color: '$textColor1',
   textAlign: 'center',
   '@bp1':{
@@ -48,7 +49,6 @@ const SubjectCellNameStyled = styled('h4', {
     justifyContent: 'center',
   },
 })
-
 const SubjectCellDescriptionStyled = styled('p', {
   fontWeight: 'normal',
   textAlign: 'center',
@@ -72,56 +72,50 @@ const SubjectCellDescriptionStyled = styled('p', {
   },
 })
 
+
 interface SubjectCellProps{
   viewOnly:boolean,
-  sheetCellsData:object[],
-  cellId:string | object,
+  cellData:any,
+  cellId:any,
   user?:any
 }
 
 export default function SubjectCell(props:SubjectCellProps) {
+  const router = useRouter();
+  const sheetId:string = `${router.query.id}`;
   let viewOnly = props.viewOnly
-  let sheetCellsData = props.sheetCellsData;
+  let cellData = props.cellData;
   let cellId = props.cellId;
   let user = props.user;
 
   const [subjectCellName, setSubjectCellName] = useState<string>(
-    sheetCellsData && 
-    sheetCellsData[cellId] != undefined && 
-    sheetCellsData[cellId][cellId]
+    cellData && 
+    cellData != undefined && 
+    cellData[cellId] ?
+    cellData[cellId]:''
   );
+  // console.log(cellData && 
+  //   cellData != undefined && 
+  //   cellData[cellId] ?
+  //   cellData[cellId]:'NOTHING')
   const [subjectCellDescription, setSubjectCellDescription] = useState<string>(
-    sheetCellsData &&
-    sheetCellsData[cellId] != undefined && 
-    sheetCellsData[cellId][cellId+'Dscrp']
+    cellData &&
+    cellData != undefined && 
+    cellData[cellId+'Dscrp'] ?
+    cellData[cellId+'Dscrp']:''
   );
   const [subjectCellColor, setSubjectCellColor] = useState<string>(
-    sheetCellsData &&
-    sheetCellsData[cellId] != undefined && 
-    sheetCellsData[cellId][cellId+'Color']
+    cellData &&
+    cellData != undefined && 
+    cellData[cellId+'Color'] ?
+    cellData[cellId+'Color']:''
   );
-  const [subjectCellLink, setSubjectCellLink] = useState('')
-  
-  // const saveSubjectData = async (e:any) => {
-  //   e.preventDefault();
-  //   await setDoc(doc(db, "users", user.uid),
-  //     {
-  //       sheets:{
-  //         [sheetName]: {
-  //           date: serverTimestamp(),
-  //           cells:{
-  //             [modalCellId]: {
-  //               [modalCellId]: subjectCellName,
-  //               [modalCellId + 'Link']: subjectCellLink,
-  //               [modalCellId + 'Dscrp']: subjectCellDescription,
-  //               [modalCellId + 'Color']: subjectCellColor
-  //             }
-  //           }
-  //         }
-  //       },
-  //     }, { merge: true }
-  //   );
-  // }
+  const [subjectCellLink, setSubjectCellLink] = useState<string>(
+    cellData &&
+    cellData != undefined && 
+    cellData[cellId+'Link'] ?
+    cellData[cellId+'Link']:''
+  )
 
   const dynamicBorderRadius = () =>{
     if (cellId == 'f1') {
@@ -134,6 +128,23 @@ export default function SubjectCell(props:SubjectCellProps) {
     }else{
       return '$1'
     }
+  }
+  
+  const saveSubjectData = async (e:any) => {
+    e.preventDefault();
+    await setDoc(doc(db, `users/${user && user.uid}/scheduleGrid/${sheetId}`),
+      {
+        cells:{
+          [cellId]: {
+            [cellId]: subjectCellName,
+            [cellId + 'Dscrp']: subjectCellDescription,
+            [cellId + 'Link']: subjectCellLink,
+            [cellId + 'Color']: subjectCellColor
+          }
+        },
+        date: serverTimestamp(),
+      }, { merge: true },
+    );
   }
 
   return (
@@ -219,16 +230,19 @@ export default function SubjectCell(props:SubjectCellProps) {
           </AlignItems>
           <Stack>
             <Input
+              fullWidth
               value={subjectCellName}
               onChange={(e)=>setSubjectCellName(e.target.value)}
               placeholder={'科目名'}
             />
             <Input
+              fullWidth
               value={subjectCellLink}
               onChange={(e)=>setSubjectCellLink(e.target.value)}
               placeholder={'URLリンク'}
             />
             <Input
+              fullWidth
               value={subjectCellDescription}
               onChange={(e)=>setSubjectCellDescription(e.target.value)}
               placeholder={'概要・教室名等'}
@@ -237,7 +251,7 @@ export default function SubjectCell(props:SubjectCellProps) {
           <Button
             icon={<FiSave/>}
             onClick={(e:any)=>{
-              // saveSubjectData(e);
+              saveSubjectData(e);
               toast('保存完了！');
             }}
           >
