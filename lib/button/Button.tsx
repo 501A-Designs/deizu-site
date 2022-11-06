@@ -58,6 +58,9 @@ const ButtonStyled = styled('button', {
         'span':{
           display:'none'
         },
+        '&:hover': {
+          transform:'scale(1.06) rotate(180deg)'
+        },
       },
       medium:{
         padding: '$2 $3',
@@ -92,7 +95,7 @@ const ButtonStyled = styled('button', {
 
 interface ButtonProps extends React.ComponentProps<typeof ButtonStyled>{
   icon: any,
-  children: string,
+  children?: string,
 }
 
 export default function Button(props:ButtonProps) {

@@ -9,13 +9,13 @@ import Stack from '../../../../lib/style/Stack'
 
 import { useRouter } from 'next/router'
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth,db } from '../../../../src/service/firebase'
 import { doc, setDoc, serverTimestamp} from "firebase/firestore";
 import StaticScene from '../../../../lib/style/StaticScene'
 import { NextSeo } from 'next-seo';
 import { FiArrowLeft, FiArrowRightCircle, FiPlus } from 'react-icons/fi';
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import BodyCenter from '../../../../lib/style/BodyCenter'
+import { auth } from '../../../../src/service/firebase'
 
 export default function Index() {
   const router = useRouter();
@@ -29,26 +29,26 @@ export default function Index() {
 
   const [loading, setLoading] = useState(false)
 
-  const createScheduleSheet = async (e:any) =>{
-    e.preventDefault();
-    setLoading(true);
-    if (user) {      
-      const docRef = doc(db, `users/${user.uid}`);
-      await setDoc(docRef,
-        {
-          sheets:{
-            [sheetName]: {
-              date: serverTimestamp(),
-              sharing: false,
-              backgroundImageUrl: sheetBackgroundImageUrl,
-              bannerImageUrl: sheetBannerImageUrl,
-            }
-          },
-        }, { merge: true }
-      );
-      router.push(`/user/${user.uid}/sheet/${sheetName}`)
-    }
-  }
+  // const createScheduleSheet = async (e:any) =>{
+  //   e.preventDefault();
+  //   setLoading(true);
+  //   if (user) {      
+  //     const docRef = doc(db, `users/${user.uid}`);
+  //     await setDoc(docRef,
+  //       {
+  //         sheets:{
+  //           [sheetName]: {
+  //             date: serverTimestamp(),
+  //             sharing: false,
+  //             backgroundImageUrl: sheetBackgroundImageUrl,
+  //             bannerImageUrl: sheetBannerImageUrl,
+  //           }
+  //         },
+  //       }, { merge: true }
+  //     );
+  //     router.push(`/user/${user.uid}/sheet/${sheetName}`)
+  //   }
+  // }
 
   return (
     <>
@@ -58,26 +58,27 @@ export default function Index() {
       />
       {user ?
         <BodyCenter>
-          {!loading &&
-            <AlignItems gap={'small'}>
-              <Button
-                size={'small'}
-                icon={<FiArrowLeft/>}
-                onClick={() =>
-                  {section === 0 ?
-                    router.push(`/user/${user.uid}/`):
-                    section === 1 ? setSection(0):setSection(1)
+          <>
+            {!loading &&
+              <AlignItems gap={'small'}>
+                <Button
+                  size={'small'}
+                  icon={<FiArrowLeft/>}
+                  onClick={() =>
+                    {section === 0 ?
+                      router.push(`/user/${user.uid}/`):
+                      section === 1 ? setSection(0):setSection(1)
+                    }
                   }
-                }
-              >
-                戻る
-              </Button>
-              <h2>
-                {sheetName && section > 0 ? sheetName:'新規作成'}
-              </h2>
-            </AlignItems>
-          }
-          <div>
+                >
+                  戻る
+                </Button>
+                <h2>
+                  {sheetName && section > 0 ? sheetName:'新規作成'}
+                </h2>
+              </AlignItems>
+            }
+
             {section === 0 &&
               <p>
                 新しい時間割表のタイトルは一度指定すると変更することはできないのでご了承ください。なお、今まで作った時間割と重複しないようなタイトルにしてください。時間割表のタイトルを入力すると、作成ボタンが表示されます。
@@ -104,7 +105,7 @@ export default function Index() {
               </div>
             }
             {section === 2 && !loading &&
-              <div>
+              <>
                 <p>
                   時間割表の後ろには背景画像を表示することができます。なお、指定する際にはバナー画像と同様、正規な画像URLを入力する必要がございます：
                 </p>
@@ -121,9 +122,9 @@ export default function Index() {
                     src={'/background.png'}
                   />
                 </AlignItems>
-              </div>
+              </>
             }
-          </div>
+          </>
 
           <Stack>
             {section === 0 &&
@@ -188,7 +189,8 @@ export default function Index() {
               </>
             }
           </Stack>
-        </BodyCenter>:<StaticScene type="notLoggedIn"/>
+        </BodyCenter>:
+        <StaticScene type={'notLoggedIn'}/>
       }
     </>
   )

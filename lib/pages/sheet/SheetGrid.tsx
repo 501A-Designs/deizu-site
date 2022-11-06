@@ -27,6 +27,7 @@ const DayOfWeekStyled = styled('div',{
   textAlign: 'center',
   padding: '0.5em',
   color: '$system4',
+  borderRadius: '$2 $2 $1 $1',
 
   // scaleFont
   variants:{
@@ -41,14 +42,6 @@ const DayOfWeekStyled = styled('div',{
         border: '1px solid transparent',
       }
     },
-    edge:{
-      true:{
-        borderRadius: '$2 $2 $2 $1',
-      },
-      false:{
-        borderRadius: '$2 $2 $1 $1',
-      }
-    }
   }
 })
 
@@ -181,7 +174,6 @@ export default function SheetGrid(props:EditorProps) {
           return (
             <DayOfWeekStyled
               today={moment().format('d') == `${dayOfWeek.indexOf(day)+1}`}
-              edge={moment().format('d') == '6'}
             >
               {day}
             </DayOfWeekStyled>

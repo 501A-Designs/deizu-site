@@ -21,49 +21,12 @@ import { SheetDataTypes } from '../sheet/Editor';
 interface SheetContainerProps {
   user:any,
   sheetDataArray:any | SheetDataTypes[],
+  currentView:number
 }
 
-{/* <>
-<Container
-  index={'inner'}
-  styleType={"filled"}
->
-  <ol>
-    <li>時間割表を作成</li>
-    <li>科目や時間を入力する</li>
-    <li>友達や家族と共有！</li>
-  </ol>
-</Container>
-<Container styleType="transparent">
-  <AlignItems justifyContent={'center'}>
-    <AlignItems
-      justifyContent={'center'}
-      flexDirection={'column'}
-    >
-      <span
-        style={{
-          fontSize: '2em',
-          color: 'var(--system3)'
-        }}
-      >
-        <FiCalendar/>
-      </span>
-      <h3 style={{color: 'var(--system3)'}}>
-        時間割表が作成されていません
-      </h3>
-      <AlignItems>
-        <Button
-          onClick={() => router.push(`/user/${user.uid}/sheet`)}
-          icon={<FiPlus/>}
-        >
-          新規作成
-        </Button>
-      </AlignItems>
-    </AlignItems>
-  </AlignItems>
-</Container>
-</> */}
-
+const SheetContainerStyled = styled('div',{
+  width:'100%'
+})
 
 const TotalText = styled('p',{
   userSelect:'none',
@@ -102,7 +65,7 @@ export default function SheetContainer(props:SheetContainerProps) {
   }
   
   return (
-    <>
+    <SheetContainerStyled>
       {v2SheetData?.data()?.sheets ?
         <Alert
           open={true}
@@ -124,6 +87,11 @@ export default function SheetContainer(props:SheetContainerProps) {
         >
         </Alert>:
         <Stack gap={'0'}>
+          {props.currentView === 2 &&
+            <Container>
+              bruh
+            </Container>
+          }
           {sheetDataArray?.docs.map((sheetDoc:SheetDocTypes) =>
             <SheetButton
               key={sheetDoc.id}
@@ -138,12 +106,27 @@ export default function SheetContainer(props:SheetContainerProps) {
               {sheetDoc.data().title}
             </SheetButton>
           )}
-          {sheetDataArray &&
-            <AlignItems justifyContent={'right'}>
-              <TotalText>
-                合計：{sheetDataArray.docs.length}枚
-              </TotalText> 
-            </AlignItems>
+          {sheetDataArray && 
+            <>
+              {
+                sheetDataArray.docs.length === 0 &&
+                <Container>
+                  <AlignItems
+                    justifyContent={'center'}
+                  >
+                    <FiCalendar/>
+                    <h4>
+                      時間割表が作成されていません
+                    </h4>
+                  </AlignItems>
+                </Container>
+              }
+              <AlignItems justifyContent={'right'}>
+                <TotalText>
+                  合計：{sheetDataArray.docs.length}枚
+                </TotalText> 
+              </AlignItems>
+            </>
           }
         </Stack>
       }
@@ -156,6 +139,6 @@ export default function SheetContainer(props:SheetContainerProps) {
           <MoonLoader size={30}/>
         </AlignItems>
       }
-    </>
+    </SheetContainerStyled>
   )
 }

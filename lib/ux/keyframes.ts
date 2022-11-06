@@ -22,7 +22,6 @@ const popOutLeftTop = keyframes({
   }
 });
 
-
 const popOut = keyframes({
   '0%': {
     transform: 'scale(0.5)',

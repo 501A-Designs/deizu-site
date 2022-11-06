@@ -42,7 +42,7 @@ export const { styled, css, config } = createStitches({
       xm:'0.9em',
       m:'0.8em',
       s:'0.75em',
-    }
+    },
   },
   media: {
     bp1: '(max-width: 700px)',

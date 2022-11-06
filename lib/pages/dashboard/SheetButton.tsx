@@ -15,11 +15,9 @@ const SheetButtonStyled = styled(ContextMenu.Trigger, {
   height: 'fit-content',
   backgroundColor: '$system1',
   width:'100%',
-
   borderBottom: '1px solid transparent',
   borderImage: 'linear-gradient(90deg, $system1 0%, $system2 50%, $system1 100%)',
   borderImageSlice: 1,
-
   transition: '$speed1',
 
   'p':{
@@ -72,7 +70,7 @@ const ContentStyled = styled(ContextMenu.Content, {
   border:'1px solid $system2',
   width:'250px',
   boxShadow:'$heavy',
-  animation: `${popOutLeftTop} 0.5s ease-out`,
+  animation: `${popOutLeftTop} 0.3s ease-out`,
 });
 
 const ItemStyled = styled(ContextMenu.Item, {
@@ -88,6 +86,7 @@ const ItemStyled = styled(ContextMenu.Item, {
   '&:hover':{
     backgroundColor:'$system2',
     border:'1px solid $system2',
+    transform: 'scale(1.02)'
   },
   variants:{
     color:{

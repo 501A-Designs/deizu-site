@@ -12,6 +12,8 @@ import AlignItems from '../../lib/style/AlignItems';
 import { signOut } from 'firebase/auth'
 import { useRouter } from 'next/router';
 import { FiLogOut } from 'react-icons/fi';
+import ProfileImage from '../../lib/pages/dashboard/ProfileImage';
+import BodyCenter from '../../lib/style/BodyCenter';
 
 export default function Index() {
   const [user] = useAuthState(auth);
@@ -23,23 +25,17 @@ export default function Index() {
         <>
           <NextSeo
             title={`ダッシュボード`}
-            description={`${user.displayName.split(' ')[0]}さんのDEIZUダッシュボード`}
+            description={`${user?.displayName?.split(' ')[0]}さんのDEIZUダッシュボード`}
           />
-          <BodyMargin>
+          <BodyCenter>
             <AlignItems
-              style={{
-                flexDirection: 'column',
-                justifyContent: 'center'
-              }}
+              flexDirection={'column'}
+              justifyContent={'center'}
             >
-              <img
+              <ProfileImage
                 src={user.photoURL}
-                style={{
-                  borderRadius: 'var(--r10)',
-                  border:'1px solid var(--system1',
-                  boxShadow:'0 8px 30px rgba(0, 0, 0, 0.12)',
-                  borderRadius:50,
-                }}
+                width={'80px'}
+                height={'80px'}
               />
               <h1>{user.displayName}</h1>
               <p style={{marginTop:0}}>{user.email}</p>
@@ -53,7 +49,7 @@ export default function Index() {
                 ログアウト
               </Button>
             </AlignItems>
-          </BodyMargin>
+          </BodyCenter>
         </>:<StaticScene type={'notLoggedIn'}/>
       }
     </>

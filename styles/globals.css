@@ -187,8 +187,3 @@ a {
 		transform: perspective(200px) rotateX(5deg) rotateY(2deg);
 	}
 }
-
-.profileImage{transition:0.5s}
-.profileImage:hover{
-	opacity: 0.5;
-}
