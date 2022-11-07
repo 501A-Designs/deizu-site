@@ -5,22 +5,25 @@ import { FiPlus, FiCheck } from "react-icons/fi";
 import gradient from 'random-gradient'
 import Button from './Button';
 import { styled } from '../../stitches.config';
-import { Router, useRouter } from 'next/router';
+import { useRouter } from 'next/router';
+import Heading from '../component/Heading';
 
-const LargeImageButtonStyled = styled('div',{
+const DataSheetButtonStyled = styled('div',{
   minWidth: '200px',
-  border:'1px solid $system2',
+  color:'$system4',
+
+  borderBottom: '1px solid transparent',
+  borderImage: 'linear-gradient(90deg, $system1 0%, $system2 50%, $system1 100%)',
+  borderImageSlice: 1,
+
   borderRadius:'$2',
-  padding: '1em',
+  padding: '$1',
   transition:'$speed1',
   cursor: 'pointer',
-  backgroundColor:'$system2',
-  '&:hover':{
-    backgroundColor: '$system1',
-  }
+  backgroundColor:'$system1',
 })
 // Nested Image
-const LargeImageButtonImageStyled = styled('div', {
+const DataSheetButtonImageStyled = styled('div', {
   borderRadius:'$2',
   width:'3.5em',
   height:'3.5em',
@@ -35,7 +38,7 @@ const LargeImageButtonImageStyled = styled('div', {
   }
 })
 
-interface LargeImageButtonProps extends React.ComponentProps<typeof LargeImageButtonStyled>{
+interface DataSheetButtonProps extends React.ComponentProps<typeof DataSheetButtonStyled>{
   imageSource?:string,
   dataSheetId:string,
   displayAddButton:boolean,
@@ -44,31 +47,25 @@ interface LargeImageButtonProps extends React.ComponentProps<typeof LargeImageBu
 }
 
 
-export default function LargeImageButton(props:LargeImageButtonProps) {
+export default function DataSheetButton(props:DataSheetButtonProps) {
   let router = useRouter();
-
   return (
-    <LargeImageButtonStyled>
+    <DataSheetButtonStyled>
       <AlignItems justifyContent={'spaceBetween'}>
         <AlignItems
           gap={'medium'}
           onClick={()=>router.push(`/datasheet/${props.dataSheetId}/`)}
         >
-          <LargeImageButtonImageStyled
+          <DataSheetButtonImageStyled
             imageSource={props.imageSource ? true:false}
             css={{
               background:gradient(props.dataSheetId),
               backgroundImage:props.imageSource,
             }}
           />
-          <h4
-            style={{
-              padding: 0,
-              margin: 0,
-            }}
-          >
+          <Heading type={'h3'}>
             {props.children}
-          </h4>
+          </Heading>
         </AlignItems>
         {props.displayAddButton && 
           <>
@@ -90,6 +87,6 @@ export default function LargeImageButton(props:LargeImageButtonProps) {
           </>
         }
       </AlignItems>
-    </LargeImageButtonStyled>
+    </DataSheetButtonStyled>
   )
 }

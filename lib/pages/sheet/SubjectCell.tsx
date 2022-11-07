@@ -40,7 +40,7 @@ const SubjectCellStyled= styled('div', {
   },
 })
 const SubjectCellNameStyled = styled('h4', {
-  color: '$textColor1',
+  color: '$system4',
   textAlign: 'center',
   '@bp1':{
     justifyContent: 'space-between',
@@ -180,10 +180,7 @@ export default function SubjectCell(props:SubjectCellProps) {
     >
       {viewOnly ?
         <p>編集するにはオーナーにDeizuのユーザーIDを共有する必要があります。</p>:
-        <Stack
-          gap={'1em'}
-          style={{paddingTop:'1em'}}
-        >
+        <Stack gap={'1em'}>
           <MockupCell
             subjectCellName = {subjectCellName}
             subjectCellLink = {subjectCellLink}
@@ -216,7 +213,7 @@ export default function SubjectCell(props:SubjectCellProps) {
           } */}
           <AlignItems justifyContent={'center'}>
             <ColorButton
-              color={'var(--system1)'}
+              color={'$system2'}
               onClick={() => setSubjectCellColor('')}
             />
             {buttonColor.map((props)=>

@@ -13,7 +13,7 @@ const ButtonStyled = styled('button', {
   variants:{
     styleType:{
       fill:{
-        color: '$textColor2',
+        color: '$system1',
         backgroundColor: '$system4',
         border: '1px solid $system1',
         '&:hover': {
@@ -22,7 +22,7 @@ const ButtonStyled = styled('button', {
         },
       },
       noFill:{
-        color: '$textColor1',
+        color: '$system4',
         backgroundColor: '$system2',
         border: '1px solid $system1',
         '&:hover': {
@@ -31,23 +31,23 @@ const ButtonStyled = styled('button', {
         },
       },
       outline:{
-        color: '$textColor1',
+        color: '$system4',
         backgroundColor: '$system1',
         border: '1px solid $system3',
         // boxShadow: '0 0 2px $system2',
         '&:hover': {
-          color: '$textColor2',
+          color: '$system1',
           backgroundColor: '$system4',
           transform:'scale(1.02)'
         },
       },
       primary:{
-        color: '$textColor2',
+        color: '$system1',
         backgroundColor: '$system4',
         border: '1px solid $system1',
         '&:hover': {
-          boxShadow: '0 8px 10px var(--system1)',
-          transform:'scale(1.02)'
+          boxShadow: '$heavy',
+          transform:'scale(1.06) rotate(180deg)'
         },
       }
     },
@@ -57,9 +57,6 @@ const ButtonStyled = styled('button', {
         fontSize:'$xxl',
         'span':{
           display:'none'
-        },
-        '&:hover': {
-          transform:'scale(1.06) rotate(180deg)'
         },
       },
       medium:{

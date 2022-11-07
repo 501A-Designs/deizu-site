@@ -6,7 +6,7 @@ const MockupCellStyled = styled('div',{
     justifyContent: 'center',
     flexDirection: 'column',
     alignItems: 'center',
-    color: '$textColor1',
+    color: '$system4',
     borderRadius:'$2',
     fontWeight: 'bold',
     transition: '$speed1',
@@ -20,8 +20,8 @@ const MockupCellNameStyled = styled('h4',{
 const MockupCellDescriptionStyled = styled('p',{
     fontWeight: 'normal',
     fontSize: '0.8em',
-    backgroundColor: '$system4',
-    color: '$textColor2',
+    backgroundColor: '$system1',
+    color: '$system4',
     borderRadius:'$1',
     padding: '5px 10px',
     width: 'fit-content',
@@ -37,8 +37,8 @@ export default function MockupCell(props) {
                 height: `${props.height ? props.height :'85px'}`,
                 width: `${props.width ? props.width:'fit-content'}`,
                 margin: `${props.margin ? props.margin :'auto'}`,
-                backgroundColor: `${props.subjectCellColor ? props.subjectCellColor:'var(--system1)'}`,
-                border:`1px solid ${props.subjectCellColor ? props.subjectCellColor:'var(--system1)'}`,
+                backgroundColor: `${props.subjectCellColor ? props.subjectCellColor:'$system2'}`,
+                border:`1px solid ${props.subjectCellColor ? props.subjectCellColor:'$system2'}`,
             }}
         >
             <MockupCellNameStyled

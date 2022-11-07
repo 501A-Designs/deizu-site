@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@formkit/auto-animate": "^1.0.0-beta.3",
+    "@radix-ui/colors": "^0.1.8",
     "@radix-ui/react-alert-dialog": "^1.0.2",
     "@radix-ui/react-context-menu": "^2.0.1",
     "@radix-ui/react-dialog": "^1.0.2",
@@ -22,6 +23,7 @@
     "moment": "^2.29.3",
     "next": "^12.1.7-canary.5",
     "next-seo": "^5.4.0",
+    "next-themes": "^0.2.1",
     "random-gradient": "^0.0.2",
     "rc-switch": "^3.2.2",
     "react": "18.0.0",

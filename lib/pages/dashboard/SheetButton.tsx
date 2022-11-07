@@ -7,10 +7,15 @@ import { fadeIn, popOut, popOutLeftTop } from '../../ux/keyframes';
 import { FiTrash } from 'react-icons/fi';
 import { styled } from '../../../stitches.config';
 import AlignItems from '../../style/AlignItems';
+import { TooltipLabel } from '../../component/TooltipLabel';
+import Tag from '../../component/Tag';
+import Stack from '../../style/Stack';
+import moment from 'moment';
+import Heading from '../../component/Heading';
 
 const SheetButtonStyled = styled(ContextMenu.Trigger, {
   fontSize:'$l',
-  padding: '0.8em',
+  padding: '$2',
   cursor: 'pointer',
   height: 'fit-content',
   backgroundColor: '$system1',
@@ -19,16 +24,6 @@ const SheetButtonStyled = styled(ContextMenu.Trigger, {
   borderImage: 'linear-gradient(90deg, $system1 0%, $system2 50%, $system1 100%)',
   borderImageSlice: 1,
   transition: '$speed1',
-
-  'p':{
-    padding: 0,
-    margin: 0,
-    height: 'fit-content',
-  },
-  'span':{
-    color:'$textColor1',
-    fontSize:'$m'
-  },
   'time':{
     color:'$system4',
     fontSize:'0.8em',
@@ -48,15 +43,15 @@ const SheetButtonStyled = styled(ContextMenu.Trigger, {
 });
 const GradientPlaceholderStyled = styled('div', {
   borderRadius:'$1',
-  width:'2.5em',
-  height:'2.5em',
+  width:'5.2em',
+  height:'5.2em',
   border:'1px solid $system1',
   boxShadow:'$light',
 });
 const ButtonImageStyled = styled('img', {
   borderRadius:'$1',
-  width:'2.5em',
-  height:'2.5em',
+  width:'5.2em',
+  height:'5.2em',
   objectFit:'cover',
   backgroundColor:'$system2',
   border:'1px solid $system1',
@@ -83,6 +78,7 @@ const ItemStyled = styled(ContextMenu.Item, {
   cursor:'pointer',
   fontSize:'$xm',
   transition:'$speed1',
+  color:'$system4',
   '&:hover':{
     backgroundColor:'$system2',
     border:'1px solid $system2',
@@ -115,12 +111,29 @@ export default function SheetButton(props:any) {
                 css={{background:gradient(props.children)}}
               />
             }
-            <AlignItems>
-              <p>{props.children}</p>
-              {props.sharing && <span title="リンク共有が有効されています"><FiUsers/></span>}
-            </AlignItems>
+            <Stack>
+              <Heading type={'h2'}>{props.children}</Heading>
+              <time>{moment(props.date).format("MMM Do dddd")}</time>
+            </Stack>
           </AlignItems>
-          <time>{props.date}</time>
+          <AlignItems>
+            {props.sharing && 
+              <Tag
+                icon={<FiUsers/>}
+                color={'blue'}
+              >
+                共有中
+              </Tag>
+            }
+            {props.archived &&
+              <Tag
+                icon={<FiArchive/>}
+                color={'orange'}
+              >
+                アーカイブ済み
+              </Tag>
+            }
+          </AlignItems>
         </AlignItems>
       </SheetButtonStyled>
 

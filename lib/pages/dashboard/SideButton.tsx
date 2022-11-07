@@ -3,6 +3,7 @@ import { keyframes } from '@stitches/react';
 import React from 'react';
 import { styled } from '../../../stitches.config';
 import { TooltipLabel } from '../../component/TooltipLabel';
+import { popOut } from '../../ux/keyframes';
 
 const SideButtonStyled = styled('button', {
   fontSize:'$xm',
@@ -13,17 +14,18 @@ const SideButtonStyled = styled('button', {
   display:'flex',
   alignItems:'center',
   justifyContent:'center',
-  transition: '$speed1',
   borderRadius:'$2',
+  transition: '$speed1',
   variants:{
     selected:{
       true:{
-        color: '$textColor2',
-        backgroundColor: '$system4',
-        border: '1px solid $system4',
+        animation:`${popOut} 0.3s`,
+        color: '$system4',
+        backgroundColor: '$system2',
+        border: '1px solid $system3',
       },
       false:{
-        color: '$textColor1',
+        color: '$system4',
         backgroundColor: 'transparent',
         border: '1px solid transparent',
         '&:hover': {

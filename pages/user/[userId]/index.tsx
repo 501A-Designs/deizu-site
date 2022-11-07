@@ -25,7 +25,7 @@ import ImageContainer from '../../../lib/pages/sheet/ImageContainer';
 import Input from '../../../lib/component/Input';
 
 import { NextSeo } from 'next-seo';
-import { FiChevronLeft, FiChevronRight, FiEdit2, FiImage, FiPlus, FiSave, FiSmile,FiArchive, FiCircle, FiExternalLink, FiFolder, FiFolderPlus, FiHeart, FiMoreHorizontal, FiDatabase } from 'react-icons/fi';
+import { FiChevronLeft, FiChevronRight, FiEdit2, FiImage, FiPlus, FiSave, FiSmile,FiArchive, FiCircle, FiExternalLink, FiFolder, FiFolderPlus, FiHeart, FiMoreHorizontal, FiDatabase, FiUsers } from 'react-icons/fi';
 
 
 
@@ -83,11 +83,13 @@ function IndivisualUser() {
 
 
   const DashBoardAlignStyled = styled('div',{
+    minHeight:'100vh',
     '@bp1':{
       gap:'1em',
     },
     '@bp2_':{
-      display:'flex',
+      display:'grid',
+      gridTemplateColumns:'1fr 6fr',
       gap:'2em',
     }
   })
@@ -123,14 +125,11 @@ function IndivisualUser() {
 
 
   const [modalSection, setModalSection] = useState(0);
-  const [currentView, setCurrentView] = useState(0);
-  const [sheetDataArray, sheetDataArrayLoading] = 
-  useCollection<DocumentData>(
-    query(
-      collection(db, `users/${user?.uid}/scheduleGrid/`),
-      where('archived', '==', currentView === 0 ? false:true)
-    )
-  );
+  const [currentView, setCurrentView] = useState('main');
+  const sheetCollectionRef = collection(db, `users/${user?.uid}/scheduleGrid/`);
+  const [allSheetDataArray, allSheetDataArrayLoading] = useCollection<DocumentData>(query(sheetCollectionRef, where('archived', '==', false)));
+  const [allSharedSheetDataArray, allSharedSheetDataArrayLoading] = useCollection<DocumentData>(query(sheetCollectionRef, where('sharing', '==', true)));
+  const [allArchivedSheetDataArray, allArchivedSheetDataArrayLoading] = useCollection<DocumentData>(query(sheetCollectionRef,where('archived', '==', true)));
 
   return (
     <>
@@ -161,8 +160,7 @@ function IndivisualUser() {
                         height='45px'
                         src={user.photoURL}
                         onClick={() => router.push('/user')}
-                      >
-                      </ProfileImage>
+                      />
                     }
                     side={'right'}
                   >
@@ -171,22 +169,29 @@ function IndivisualUser() {
                   <SideBarStyled>
                     <SideButton
                       icon={<FiFolder/>}
-                      selected={currentView == 0}
-                      onClick={()=> setCurrentView(0)}
+                      selected={currentView == 'main'}
+                      onClick={()=> setCurrentView('main')}
+                    >
+                      時間割表を開く
+                    </SideButton>
+                    <SideButton
+                      icon={<FiUsers/>}
+                      selected={currentView == 'shared'}
+                      onClick={()=> setCurrentView('shared')}
                     >
                       時間割表を開く
                     </SideButton>
                     <SideButton
                       icon={<FiArchive/>}
-                      selected={currentView == 1}
-                      onClick={()=> setCurrentView(1)}
+                      selected={currentView == 'archive'}
+                      onClick={()=> setCurrentView('archive')}
                     >
                       アーカイブを開く
                     </SideButton>
                     <SideButton
                       icon={<FiDatabase/>}
-                      selected={currentView == 2}
-                      onClick={()=> setCurrentView(2)}
+                      selected={currentView == 'datasheet'}
+                      onClick={()=> setCurrentView('datasheet')}
                     >
                       作成したデータシートを見る
                     </SideButton>
@@ -257,42 +262,60 @@ function IndivisualUser() {
                     </Dialog>
                   </SideBarStyled>
                 </SideBarContainerStyled>
-                {currentView < 2 &&
+                {currentView == 'main' &&
                   <SheetContainer
+                    title={'Main'}
                     user={user}
-                    sheetDataArray={sheetDataArray}
+                    sheetDataArray={allSheetDataArray}
+                    currentView={currentView}
+                  />
+                }
+                {currentView == 'shared' &&
+                  <SheetContainer
+                    title={'Sharing'}
+                    user={user}
+                    sheetDataArray={allSharedSheetDataArray}
+                    currentView={currentView}
+                  />
+                }
+                {currentView == 'archive' &&
+                  <SheetContainer
+                    title={'Archive'}
+                    user={user}
+                    sheetDataArray={allArchivedSheetDataArray}
                     currentView={currentView}
                   />
                 }
               </DashBoardAlignStyled>
-            </BodyMargin>
-            <Footer
-              css={{
-                background: 'linear-gradient(transparent, $system2)',
-                paddingBottom:'2em'
-              }}
-            >
-              <AlignItems
-                justifyContent={'center'}
+              <Footer
+                css={{
+                  background: 'radial-gradient(at bottom, $system2,transparent 60%)',
+                  backgroundPosition:'bottom',
+                  paddingBottom:'2em'
+                }}
               >
-                <TooltipLabel
-                  trigger={                     
-                    <Button
-                      size={'extraLarge'}
-                      styleType={'primary'}
-                      shape={'round'}
-                      icon={<FiPlus/>}
-                      onClick={() => 
-                        router.push(`/user/${user.uid}/sheet`)
-                      }
-                    />
-                  }
-                  side={'top'}
+                <AlignItems
+                  justifyContent={'center'}
                 >
-                  新規作成
-                </TooltipLabel>
-              </AlignItems>
-            </Footer>
+                  <TooltipLabel
+                    trigger={                     
+                      <Button
+                        size={'extraLarge'}
+                        styleType={'primary'}
+                        shape={'round'}
+                        icon={<FiPlus/>}
+                        onClick={() => 
+                          router.push(`/user/${user.uid}/sheet`)
+                        }
+                      />
+                    }
+                    side={'top'}
+                  >
+                    新規作成
+                  </TooltipLabel>
+                </AlignItems>
+              </Footer>
+            </BodyMargin>
             </>
           }
         </>

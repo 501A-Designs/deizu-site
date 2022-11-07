@@ -1,8 +1,11 @@
 import '../styles/globals.css'
+import { AppProps } from 'next/app';
+// import { ThemeProvider } from "next-themes";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+// import { darkTheme } from '../stitches.config';
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <ToastContainer
@@ -27,7 +30,16 @@ function MyApp({ Component, pageProps }) {
         draggable
         pauseOnHover
       />
-      <Component {...pageProps} />
+      {/* <ThemeProvider
+        attribute="class"
+        defaultTheme="system"
+        value={{
+          light: "light",
+          dark: darkTheme.className
+        }}
+      > */}
+        <Component {...pageProps} />
+      {/* </ThemeProvider> */}
     </>
   )
 }

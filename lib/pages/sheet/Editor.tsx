@@ -21,9 +21,10 @@ import moment from 'moment';
 import { doc, updateDoc, deleteField,collection, getDocs, DocumentData } from "firebase/firestore";
 import { db } from "../../../src/service/firebase";
 import { useCollection } from "react-firebase-hooks/firestore";
-import LargeImageButton from "../../button/DataSheetButton";
+import DataSheetButton from "../../button/DataSheetButton";
 import Input from "../../component/Input";
 import TextPreview from "../../component/TextPreview";
+import Heading from "../../component/Heading";
 // import { SheetDataTypes } from "../../../pages/user/[userId]/sheet/[id]";
 
 export interface SheetDataTypes {
@@ -31,6 +32,7 @@ export interface SheetDataTypes {
   cells:any,
   date:any,
   sharing:boolean,
+  archived:boolean,
   location:string,
   bannerImageUrl?:string,
   backgroundImageUrl?:string,
@@ -204,7 +206,7 @@ export default function Editor(props:EditorProps) {
                     </SectionButton></>
                   }
                   {modalSection !== 0 &&
-                    <Stack>
+                    <Stack gap={'0'}>
                       <SectionButton
                         onClick={()=>setModalSection(0)}
                         leftIcon={<FiArrowLeft/>}
@@ -218,7 +220,7 @@ export default function Editor(props:EditorProps) {
                               {
                                 dataSheetData?.docs.map((datasheet) =>{
                                   return (
-                                    <LargeImageButton
+                                    <DataSheetButton
                                       key={datasheet.id}
                                       displayAddButton={true}
                                       dataSheetId={datasheet.id}
@@ -230,7 +232,7 @@ export default function Editor(props:EditorProps) {
                                       }
                                     >
                                       {datasheet.data().dataSheetName}
-                                    </LargeImageButton>
+                                    </DataSheetButton>
                                   )
                                 })
                               }
@@ -388,15 +390,15 @@ export default function Editor(props:EditorProps) {
               <h5>
                 {/* 最終変更時：{sheetData.date.toDate().toDateString()} */}
               </h5>
-              <h4>
+              <Heading type={'h5'}>
                 {moment().format('LT')}｜
                 {moment().format('dddd')}｜
                 {moment().format('MMMM Do YYYY')}
-              </h4>
+              </Heading>
             </>:
             <>
-              <h2>Deizu</h2>
-              <p>Designed & Developed By 501A</p>
+              <Heading type={'h3'}>Deizu</Heading>
+              <Heading type={'h5'}>Designed & Developed By 501A</Heading>
             </>
           }
         </AlignItems>

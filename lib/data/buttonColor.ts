@@ -1,0 +1,18 @@
+export const buttonColor:string[] = [
+    "$red7",
+    "$blue7",
+    "$amber7",
+    "$green7",
+    "$pink7",
+    "$brown7",
+    "$purple7",
+    // "#ff9999",
+    // "#add8e6",
+    // "#ffde88",
+    // "#90ee90",
+    // "#ffc0cb",
+    // "#ffceff",
+    // "#e4c997",
+    // "#97e4c0",
+    // "#ffc74e",
+]

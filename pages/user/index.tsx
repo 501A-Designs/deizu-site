@@ -14,6 +14,7 @@ import { useRouter } from 'next/router';
 import { FiLogOut } from 'react-icons/fi';
 import ProfileImage from '../../lib/pages/dashboard/ProfileImage';
 import BodyCenter from '../../lib/style/BodyCenter';
+import Heading from '../../lib/component/Heading';
 
 export default function Index() {
   const [user] = useAuthState(auth);
@@ -37,8 +38,8 @@ export default function Index() {
                 width={'80px'}
                 height={'80px'}
               />
-              <h1>{user.displayName}</h1>
-              <p style={{marginTop:0}}>{user.email}</p>
+              <Heading type={'h1'}>{user.displayName}</Heading>
+              <Heading type={'h4'}>{user.email}</Heading>
               <Button
                 icon={<FiLogOut/>}
                 onClick={()=> {

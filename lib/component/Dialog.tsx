@@ -50,15 +50,15 @@ function Content({ children, ...props }:{children:any}) {
 }
 
 const StyledTitle = styled(DialogPrimitive.Title, {
+  color: '$system4',
   margin: 0,
   fontWeight: 500,
-  color: 'black',
   fontSize: 17,
 });
 
 const StyledDescription = styled(DialogPrimitive.Description, {
   margin: '10px 0 20px',
-  color: 'black',
+  color: '$system4',
   fontSize: 15,
   lineHeight: 1.5,
 });

@@ -2,11 +2,16 @@ import { useRouter } from 'next/router';
 import React from 'react'
 import { FiLogIn } from 'react-icons/fi';
 import { MoonLoader } from 'react-spinners';
+import { styled } from '../../stitches.config';
 // import { MoonLoader } from 'react-spinners';
 import Button from '../button/Button'
 import Container from '../component/Container';
+import Heading from '../component/Heading';
 import AlignItems from './AlignItems'
 
+const StaticSceneStyled = styled('div',{
+  backgroundColor:'$system1'
+})
 
 interface StaticSceneProps{
   type: 'notLoggedIn'|'loading'|'accessDenied'|'noMobile'
@@ -14,15 +19,15 @@ interface StaticSceneProps{
 
 export default function StaticScene({type}:StaticSceneProps) {
   const router = useRouter();
-
   return (
+    <StaticSceneStyled>
       <AlignItems
         minHeight={'100vh'}
         justifyContent={'center'}
       >
         {type == 'notLoggedIn' &&
           <Container styleType={'transparent'}>
-            <h1>:(</h1>
+            <Heading type={'h1'}>:(</Heading>
             <p>ログインする必要があります</p>
             <Button
               icon={<FiLogIn/>}
@@ -41,13 +46,13 @@ export default function StaticScene({type}:StaticSceneProps) {
         }
         {type == 'accessDenied' &&
           <Container styleType={'transparent'}>
-            <h1>:P</h1>
+            <Heading type={'h1'}>:P</Heading>
             <p>本ページはアクセスすることができません</p>
           </Container>
         }
         {type == 'noMobile' &&
           <Container styleType={'transparent'}>
-            <h1>:0</h1>
+            <Heading type={'h1'}>:0</Heading>
             <p>
               DEIZUはまだスマートフォン・パソコン以外のデバイスには対応しておりません。
               <br/>
@@ -56,5 +61,6 @@ export default function StaticScene({type}:StaticSceneProps) {
           </Container>
         }
       </AlignItems>
+    </StaticSceneStyled>
   )
 }

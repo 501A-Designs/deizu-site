@@ -17,11 +17,13 @@ import { ClipLoader, MoonLoader } from 'react-spinners';
 import { scheduleCellId } from '../../data/scheduleCellId';
 import { SheetDocTypes } from '../../../pages/user/[userId]';
 import { SheetDataTypes } from '../sheet/Editor';
+import Heading from '../../component/Heading';
 
 interface SheetContainerProps {
+  title:string,
   user:any,
   sheetDataArray:any | SheetDataTypes[],
-  currentView:number
+  currentView:string
 }
 
 const SheetContainerStyled = styled('div',{
@@ -34,9 +36,9 @@ const TotalText = styled('p',{
   marginTop:'$4',
   backgroundColor:'$system1',
   border:'1px solid $system2',
+  color:'$system4',
   padding:'$1 $3',
   borderRadius:'$3',
-  color:'$fontColor1',
   fontSize:'$s'
 })
 
@@ -57,6 +59,7 @@ export default function SheetContainer(props:SheetContainerProps) {
         date: serverTimestamp(),
         bannerImageUrl:v2SheetData?.data()?.[sheet].bannerImageUrl,
         backgroundImageUrl:v2SheetData?.data()?.[sheet].backgroundImageUrl,
+        archived:false
       })
     })
     updateDoc(userDoc, {
@@ -87,11 +90,12 @@ export default function SheetContainer(props:SheetContainerProps) {
         >
         </Alert>:
         <Stack gap={'0'}>
-          {props.currentView === 2 &&
-            <Container>
-              bruh
-            </Container>
-          }
+          <Heading
+            type={'h1'}
+            margin={'0 0 0.5em 0.5em'}
+          >
+            {props?.title}
+          </Heading>
           {sheetDataArray?.docs.map((sheetDoc:SheetDocTypes) =>
             <SheetButton
               key={sheetDoc.id}
@@ -101,6 +105,7 @@ export default function SheetContainer(props:SheetContainerProps) {
                 router.push(`/user/${props.user?.uid}/sheet/${sheetDoc.id}`);
               }}
               sharing={sheetDoc.data().sharing}
+              archived={sheetDoc.data().archived}
               date={sheetDoc.data().date.toDate().toDateString()}
             >
               {sheetDoc.data().title}

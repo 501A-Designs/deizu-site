@@ -1,17 +1,53 @@
+import {
+  gray,
+  grayDark,
+  blue,
+  blueDark,
+  red,
+  redDark,
+  green,
+  greenDark,
+  orange,
+  orangeDark,
+  amber,
+  amberDark,
+  pink,
+  pinkDark,
+  brown,
+  brownDark,
+  purple,
+  purpleDark,
+} from '@radix-ui/colors';
 import { createStitches } from '@stitches/react';
 
-export const { styled, css, config } = createStitches({
+export const { styled, css, config,createTheme } = createStitches({
   theme: {
     colors: {
       // Colors
-      system1: 'white',
-      system2: '#ececec',
-      system3: '#dbdbdb',
-      system4: 'black',
+      system1: '$gray1',
+      system2: '$gray4',
+      system3: '$gray7',
+      system4: '$gray12',
 
-      // Text Color
-      textColor1: 'black',
-      textColor2: 'white',
+      // Colors
+      ...gray,
+      ...grayDark,
+      ...blue,
+      ...blueDark,
+      ...red,
+      ...redDark,
+      ...green,
+      ...greenDark,
+      ...orange,
+      ...orangeDark,
+      ...amber,
+      ...amberDark,
+      ...pink,
+      ...pinkDark,
+      ...brown,
+      ...brownDark,
+      ...purple,
+      ...purpleDark,
     },
     space:{
       1:'5px',
@@ -61,3 +97,14 @@ export const { styled, css, config } = createStitches({
   //   marginX: (value) => ({ marginLeft: value, marginRight: value }),
   // },
 });
+
+// const darkTheme = createTheme({
+//   colors: {
+//     system1: '$grayDark1',
+//     system2: '$grayDark4',
+//     system3: '$grayDark7',
+//     system4: '$grayDark12',
+//   },
+// });
+
+// export {darkTheme}

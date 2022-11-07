@@ -5,11 +5,12 @@ const SectionButtonStyled = styled('div', {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
+  color:'$system4',
   height: 'fit-content',
-  backgroundColor:'$system1',
   borderRadius:'$2',
   padding: '0.7em 0.8em',
   cursor: 'pointer',
+  backgroundColor:'$system1',
   transition: '$speed1',
   '&:hover':{
     backgroundColor:'$system2',
@@ -18,8 +19,7 @@ const SectionButtonStyled = styled('div', {
 });
 const LeftIcon = styled('span', {
   border: '1px solid $system1',
-  color: '$textColor2',
-  backgroundColor: '$system4',
+  background: 'linear-gradient(45deg,$system2,$system3)',
   borderRadius: '$3',
   boxShadow:'$medium',
   width:'40px',

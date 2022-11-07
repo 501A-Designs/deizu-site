@@ -2,7 +2,8 @@ import React from 'react'
 import { styled } from '../../stitches.config'
 
 let ContainerStyled = styled('div',{
-  color: '$textColor1',
+  color: '$system4',
+  minWidth:'300px',
   height: 'fit-content',
   variants:{
     styleType:{

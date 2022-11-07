@@ -5,7 +5,7 @@ const ImageContainerStyled = styled('div',{
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   padding: '20px 30px',
-  color: '$textColor1',
+  color: '$system4',
   borderRadius: '$3',
   objectFit: 'cover',
   height: 'fit-content',
