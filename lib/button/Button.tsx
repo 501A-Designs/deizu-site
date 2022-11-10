@@ -12,7 +12,7 @@ const ButtonStyled = styled('button', {
 
   variants:{
     styleType:{
-      fill:{
+      noFill:{
         color: '$gray12',
         backgroundColor: '$gray4',
         border: '1px solid $gray5',
@@ -24,11 +24,14 @@ const ButtonStyled = styled('button', {
           transform:'scale(1.02)'
         },
       },
-      noFill:{
-        color: '$gray12',
-        backgroundColor: '$gray3',
-        border: '1px solid $gray3',
+      fill:{
+        color: '$gray1',
+        backgroundColor: '$gray12',
+        border: '1px solid $gray12',
         '&:hover': {
+          color: '$gray12',
+          border: '1px solid $gray4',
+          backgroundColor: '$gray3',
           boxShadow: '0 8px 10px $gray1',
           transform:'scale(1.02)'
         },
@@ -66,12 +69,12 @@ const ButtonStyled = styled('button', {
     },
     fullWidth:{
       true:{
-        width:'auto'
+        width:'100%'
       },
     }
   },
   defaultVariants:{
-    styleType:'fill',
+    styleType:'noFill',
     size:'medium',
     shape:'standard'
   }

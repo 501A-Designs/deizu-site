@@ -32,15 +32,20 @@ const SubjectCellStyled= styled('div', {
     border:'1px solid $gray5',
     // borderRadius: '$2',
   },
+  justifyContent: 'space-between',
   '@bp1':{
-    justifyContent: 'space-between',
     padding:'$1'
   },
   '@bp2_':{
-    justifyContent: 'center',
     gap:'$1',
     padding:'$2'
   },
+})
+const SubjectCellNameContainerStyled = styled('div',{
+  display:'flex',
+  alignItems:'center',
+  justifyContent: 'center',
+  height:'100%'
 })
 const SubjectCellNameStyled = styled('h5', {
   color: '$gray12',
@@ -69,11 +74,11 @@ const SubjectCellDescriptionStyled = styled('p', {
     padding:'2.5px $1'
   },
   '@bp3':{
-    fontSize: '0.65em',
+    fontSize: '$s',
     padding:'3px $1'
   },
   '@bp4':{
-    fontSize: '0.8em',
+    fontSize: '$m',
     padding:'$1 $2'
   },
 })
@@ -100,10 +105,6 @@ export default function SubjectCell(props:SubjectCellProps) {
     cellData[cellId] ?
     cellData[cellId]:''
   );
-  // console.log(cellData && 
-  //   cellData != undefined && 
-  //   cellData[cellId] ?
-  //   cellData[cellId]:'NOTHING')
   const [subjectCellDescription, setSubjectCellDescription] = useState<string>(
     cellData &&
     cellData != undefined && 
@@ -169,13 +170,15 @@ export default function SubjectCell(props:SubjectCellProps) {
             backgroundColor: `${subjectCellColor ? subjectCellColor:'$gray3'}`,
           }}
         >
-          <SubjectCellNameStyled
-            onClick={() => {
-              subjectCellLink && window.open(subjectCellLink, "_blank")
-            }}
-          >
-            {subjectCellName}
-          </SubjectCellNameStyled>
+          <SubjectCellNameContainerStyled>
+            <SubjectCellNameStyled
+              onClick={() => {
+                subjectCellLink && window.open(subjectCellLink, "_blank")
+              }}
+            >
+              {subjectCellName}
+            </SubjectCellNameStyled>
+          </SubjectCellNameContainerStyled>
           {subjectCellDescription && 
             <SubjectCellDescriptionStyled>
               {subjectCellDescription}

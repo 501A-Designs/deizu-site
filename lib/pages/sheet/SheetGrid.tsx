@@ -14,21 +14,18 @@ const SheetGridStyled = styled('div',{
   gridTemplateColumns:'0.5fr 1.5fr 1.5fr 1.5fr 1.5fr 1.5fr 1.5fr'
 })
 
-const DayOfWeekContainerStyled = styled('div',{
-  display: 'grid',
-  height: 'fit-content',
-  gap: '0.2em',
-  gridTemplateColumns:'',
-})
-
 const DayOfWeekStyled = styled('div',{
   userSelect: 'none',
   textAlign: 'center',
   padding: '0.5em',
   color: '$gray1',
-  borderRadius: '$3 $3 $1 $1',
-
-  // scaleFont
+  borderRadius: '$2 $2 $1 $1',
+  '@bp1':{
+    fontSize:'$s',
+  },
+  '@bp2_':{
+    fontSize:'$l',
+  },
   variants:{
     today:{
       true:{
@@ -44,21 +41,6 @@ const DayOfWeekStyled = styled('div',{
   }
 })
 
-const TimeCellGridStyled = styled('div',{
-  display: 'grid',
-  height: 'fit-content',
-  gap:'0.2em',
-  '@bp1_2':{
-    display:'none'
-  }
-})
-
-const SubjectCellGridStyled =  styled('div',{
-  display: 'grid',
-  gridTemplateColumns:'1fr 1fr 1fr 1fr 1fr 1fr',
-  gap: '0.2em'
-})
-
 const rows:number[] = [1,2,3,4,5,6,7]; // Or something else
 
 function Row(rowProps:any){
@@ -66,7 +48,10 @@ function Row(rowProps:any){
     <>
       <TimeCell
         key={rowProps.rowId}
+        viewOnly={rowProps.viewOnly}
         displayPeriod={rowProps.rowId}
+        timeData={rowProps.sheetData?.time}
+        user={rowProps.user}
       />
       {scheduleCellId[rowProps.rowId-1].map(cellId =>
         <SubjectCell
@@ -90,8 +75,8 @@ export default function SheetGrid(props:EditorProps) {
 
   return (
     <Stack>
-      <DayOfWeekContainerStyled>
-        <TimeCellGridStyled/>
+      <SheetGridStyled>
+        <br/>
         {dayOfWeek.map(day =>{
           return (
             <DayOfWeekStyled
@@ -101,8 +86,6 @@ export default function SheetGrid(props:EditorProps) {
             </DayOfWeekStyled>
           )
         })}
-      </DayOfWeekContainerStyled>
-      <SheetGridStyled>
         {
           rows.map(rowId => {
             return(

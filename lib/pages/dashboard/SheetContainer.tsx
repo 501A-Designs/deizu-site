@@ -55,10 +55,12 @@ export default function SheetContainer(props:SheetContainerProps) {
         title:sheet,
         sharing:false,
         cells:v2SheetData?.data()?.sheets[sheet].cells ? v2SheetData?.data()?.sheets[sheet].cells:{},
-        dataSheetId:v2SheetData?.data()?.sheets[sheet].dataSheetId,
+        dataSheetId:v2SheetData?.data()?.sheets[sheet]?.dataSheetId === undefined ? '':v2SheetData?.data()?.sheets[sheet]?.dataSheetId,
         date: serverTimestamp(),
-        bannerImageUrl:v2SheetData?.data()?.[sheet].bannerImageUrl,
-        backgroundImageUrl:v2SheetData?.data()?.[sheet].backgroundImageUrl,
+        bannerImageUrl:v2SheetData?.data()?.[sheet]?.bannerImageUrl === undefined ?
+        '':v2SheetData?.data()?.[sheet].bannerImageUrl,
+        backgroundImageUrl:v2SheetData?.data()?.[sheet]?.backgroundImageUrl === undefined ?
+        '':v2SheetData?.data()?.[sheet].backgroundImageUrl,
         archived:false
       })
     })
@@ -75,7 +77,7 @@ export default function SheetContainer(props:SheetContainerProps) {
           closeButton={
             <Button
               fullWidth
-              styleType={'outline'}
+              styleType={'fill'}
               icon={<FiSave/>}
               onClick={()=>convertV2toV3()}
             >
