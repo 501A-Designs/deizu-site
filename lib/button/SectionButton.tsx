@@ -5,23 +5,23 @@ const SectionButtonStyled = styled('div', {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  color:'$system4',
   height: 'fit-content',
   borderRadius:'$2',
   padding: '0.7em 0.8em',
   cursor: 'pointer',
-  backgroundColor:'$system1',
+  color:'$gray12',
+  backgroundColor:'$gray1',
   transition: '$speed1',
   '&:hover':{
-    backgroundColor:'$system2',
+    backgroundColor:'$gray3',
     transform: 'scale(1.01)'
   }
 });
 const LeftIcon = styled('span', {
-  border: '1px solid $system1',
-  background: 'linear-gradient(45deg,$system2,$system3)',
+  border: '1px solid $gray6',
+  background: 'linear-gradient(45deg,$gray3,$gray7)',
   borderRadius: '$3',
-  boxShadow:'$medium',
+  // boxShadow:'$light',
   width:'40px',
   height:'40px',
   display: 'flex',
@@ -29,7 +29,7 @@ const LeftIcon = styled('span', {
   justifyContent: 'center',
 });
 const RightIcon = styled('span', {
-  color: '$system4',
+  color: '$gray8',
   marginLeft: 'auto',
   fontSize: 'small',
   paddingRight: '15px'

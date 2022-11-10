@@ -2,24 +2,28 @@ import React from 'react'
 import { styled } from '../../stitches.config'
 
 let ContainerStyled = styled('div',{
-  color: '$system4',
+  color: '$gray12',
   minWidth:'300px',
   height: 'fit-content',
   variants:{
     styleType:{
       standard:{
-        backgroundColor: '$system1',
-        border:'1px solid $system2',
+        backgroundColor: '$gray1',
+        border:'1px solid $gray4',
         boxShadow: '$heavy',
       },
       filled:{
-        backgroundColor: '$system2',
-        border:'1px solid $system3',
+        backgroundColor: '$gray4',
+        border:'1px solid $gray5',
       },
       transparent:{
         background:'transparent',
         border:'1px solid transparent',
       },
+      gradient:{
+        background:'linear-gradient(45deg, $gray1, $gray3)',
+        border:'1px solid $gray3',
+      }
     },
     index:{
       outer:{
@@ -28,7 +32,10 @@ let ContainerStyled = styled('div',{
       },
       inner:{
         borderRadius: '$2',
-        padding: '$3',
+        padding: '$2',
+        'p':{
+          margin:'$2'
+        }
       }
     }
   },

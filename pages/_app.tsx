@@ -1,22 +1,23 @@
 import '../styles/globals.css'
 import { AppProps } from 'next/app';
-// import { ThemeProvider } from "next-themes";
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-// import { darkTheme } from '../stitches.config';
+import { ThemeProvider } from "next-themes";
+// import { ToastContainer } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
+import { css, darkTheme, styled } from '../stitches.config';
+import * as Toast from '@radix-ui/react-toast';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
-      <ToastContainer
+      {/* <ToastContainer
         toastStyle={{
-          backgroundColor: 'var(--system3)',
-          borderRadius:'var(--borderRadius2)',
-          boxShadow:'0 8px 30px rgba(0, 0, 0, 0.12)',
+          backgroundColor: '$gray12',
+          borderRadius:'9999px',
+          boxShadow:'none',
           padding: '0.25em',
           fontSize:'15px',
-          border:'1px solid var(--system0)',
-          color:'var(--txtColor1)',
+          border:'1px solid $gray1',
+          color:'$gray1',
           textAlign:'center'
         }}
         position="top-center"
@@ -29,17 +30,19 @@ function MyApp({ Component, pageProps }: AppProps) {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-      />
-      {/* <ThemeProvider
+      /> */}
+      <ThemeProvider
         attribute="class"
-        defaultTheme="system"
+        defaultTheme="light"
         value={{
           light: "light",
           dark: darkTheme.className
         }}
-      > */}
-        <Component {...pageProps} />
-      {/* </ThemeProvider> */}
+      >
+        <Toast.Provider swipeDirection={'down'}>
+          <Component {...pageProps} />
+        </Toast.Provider>
+      </ThemeProvider>
     </>
   )
 }

@@ -4,34 +4,37 @@ import { styled } from '../../stitches.config';
 import AlignItems from '../style/AlignItems';
 
 const ButtonStyled = styled('button', {
-  // fontSize:'$xm',
   userSelect: 'none',
   outline: 'none',
   cursor: 'pointer',
+  fontWeight:'bold',
   transition: '$speed1',
 
   variants:{
     styleType:{
       fill:{
-        color: '$system1',
-        backgroundColor: '$system4',
-        border: '1px solid $system1',
+        color: '$gray12',
+        backgroundColor: '$gray4',
+        border: '1px solid $gray5',
         '&:hover': {
-          boxShadow: '0 8px 10px var(--system1)',
+          color: '$gray1',
+          backgroundColor: '$gray12',
+          border: '1px solid $gray12',
+          boxShadow: '0 8px 10px $gray1',
           transform:'scale(1.02)'
         },
       },
       noFill:{
-        color: '$system4',
-        backgroundColor: '$system2',
-        border: '1px solid $system1',
+        color: '$gray12',
+        backgroundColor: '$gray3',
+        border: '1px solid $gray3',
         '&:hover': {
-          boxShadow: '0 8px 10px var(--system1)',
+          boxShadow: '0 8px 10px $gray1',
           transform:'scale(1.02)'
         },
       },
       outline:{
-        color: '$system4',
+        color: '$gray1',
         backgroundColor: '$system1',
         border: '1px solid $system3',
         // boxShadow: '0 0 2px $system2',
@@ -40,25 +43,9 @@ const ButtonStyled = styled('button', {
           backgroundColor: '$system4',
           transform:'scale(1.02)'
         },
-      },
-      primary:{
-        color: '$system1',
-        backgroundColor: '$system4',
-        border: '1px solid $system1',
-        '&:hover': {
-          boxShadow: '$heavy',
-          transform:'scale(1.06) rotate(180deg)'
-        },
       }
     },
     size:{
-      extraLarge:{
-        padding: '$3',
-        fontSize:'$xxl',
-        'span':{
-          display:'none'
-        },
-      },
       medium:{
         padding: '$2 $3',
       },
@@ -79,7 +66,7 @@ const ButtonStyled = styled('button', {
     },
     fullWidth:{
       true:{
-        width:'100%'
+        width:'auto'
       },
     }
   },

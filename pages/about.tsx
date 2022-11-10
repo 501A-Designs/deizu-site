@@ -23,7 +23,7 @@ export default function About() {
                             index="inner"
                             styleType="filled"
                         >
-                            <p style={{margin:0}}>
+                            <p>
                                 プライバシーポリシーは誰が見ても理解出来るほどわかりやすくする必要があると考えています。多くの場合長く回りくどく書かれているものを極力わかりやすくシンプルに書きました。本サイトを使用する際はよく読んで、同意した上で使用してください。
                             </p>
                         </Container>

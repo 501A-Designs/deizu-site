@@ -18,16 +18,29 @@ import { styled } from '../stitches.config';
 import MockUp from '../lib/pages/landing/MockUp';
 import BodyMargin from '../lib/style/BodyMargin';
 
+
+const BlockListStyled = styled('li',{
+  borderRadius: '$2',
+  backgroundColor: '$gray2',
+  padding: '0.5em 1em',
+  fontSize: '1rem',
+  width: 'fit-content'
+})
+
+const DuoGridStyled = styled('div',{
+  minHeight:'100vh',
+  display:'grid',
+  '@bp1':{
+    gridTemplateColumns:'1fr'
+  },
+  '@bp2_':{
+    gridTemplateColumns:'1fr 1fr'
+  }
+})
+
 export default function Home() {
   let router = useRouter();
 
-  const BlockList = styled('li',{
-    borderRadius: '$2',
-    backgroundColor: '$system2',
-    padding: '0.5em 1em',
-    fontSize: '1rem',
-    width: 'fit-content'
-  })
 
   return (
     <BodyMargin>
@@ -90,17 +103,17 @@ export default function Home() {
         </AlignItems>
       </div>
       {/* <hr/> */}
-      <div className={'grid-1fr-1fr sidePadding responsiveFullHeight'}>
+      <DuoGridStyled>
         <AlignItems style={{justifyContent: 'center'}}>
-          <div>
+          <Container styleType={'transparent'}>
             <h2>より早く。効率的に。</h2>
             <h1>v2.0.0で激的な変化。</h1>
             <p>
               テンプレートの作成で時間をかけてしまい、大事だった「時間割」を作れなかった日々はもう終わり。v2.0.0ではDeizuを根本的に作り直しました。これによって様々な機能の搭載が可能となり、ユーザー様に最適なUXをお届け。
             </p>
-          </div>
+          </Container>
         </AlignItems>
-        <AlignItems style={{justifyContent: 'center'}}>
+        <AlignItems justifyContent={'center'}>
           <Container
             xDegree={'5deg'}
             yDegree={'-2deg'}
@@ -116,20 +129,20 @@ export default function Home() {
             <p>詳しい情報については<Link href='/updates'>こちらから</Link></p>
           </Container>
         </AlignItems>
-      </div>
+      </DuoGridStyled>
 
-      <div className={'grid-1fr-1fr sidePadding responsiveFullHeight'}>            
+      <DuoGridStyled>            
         <AlignItems>
           <Container styleType={'transparent'}>
             <Stack gap={'$2'}>
-              <BlockList>シンプルでわかりやすいUI</BlockList>
-              <BlockList>Googleでログイン</BlockList>
-              <BlockList>Web上で使用</BlockList>
-              <BlockList>科目のセルの色、リンク、概要欄可</BlockList>
-              <BlockList>時間割の時間を指定</BlockList>
-              <BlockList>何枚もの時間割表を作成・保存可</BlockList>
-              <BlockList>リンクを通した時間割表の共有</BlockList>
-              <BlockList>GitHubにてオープンソース</BlockList>
+              <BlockListStyled>シンプルでわかりやすいUI</BlockListStyled>
+              <BlockListStyled>Googleでログイン</BlockListStyled>
+              <BlockListStyled>Web上で使用</BlockListStyled>
+              <BlockListStyled>科目のセルの色、リンク、概要欄可</BlockListStyled>
+              <BlockListStyled>時間割の時間を指定</BlockListStyled>
+              <BlockListStyled>何枚もの時間割表を作成・保存可</BlockListStyled>
+              <BlockListStyled>リンクを通した時間割表の共有</BlockListStyled>
+              <BlockListStyled>GitHubにてオープンソース</BlockListStyled>
             </Stack>
           </Container>
         </AlignItems>
@@ -142,19 +155,22 @@ export default function Home() {
             </p>
           </div>
         </AlignItems>
-      </div>
-      <div className={'grid-1fr-1fr sidePadding responsiveFullHeight'}>
+      </DuoGridStyled>
+      <DuoGridStyled>
         <AlignItems>
-          <div>
-            <h1>あなたにあった場所・場合で</h1>
+          <Container styleType={'transparent'}>
+            <h1>どんな場所・場合でも</h1>
             <strong>異なるデバイスでも同じデータを共有。</strong>
             <p>
               場所と機種問わずデータは全てユーザー様のアカウントと結び付けられ保存されています。Webで作成した時間割をスマホのブラウザーから見れる便利さ。シンプルでかつ説明書すらいらないユーザー重視のプラットフォームを体験してませんか？
             </p>
-          </div>
+          </Container>
         </AlignItems>
         <AlignItems>
-          <Container marginBottom={'small'}>
+          <Container
+            styleType={'gradient'}
+            marginBottom={'small'}
+          >
             <h2>Web &rarr;</h2>
             <p>Next.Js等のモダンなウェブテクノロジーで構成された時間割作成アプリケーション。バックエンドではFirebaseを使用し、充実したユーザーエクスピリエンスとデザインを兼ね備えた唯一無二な時間割表作成プラットフォームです。</p>
             <Button
@@ -165,7 +181,7 @@ export default function Home() {
             </Button>
           </Container>
         </AlignItems>
-      </div>
+      </DuoGridStyled>
       <NavFooter />
     </BodyMargin>
   )

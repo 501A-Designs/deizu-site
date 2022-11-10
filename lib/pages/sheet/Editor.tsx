@@ -25,6 +25,7 @@ import DataSheetButton from "../../button/DataSheetButton";
 import Input from "../../component/Input";
 import TextPreview from "../../component/TextPreview";
 import Heading from "../../component/Heading";
+import { styled } from "../../../stitches.config";
 // import { SheetDataTypes } from "../../../pages/user/[userId]/sheet/[id]";
 
 export interface SheetDataTypes {
@@ -61,6 +62,10 @@ export default function Editor(props:EditorProps) {
     setSheetBannerImageUrl(sheetData && sheetData.bannerImageUrl);
   }, [sheetData])
   
+  const LargeHeading = styled('h1',{
+    fontSize:'2.5em',
+    color:'gray12',
+  })
 
   // Functions
 
@@ -94,20 +99,35 @@ export default function Editor(props:EditorProps) {
   const [dataSheetId, setDataSheetId] = useState('')
 
   return (
-    <BodyMargin>
-      <Stack gap={'0.5em'}>
-        <ImageContainer src={sheetBannerImageUrl}>
-          <AlignItems justifyContent={'spaceBetween'}>
+    <>
+      {sheetBannerImageUrl && <ImageContainer src={sheetBannerImageUrl}/>}
+      <BodyMargin>
+        <AlignItems
+          justifyContent={'spaceBetween'}
+          marginBottom={'extraLarge'}
+        >
+          <LargeHeading>
+            {sheetData.title}
+          </LargeHeading>
+          <AlignItems>
             {viewOnly ?
-              <Button
-                size={'small'}
-                icon={<FiLogIn/>}
-                styleType={'outline'}
-                onClick={() => router.push('/app')}
-              >
-                アカウント作成
-              </Button>:
-              <AlignItems>
+              <>
+                <Button
+                  size={'small'}
+                  icon={<FiLogIn/>}
+                  styleType={'outline'}
+                  onClick={() => router.push('/app')}
+                >
+                  アカウント作成
+                </Button>
+                <Button
+                  icon={<FiEye/>}
+                  size={'small'}
+                >
+                  閲覧中
+                </Button>
+              </>:
+              <>
                 <Button
                   size={'small'}
                   icon={<FiHome/>}
@@ -115,46 +135,6 @@ export default function Editor(props:EditorProps) {
                 >
                   ダッシュボード
                 </Button>
-                <MediaQuery hide={'mobile'}>
-                  <Button
-                    size={'small'}
-                    icon={<FiPlus/>}
-                    onClick={() => router.push(`/user/${user.uid}/sheet`)}
-                  >
-                    新規作成
-                  </Button>
-                </MediaQuery>
-              </AlignItems>
-            }
-            <h1
-              className={'scaleFontLarge'}
-              style={{
-                color: '$textColor1',
-                textShadow: '0px 0px 15px $system2',
-              }}
-            >
-              {sheetData.title}
-            </h1>
-            {viewOnly ?
-              <Button
-                icon={<FiEye/>}
-                size={'small'}
-              >
-                閲覧中
-              </Button>:
-              <AlignItems>
-                <MediaQuery hide={'mobile'}>
-                  <Button
-                    size={'small'}
-                    icon={<FiLayout/>}
-                    // onClick={()=>{
-                    // }}
-                  >
-                    hello
-                    {/* {!listViewState ? 'リスト表示':'グリッド表示'} */}
-                  </Button>
-                </MediaQuery>
-
                 <Dialog
                   title={'設定'}
                   openButton={
@@ -370,39 +350,41 @@ export default function Editor(props:EditorProps) {
                     </Stack>
                   }
                 </Dialog>
-              </AlignItems>
+              </>
             }
           </AlignItems>
-        </ImageContainer>
-        <SheetGrid
-          sheetData={sheetData}
-          viewOnly={viewOnly}
-          user={user}
-        />
-        <AlignItems
-          justifyContent={'center'}
-          flexDirection={'column'}
-          gap={'small'}
-          marginTop={'extraLarge'}
-        >
-          {!viewOnly ?
-            <>
-              <h5>
-                {/* 最終変更時：{sheetData.date.toDate().toDateString()} */}
-              </h5>
-              <Heading type={'h5'}>
-                {moment().format('LT')}｜
-                {moment().format('dddd')}｜
-                {moment().format('MMMM Do YYYY')}
-              </Heading>
-            </>:
-            <>
-              <Heading type={'h3'}>Deizu</Heading>
-              <Heading type={'h5'}>Designed & Developed By 501A</Heading>
-            </>
-          }
         </AlignItems>
-      </Stack>
-    </BodyMargin>
+        <Stack gap={'0.5em'}>
+          <SheetGrid
+            sheetData={sheetData}
+            viewOnly={viewOnly}
+            user={user}
+          />
+          <AlignItems
+            justifyContent={'center'}
+            flexDirection={'column'}
+            gap={'small'}
+            marginTop={'extraLarge'}
+          >
+            {!viewOnly ?
+              <>
+                <h5>
+                  {/* 最終変更時：{sheetData.date.toDate().toDateString()} */}
+                </h5>
+                <Heading type={'h5'}>
+                  {moment().format('LT')}｜
+                  {moment().format('dddd')}｜
+                  {moment().format('MMMM Do YYYY')}
+                </Heading>
+              </>:
+              <>
+                <Heading type={'h3'}>Deizu</Heading>
+                <Heading type={'h5'}>Designed & Developed By 501A</Heading>
+              </>
+            }
+          </AlignItems>
+        </Stack>
+      </BodyMargin>
+    </>
   )
 }

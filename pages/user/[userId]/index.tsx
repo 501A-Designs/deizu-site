@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState} from 'react'
 
 // Button Component
 import Button from '../../../lib/button/Button'
@@ -25,7 +25,7 @@ import ImageContainer from '../../../lib/pages/sheet/ImageContainer';
 import Input from '../../../lib/component/Input';
 
 import { NextSeo } from 'next-seo';
-import { FiChevronLeft, FiChevronRight, FiEdit2, FiImage, FiPlus, FiSave, FiSmile,FiArchive, FiCircle, FiExternalLink, FiFolder, FiFolderPlus, FiHeart, FiMoreHorizontal, FiDatabase, FiUsers } from 'react-icons/fi';
+import { FiChevronLeft, FiChevronRight, FiEdit2, FiImage, FiPlus, FiSave, FiSmile,FiArchive, FiCircle, FiExternalLink, FiFolder, FiFolderPlus, FiHeart, FiMoreHorizontal, FiDatabase, FiUsers, FiSettings } from 'react-icons/fi';
 
 
 
@@ -43,6 +43,9 @@ import { styled } from '../../../stitches.config';
 import SideButton from '../../../lib/pages/dashboard/SideButton';
 import ProfileImage from '../../../lib/pages/dashboard/ProfileImage';
 import { TooltipLabel } from '../../../lib/component/TooltipLabel';
+import Toggle from '../../../lib/component/Toggle';
+import Heading from '../../../lib/component/Heading';
+import SettingDialogContent from '../../../lib/pages/dashboard/SettingDialogContent';
 
 export interface SheetDocTypes{
   id:string,
@@ -123,6 +126,25 @@ function IndivisualUser() {
     }
   })
 
+  const CreateNewButton = styled('button',{
+    cursor:'pointer',
+    padding: '$3',
+    fontSize:'$xxl',
+    display:'flex',
+    alignItems:'center',
+    borderRadius:'$rounded',
+    color: '$gray12',
+    background: 'linear-gradient($gray2,$gray5)',
+    border: '1px solid $gray5',
+    transition:'$speed1',
+    '&:hover': {
+      boxShadow: '$small',
+      color: '$gray1',
+      background: '$gray12',
+      transform:'scale(1.06) rotate(360deg)'
+    },
+  })
+
 
   const [modalSection, setModalSection] = useState(0);
   const [currentView, setCurrentView] = useState('main');
@@ -196,69 +218,16 @@ function IndivisualUser() {
                       作成したデータシートを見る
                     </SideButton>
                     <Dialog
-                      title={'見た目の設定'}
+                      title={'設定'}
                       openButton={
                         <SideButton
-                          icon={<FiEdit2/>}
+                          icon={<FiSettings/>}
                         >
-                          見た目の設定
+                          設定
                         </SideButton>
                       }
                     >
-                      <Stack>
-                        {modalSection === 0 && 
-                          <Stack>
-                            <SectionButton
-                              leftIcon={<FiImage/>}
-                              rightIcon={<FiChevronRight/>}
-                              onClick={()=>setModalSection(1)}
-                            >
-                              背景画像の設定
-                            </SectionButton>
-                            <SectionButton
-                              leftIcon={<FiSmile/>}
-                              rightIcon={<FiChevronRight/>}
-                              onClick={()=>setModalSection(2)}
-                            >
-                              配色
-                            </SectionButton>
-                          </Stack>
-                        }
-                        <Stack>
-                          {modalSection !== 0 &&
-                            <SectionButton
-                              leftIcon={<FiChevronLeft/>}
-                              onClick={()=>setModalSection(0)}
-                            >
-                              戻る
-                            </SectionButton>
-                          }
-                          {modalSection === 2 &&
-                            <Stack grid={'1fr 1fr'}>
-                              {themeColorData.map((prop)=>{
-                                return (
-                                  <ThemeButton
-                                    key={prop.name}
-                                    data={prop.value}
-                                    // currentTheme={themeColor}
-                                    // onClick={()=>setThemeColor(prop.value)}
-                                  >
-                                    {prop.name}
-                                  </ThemeButton>
-                                )
-                              })}
-                            </Stack>
-                          }
-                          {modalSection !== 0 &&
-                            <Button
-                              icon={<FiSave/>}
-                              // onClick={(e)=>saveThemeData(e)}
-                            >
-                              保存
-                            </Button>
-                          }
-                        </Stack>
-                      </Stack>
+                      <SettingDialogContent/>
                     </Dialog>
                   </SideBarStyled>
                 </SideBarContainerStyled>
@@ -289,7 +258,7 @@ function IndivisualUser() {
               </DashBoardAlignStyled>
               <Footer
                 css={{
-                  background: 'radial-gradient(at bottom, $system2,transparent 60%)',
+                  background: 'radial-gradient(at bottom, $gray2,transparent 50%)',
                   backgroundPosition:'bottom',
                   paddingBottom:'2em'
                 }}
@@ -297,22 +266,13 @@ function IndivisualUser() {
                 <AlignItems
                   justifyContent={'center'}
                 >
-                  <TooltipLabel
-                    trigger={                     
-                      <Button
-                        size={'extraLarge'}
-                        styleType={'primary'}
-                        shape={'round'}
-                        icon={<FiPlus/>}
-                        onClick={() => 
-                          router.push(`/user/${user.uid}/sheet`)
-                        }
-                      />
+                  <CreateNewButton
+                    onClick={() => 
+                      router.push(`/user/${user.uid}/sheet`)
                     }
-                    side={'top'}
                   >
-                    新規作成
-                  </TooltipLabel>
+                    <FiPlus/>
+                  </CreateNewButton>
                 </AlignItems>
               </Footer>
             </BodyMargin>

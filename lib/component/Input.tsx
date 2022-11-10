@@ -3,16 +3,16 @@ import { styled } from '../../stitches.config'
 
 const InputStyled = styled('input', {
   outline: 'none',
-  color: '$txtColor1',
-  backgroundColor: '$system1',
+  color: '$gray12',
+  backgroundColor: '$gray3',
+  border: '1px solid $gray4',
   padding: '$2',
   borderRadius: '$2',
-  border: '1px solid $system2',
-  transition: '$speed2',
+  transition: '$speed1',
   variants:{
     fullWidth: {
       true:{
-        width: '100%',
+        // width: '100%',
         textAlign: 'center',
       },
       false:{
@@ -23,7 +23,7 @@ const InputStyled = styled('input', {
   },
   '&:focus':{
     boxShadow: '$light',
-    border: '1px solid $system2',
+    border: '1px solid $gray5',
   }
 })
 

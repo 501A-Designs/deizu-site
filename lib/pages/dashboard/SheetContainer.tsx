@@ -34,9 +34,9 @@ const TotalText = styled('p',{
   userSelect:'none',
   width:'fit-content',
   marginTop:'$4',
-  backgroundColor:'$system1',
-  border:'1px solid $system2',
-  color:'$system4',
+  backgroundColor:'$gray1',
+  border:'1px solid $gray4',
+  color:'$gray12',
   padding:'$1 $3',
   borderRadius:'$3',
   fontSize:'$s'

@@ -11,7 +11,7 @@ const NoticeStyled = styled('div',{
   }
 })
 
-export default function Notice(props) {
+export default function Notice(props:any) {
   return (
     <AlignItems justifyContent={'center'}>
       <NoticeStyled>

@@ -11,32 +11,31 @@ import { EditorProps } from "./Editor";
 const SheetGridStyled = styled('div',{
   display:'grid',
   gap: '0.2em',
-  '@bp1_2':{gridTemplateColumns:'1fr'},
-  '@bp3_':{gridTemplateColumns:'0.5fr 9fr'}
+  gridTemplateColumns:'0.5fr 1.5fr 1.5fr 1.5fr 1.5fr 1.5fr 1.5fr'
 })
 
 const DayOfWeekContainerStyled = styled('div',{
   display: 'grid',
   height: 'fit-content',
   gap: '0.2em',
-  gridTemplateColumns:'1fr 1fr 1fr 1fr 1fr 1fr',
+  gridTemplateColumns:'',
 })
 
 const DayOfWeekStyled = styled('div',{
   userSelect: 'none',
   textAlign: 'center',
   padding: '0.5em',
-  color: '$system4',
-  borderRadius: '$2 $2 $1 $1',
+  color: '$gray1',
+  borderRadius: '$3 $3 $1 $1',
 
   // scaleFont
   variants:{
     today:{
       true:{
-        border: '1px solid $system2',
-        backgroundColor: '$system2',
+        border: '1px solid $gray3',
+        backgroundColor: '$gray3',
         fontWeight: 'bold',
-        color: '$system4',
+        color: '$gray12',
       },
       false:{
         border: '1px solid transparent',
@@ -60,116 +59,39 @@ const SubjectCellGridStyled =  styled('div',{
   gap: '0.2em'
 })
 
+const rows:number[] = [1,2,3,4,5,6,7]; // Or something else
+
+function Row(rowProps:any){
+  return(
+    <>
+      <TimeCell
+        key={rowProps.rowId}
+        displayPeriod={rowProps.rowId}
+      />
+      {scheduleCellId[rowProps.rowId-1].map(cellId =>
+        <SubjectCell
+          key={cellId}
+          viewOnly={rowProps.viewOnly}
+          cellData={rowProps.sheetData?.cells[cellId]}
+          cellId={cellId}
+          user={rowProps.user}
+        />
+      )}
+    </>
+  )
+}
+
 export default function SheetGrid(props:EditorProps) {
   let sheetData = props.sheetData;
   let viewOnly = props.viewOnly;
-
+  let user = props.user
   const cellVerticalLocation:string[] =['a', 'b', 'c', 'd', 'e', 'f'];
   const dayOfWeek:string[] = ['月','火','水','木','金','土']
-  const timeCellLocation:number[] = [1,2,3,4,5,6,7]
 
-  const [modalCellId, setModalCellId] = useState('');
-
-  // TIME MODAL
-  // const [timeModalIsOpen, setTimeModalIsOpen] = useState(false);
-  // const [timeStart, setTimeStart] = useState('');
-  // const [timeEnd, setTimeEnd] = useState('');
-  // const [modalTimeNumber, setModalTimeNumber] = useState('');
-
-  // const closeTimeModal = () => {
-  //   setTimeStart('')
-  //   setTimeEnd('');
-  //   setTimeModalIsOpen(false);
-  // }
-  // const openTimeModal = (prop) => {
-  //   if (!viewOnly) {
-  //     if (sheetTimeData) {
-  //       if (sheetTimeData[prop]) {
-  //         setTimeStart(sheetTimeData[prop].start);
-  //         setTimeEnd(sheetTimeData[prop].end)
-  //       }
-  //     }else{
-  //       setTimeStart('');
-  //       setTimeEnd('');
-  //     }
-  //     setTimeModalIsOpen(true);
-  //   }
-  // }
-  // const saveTimeData = async (e) => {
-  //   e.preventDefault();
-  //   let newObject = Object.assign({ ...sheetTimeData, 
-  //     [modalTimeNumber]: {
-  //       start: timeStart,
-  //       end: timeEnd,
-  //     } 
-  //   })
-  //   setSheetTimeData(newObject);
-  //   const docRef = doc(db, "users", user.uid);
-  //   await setDoc(docRef,
-  //       {
-  //         sheets:{
-  //           [sheetName]: {
-  //             date: serverTimestamp(),
-  //             time:{
-  //               [modalTimeNumber]: {
-  //                 start: timeStart,
-  //                 end: timeEnd,
-  //               }
-  //             }
-  //           }
-  //         },
-  //       }, { merge: true }
-  //   );
-  //   closeTimeModal();
-  // }
-
-  {/* <Modal
-    isOpen={timeModalIsOpen}
-    onRequestClose={closeTimeModal}
-    style={modalStyle}
-  >
-    <Stack gap={'1em'} style={{paddingTop:'1em'}}>
-      {isMobile && 
-        <AlignItems justifyContent={'right'}>
-          <CloseButton
-            onClick={() =>closeTimeModal()}
-          />
-        </AlignItems>
-      }
-      <AlignItems style={{justifyContent: 'center'}}>
-        <TextPreview padding={'small'}>
-          {timeStart ? timeStart:'開始時'}
-        </TextPreview>
-        <span>〜</span>
-        <TextPreview padding={'small'}>
-          {timeEnd ? timeEnd:'終了時'}
-        </TextPreview>
-      </AlignItems>
-      <Stack>
-        <Input
-          type={'time'}
-          value={timeStart}
-          onChange={(e)=>setTimeStart(e.target.value)}
-          placeholder={'開始時'}
-        />
-        <Input
-          type={'time'}
-          value={timeEnd}
-          onChange={(e)=>setTimeEnd(e.target.value)}
-          placeholder={'終了時'}
-        />
-      </Stack>
-      <Button
-        onClick={(e)=>saveTimeData(e)}
-      >
-        保存
-      </Button>
-    </Stack>
-  </Modal> */}
   return (
-    <SheetGridStyled>
-      <TimeCellGridStyled/>
+    <Stack>
       <DayOfWeekContainerStyled>
+        <TimeCellGridStyled/>
         {dayOfWeek.map(day =>{
           return (
             <DayOfWeekStyled
@@ -180,33 +102,20 @@ export default function SheetGrid(props:EditorProps) {
           )
         })}
       </DayOfWeekContainerStyled>
-      
-      <TimeCellGridStyled>
-        {timeCellLocation.map(cellNumber => {
-          return( 
-            <TimeCell
-              // onClick={()=>{
-              //   openTimeModal(cellNumber);
-              //   setModalTimeNumber(cellNumber);
-              // }}
-              key={cellNumber}
-              // sheetTimeData={sheetTimeData}
-              displayPeriod={cellNumber}
-            />
-          )
-        })}
-      </TimeCellGridStyled>
-      <SubjectCellGridStyled>
-        {scheduleCellId.map(cellId =>
-          <SubjectCell
-            key={cellId}
-            viewOnly={viewOnly}
-            cellData={sheetData && sheetData.cells && sheetData.cells[cellId]}
-            cellId={cellId}
-            user={props.user}
-          />
-        )}
-      </SubjectCellGridStyled>
-    </SheetGridStyled>
+      <SheetGridStyled>
+        {
+          rows.map(rowId => {
+            return(
+              <Row
+                viewOnly={viewOnly}
+                rowId={rowId}
+                sheetData={sheetData}
+                user={user}
+              />
+            )
+          })
+        }
+      </SheetGridStyled>
+    </Stack>
   )
 }

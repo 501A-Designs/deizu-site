@@ -22,41 +22,47 @@ const SubjectCellStyled= styled('div', {
   flexDirection: 'column',
   alignItems: 'center',
   fontWeight: 'bold',
-  height: '85px',
+  minHeight: '85px',
   transition: '$speed1',
   cursor: 'pointer',
-  border:'1px solid $system1',
+  border:'1px solid $gray3',
   '&:hover':{
     transform:'scale(0.95)',
     boxShadow:'$light',
-    border:'1px solid $system3',
+    border:'1px solid $gray5',
     // borderRadius: '$2',
   },
   '@bp1':{
     justifyContent: 'space-between',
+    padding:'$1'
   },
   '@bp2_':{
     justifyContent: 'center',
+    gap:'$1',
+    padding:'$2'
   },
 })
-const SubjectCellNameStyled = styled('h4', {
-  color: '$system4',
+const SubjectCellNameStyled = styled('h5', {
+  color: '$gray12',
   textAlign: 'center',
+  margin:'0',
   '@bp1':{
-    justifyContent: 'space-between',
+    fontSize:'$s',
   },
-  '@bp2_':{
-    justifyContent: 'center',
+  '@bp2':{
+    fontSize:'$m',
+  },
+  '@bp3_':{
+    fontSize:'$l',
   },
 })
 const SubjectCellDescriptionStyled = styled('p', {
   fontWeight: 'normal',
   textAlign: 'center',
-  // fontSize: `${!isMobile && '0.8em'}`,
   width: 'fit-content',
-  margin: '5px',
-  color: '$textColor2',
-  backgroundColor: '$system4',
+  margin: '0',
+  color: '$gray12',
+  backgroundColor: '$gray1',
   borderRadius: '$1',
   '@bp1_2':{
     fontSize: '0.5em',
@@ -159,8 +165,8 @@ export default function SubjectCell(props:SubjectCellProps) {
             '@bp2_':{
               borderRadius: `${dynamicBorderRadius()}`,
             },
-            border: `1px solid ${subjectCellColor ? subjectCellColor:'$system2'}`,
-            backgroundColor: `${subjectCellColor ? subjectCellColor:'$system2'}`,
+            border: `1px solid ${subjectCellColor ? subjectCellColor:'$gray3'}`,
+            backgroundColor: `${subjectCellColor ? subjectCellColor:'$gray3'}`,
           }}
         >
           <SubjectCellNameStyled
@@ -213,7 +219,7 @@ export default function SubjectCell(props:SubjectCellProps) {
           } */}
           <AlignItems justifyContent={'center'}>
             <ColorButton
-              color={'$system2'}
+              color={'$gray3'}
               onClick={() => setSubjectCellColor('')}
             />
             {buttonColor.map((props)=>

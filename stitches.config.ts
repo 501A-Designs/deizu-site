@@ -1,4 +1,6 @@
 import {
+  whiteA,
+  blackA,
   gray,
   grayDark,
   blue,
@@ -20,34 +22,22 @@ import {
 } from '@radix-ui/colors';
 import { createStitches } from '@stitches/react';
 
-export const { styled, css, config,createTheme } = createStitches({
+export const { styled, css, createTheme } = createStitches({
   theme: {
     colors: {
-      // Colors
-      system1: '$gray1',
-      system2: '$gray4',
-      system3: '$gray7',
-      system4: '$gray12',
-
-      // Colors
+      // system1: '$gray1',
+      // system2: '$gray4',
+      // system3: '$gray7',
+      // system4: '$gray12',
       ...gray,
-      ...grayDark,
       ...blue,
-      ...blueDark,
       ...red,
-      ...redDark,
       ...green,
-      ...greenDark,
       ...orange,
-      ...orangeDark,
       ...amber,
-      ...amberDark,
       ...pink,
-      ...pinkDark,
       ...brown,
-      ...brownDark,
       ...purple,
-      ...purpleDark,
     },
     space:{
       1:'5px',
@@ -62,9 +52,9 @@ export const { styled, css, config,createTheme } = createStitches({
       rounded:'9999px',
     },
     shadows:{
-      light:'0 3px 10px rgba(60, 60, 60, 0.12)',
-      medium:'0 6px 20px rgba(20, 20, 20, 0.12)',
-      heavy:'0 8px 30px rgba(0, 0, 0, 0.12)',
+      light:'0 3px 10px rgba(150, 150, 150, 0.12)',
+      medium:'0 6px 20px rgba(100, 100, 100, 0.12)',
+      heavy:'0 8px 30px rgba(50, 50, 50, 0.12)',
     },
     transitions:{
       speed1: '0.3s',
@@ -77,7 +67,7 @@ export const { styled, css, config,createTheme } = createStitches({
       l:'1em',
       xm:'0.9em',
       m:'0.8em',
-      s:'0.75em',
+      s:'0.7em',
     },
   },
   media: {
@@ -98,13 +88,20 @@ export const { styled, css, config,createTheme } = createStitches({
   // },
 });
 
-// const darkTheme = createTheme({
-//   colors: {
-//     system1: '$grayDark1',
-//     system2: '$grayDark4',
-//     system3: '$grayDark7',
-//     system4: '$grayDark12',
-//   },
-// });
-
-// export {darkTheme}
+export const darkTheme = createTheme({
+  colors: {
+    // system1: '$grayDark1',
+    // system2: '$grayDark4',
+    // system3: '$grayDark7',
+    // system4: '$grayDark12',
+    ...grayDark,
+    ...blueDark,
+    ...redDark,
+    ...greenDark,
+    ...orangeDark,
+    ...amberDark,
+    ...pinkDark,
+    ...brownDark,
+    ...purpleDark,
+  },
+});

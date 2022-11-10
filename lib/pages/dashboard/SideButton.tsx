@@ -20,18 +20,18 @@ const SideButtonStyled = styled('button', {
     selected:{
       true:{
         animation:`${popOut} 0.3s`,
-        color: '$system4',
-        backgroundColor: '$system2',
-        border: '1px solid $system3',
+        color: '$gray1',
+        backgroundColor: '$gray12',
+        border: '1px solid $gray12',
       },
       false:{
-        color: '$system4',
+        color: '$gray12',
         backgroundColor: 'transparent',
         border: '1px solid transparent',
         '&:hover': {
           transform:'scale(1.05)',
-          backgroundColor: '$system2',
-          border: '1px solid $system2',
+          backgroundColor: '$gray4',
+          border: '1px solid $gray4',
         },
       },
     },

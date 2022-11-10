@@ -1,35 +1,25 @@
 import React from 'react'
 import { styled } from '../../stitches.config'
+import AlignItems from '../style/AlignItems'
 
 let TextPreviewStyled = styled('div',{
-  backgroundColor: '$system2',
-  border: '1px solid $system3',
+  backgroundColor: '$gray2',
+  // boxShadow:'$light',
+  border: '1px solid $gray5',
   borderRadius: '$2',
   overflowX:'scroll',
   width: 'max-width',
-  height: 'min-height',
+  minHeight: '50px',
   marginBottom:'$2',
-  variants:{
-    padding:{
-      medium:{
-        padding: '$2 $3'
-      },
-      small:{
-        padding: '$1 $2'
-      }
-    }
-  },
-  defaultVariants:{
-    padding:'medium'
-  }
+  padding: '$2 $3'
 })
 
-export default function TextPreview({padding, children}:React.ComponentProps<typeof TextPreviewStyled>) {
+export default function TextPreview({children}:React.ComponentProps<typeof TextPreviewStyled>) {
   return (
-    <TextPreviewStyled
-      padding={padding}
-    >
-      {children}
+    <TextPreviewStyled>
+      <AlignItems>
+        {children}
+      </AlignItems>
     </TextPreviewStyled>
   )
 }

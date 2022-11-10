@@ -2,7 +2,7 @@ import React from 'react'
 import * as ContextMenu from '@radix-ui/react-context-menu';
 
 import gradient from 'random-gradient'
-import { FiArchive, FiEdit3, FiHeart, FiLink, FiUsers } from 'react-icons/fi'
+import { FiArchive, FiEdit3, FiLink, FiUsers } from 'react-icons/fi'
 import { fadeIn, popOut, popOutLeftTop } from '../../ux/keyframes';
 import { FiTrash } from 'react-icons/fi';
 import { styled } from '../../../stitches.config';
@@ -18,14 +18,13 @@ const SheetButtonStyled = styled(ContextMenu.Trigger, {
   padding: '$2',
   cursor: 'pointer',
   height: 'fit-content',
-  backgroundColor: '$system1',
   width:'100%',
   borderBottom: '1px solid transparent',
-  borderImage: 'linear-gradient(90deg, $system1 0%, $system2 50%, $system1 100%)',
+  borderImage: 'linear-gradient(90deg, $gray1 0%, $gray4 50%, $gray1 100%)',
   borderImageSlice: 1,
   transition: '$speed1',
   'time':{
-    color:'$system4',
+    color:'$gray12',
     fontSize:'0.8em',
     '@bp1':{
       display:'none'
@@ -35,34 +34,34 @@ const SheetButtonStyled = styled(ContextMenu.Trigger, {
     },
   },
   '&:hover':{
-    borderRadius:'$2',
+    borderRadius:'$3',
     borderImage:'none',
-    backgroundColor:'$system2',
+    backgroundColor: '$gray3',
     transform: 'scale(1.01)'
   },
 });
 const GradientPlaceholderStyled = styled('div', {
-  borderRadius:'$1',
+  borderRadius:'$2',
   width:'5.2em',
   height:'5.2em',
-  border:'1px solid $system1',
+  border:'1px solid $gray2',
   boxShadow:'$light',
 });
 const ButtonImageStyled = styled('img', {
-  borderRadius:'$1',
+  borderRadius:'$2',
   width:'5.2em',
   height:'5.2em',
   objectFit:'cover',
-  backgroundColor:'$system2',
-  border:'1px solid $system1',
+  backgroundColor:'$gray4',
+  border:'1px solid $gray2',
   boxShadow:'$light',
 });
 
 const ContentStyled = styled(ContextMenu.Content, {
   padding:'$2',
   borderRadius:'$2',
-  backgroundColor:'$system1',
-  border:'1px solid $system2',
+  backgroundColor:'$gray1',
+  border:'1px solid $gray4',
   width:'250px',
   boxShadow:'$heavy',
   animation: `${popOutLeftTop} 0.3s ease-out`,
@@ -72,16 +71,16 @@ const ItemStyled = styled(ContextMenu.Item, {
   padding:'$1 $2',
   borderRadius:'$1',
   width:'100%',
-  border:'1px solid $system1',
+  border:'1px solid $gray1',
   boxShadow:'none',
   outline:'none',
   cursor:'pointer',
   fontSize:'$xm',
   transition:'$speed1',
-  color:'$system4',
+  color:'$gray12',
   '&:hover':{
-    backgroundColor:'$system2',
-    border:'1px solid $system2',
+    backgroundColor:'$gray4',
+    border:'1px solid $gray4',
     transform: 'scale(1.02)'
   },
   variants:{

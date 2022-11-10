@@ -4,17 +4,17 @@ import { styled } from '../../stitches.config';
 import { popOut } from '../ux/keyframes';
 
 const ContentStyled = styled(Tooltip.Content,{
-  background:'$system4',
-  color:'$textColor2',
+  background:'$gray6',
+  color:'$gray12',
+  border:'1px solid $gray6',
   boxShadow:'$heavy',
-  border:'1px solid $system4',
   padding:'$1 $2',
   fontSize:'$s',
   borderRadius:'$1',
   zIndex:'1000'
 })
 const ArrowStyled = styled(Tooltip.Arrow,{
-  fill:'$system4',
+  fill:'$gray6',
 })
 
 interface TooltipLabelProps extends React.ComponentProps<typeof ContentStyled>{

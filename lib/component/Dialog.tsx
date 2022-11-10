@@ -22,9 +22,9 @@ const StyledOverlay = styled(DialogPrimitive.Overlay, {
 });
 
 const StyledContent = styled(DialogPrimitive.Content, {
-  backgroundColor: '$system1',
+  backgroundColor: '$gray1',
   borderRadius: '$3',
-  border: '1px solid $system2',
+  border: '1px solid $gray2',
   boxShadow: '$heavy',
   position: 'fixed',
   top: '50%',
@@ -50,7 +50,7 @@ function Content({ children, ...props }:{children:any}) {
 }
 
 const StyledTitle = styled(DialogPrimitive.Title, {
-  color: '$system4',
+  color: '$gray12',
   margin: 0,
   fontWeight: 500,
   fontSize: 17,
@@ -58,7 +58,7 @@ const StyledTitle = styled(DialogPrimitive.Title, {
 
 const StyledDescription = styled(DialogPrimitive.Description, {
   margin: '10px 0 20px',
-  color: '$system4',
+  color: '$gray12',
   fontSize: 15,
   lineHeight: 1.5,
 });

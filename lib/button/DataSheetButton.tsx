@@ -13,7 +13,7 @@ const DataSheetButtonStyled = styled('div',{
   color:'$system4',
 
   borderBottom: '1px solid transparent',
-  borderImage: 'linear-gradient(90deg, $system1 0%, $system2 50%, $system1 100%)',
+  borderImage: 'linear-gradient(90deg, $gray1 0%, $gray4 50%, $gray1 100%)',
   borderImageSlice: 1,
 
   borderRadius:'$2',

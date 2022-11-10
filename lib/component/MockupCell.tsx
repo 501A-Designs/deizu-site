@@ -6,8 +6,11 @@ const MockupCellStyled = styled('div',{
     justifyContent: 'center',
     flexDirection: 'column',
     alignItems: 'center',
-    color: '$system4',
+    color: '$gray12',
     borderRadius:'$2',
+    minWidth:'250px',
+    padding:'$1',
+    minHeight: '85px',
     fontWeight: 'bold',
     transition: '$speed1',
     cursor: 'pointer'
@@ -16,12 +19,13 @@ const MockupCellStyled = styled('div',{
 const MockupCellNameStyled = styled('h4',{
     textAlign: 'center',
     width:'150px',
+    margin:'0',
 })
 const MockupCellDescriptionStyled = styled('p',{
     fontWeight: 'normal',
     fontSize: '0.8em',
-    backgroundColor: '$system1',
-    color: '$system4',
+    backgroundColor: '$gray12',
+    color: '$gray1',
     borderRadius:'$1',
     padding: '5px 10px',
     width: 'fit-content',
@@ -33,12 +37,10 @@ export default function MockupCell(props) {
     return (
         <MockupCellStyled
             css={{
-                padding: `${props.padding ? props.padding :'0 5em'}`,
-                height: `${props.height ? props.height :'85px'}`,
                 width: `${props.width ? props.width:'fit-content'}`,
                 margin: `${props.margin ? props.margin :'auto'}`,
-                backgroundColor: `${props.subjectCellColor ? props.subjectCellColor:'$system2'}`,
-                border:`1px solid ${props.subjectCellColor ? props.subjectCellColor:'$system2'}`,
+                backgroundColor: `${props.subjectCellColor ? props.subjectCellColor:'$gray3'}`,
+                border:`1px solid ${props.subjectCellColor ? props.subjectCellColor:'$gray3'}`,
             }}
         >
             <MockupCellNameStyled
