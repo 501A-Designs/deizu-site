@@ -157,7 +157,7 @@ export default function SubjectCell(props:SubjectCellProps) {
   return (
     <Dialog
       title={viewOnly ? '編集不可能':'編集中'}
-      openButton={
+      trigger={
         <SubjectCellStyled
           css={{
             '@bp1':{

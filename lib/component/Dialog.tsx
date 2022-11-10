@@ -65,7 +65,7 @@ const StyledDescription = styled(DialogPrimitive.Description, {
 
 interface DialogProps{
   title:string,
-  openButton:JSX.Element,
+  trigger:JSX.Element,
   description?:string,
   children:any
 }
@@ -74,7 +74,7 @@ export default function Dialog(props:DialogProps){
   return (
     <DialogPrimitive.Root>
       <DialogPrimitive.Trigger asChild>
-        {props.openButton}
+        {props.trigger}
       </DialogPrimitive.Trigger>
       <Content>
         <AlignItems

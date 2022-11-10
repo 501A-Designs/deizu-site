@@ -24,7 +24,7 @@ const DayOfWeekStyled = styled('div',{
     fontSize:'$s',
   },
   '@bp2_':{
-    fontSize:'$l',
+    fontSize:'$m',
   },
   variants:{
     today:{
@@ -80,6 +80,7 @@ export default function SheetGrid(props:EditorProps) {
         {dayOfWeek.map(day =>{
           return (
             <DayOfWeekStyled
+              key={day}
               today={moment().format('d') == `${dayOfWeek.indexOf(day)+1}`}
             >
               {day}
@@ -90,6 +91,7 @@ export default function SheetGrid(props:EditorProps) {
           rows.map(rowId => {
             return(
               <Row
+                key={rowId}
                 viewOnly={viewOnly}
                 rowId={rowId}
                 sheetData={sheetData}

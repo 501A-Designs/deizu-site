@@ -1,5 +1,8 @@
 import React from 'react'
+import { FiEdit3, FiImage } from 'react-icons/fi'
 import { styled } from '../../../stitches.config'
+import Menu, { ItemStyled } from '../../component/Menu'
+import AlignItems from '../../style/AlignItems'
 
 const ImageContainerStyled = styled('div',{
   backgroundAttachment:'fixed',
@@ -36,26 +39,36 @@ const ImageContainerOverlay = styled('div',{
 
 interface ImageContainerProps{
   src?:string,
-  children:JSX.Element | JSX.Element[]
+  children:JSX.Element | JSX.Element[],
+  menuChildren:JSX.Element | JSX.Element[],
+
 }
 
 
 export default function ImageContainer(props:ImageContainerProps) {
   return (
-    <ImageContainerStyled
-      css={{
-        backgroundImage:`${props.src ? `url(${props.src})` :'none'}`,
-        backgroundColor:`${props.src ? '$gray2':'transparent'}`,
-        height: `${props.src ? '200px':'130px'}`,
-      }}
+
+    <Menu
+      title={'基本設定'}
+      trigger={
+        <ImageContainerStyled
+          css={{
+            backgroundImage:`${props.src ? `url(${props.src})` :'none'}`,
+            backgroundColor:`${props.src ? '$gray2':'transparent'}`,
+            height: `${props.src ? '200px':'130px'}`,
+          }}
+        >
+          <ImageContainerOverlay
+            css={{
+              height: `${props.src ? '200px':'130px'}`,
+            }}
+          >
+            {props.children}
+          </ImageContainerOverlay>
+        </ImageContainerStyled>
+      }
     >
-      <ImageContainerOverlay
-        css={{
-          height: `${props.src ? '200px':'130px'}`,
-        }}
-      >
-        {props.children}
-      </ImageContainerOverlay>
-    </ImageContainerStyled>
+      {props.menuChildren}
+    </Menu>
   )
 }

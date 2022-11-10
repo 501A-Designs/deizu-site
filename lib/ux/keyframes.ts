@@ -11,17 +11,6 @@ const slideInBottom = keyframes({
   },
 });
 
-const popOutLeftTop = keyframes({
-  '0%': {
-    transform: 'scale(0.5) translateX(-40%) translateY(-40%)',
-    opacity: 0,
-    borderRadius:'$3',
-  },
-  '50%':{
-    transform: 'scale(1.03)'
-  }
-});
-
 const popOut = keyframes({
   '0%': {
     transform: 'scale(0.5)',
@@ -38,4 +27,4 @@ const fadeIn = keyframes({
 });
 
 
-export {slideInBottom,popOutLeftTop,popOut, fadeIn};
+export {slideInBottom,popOut, fadeIn};

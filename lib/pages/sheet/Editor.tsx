@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import {  FiArrowLeft, FiEye, FiAlertTriangle, FiChevronRight, FiCopy, FiDatabase, FiExternalLink, FiGrid, FiHome, FiImage, FiInfo, FiLayout, FiLink, FiLock, FiLogIn, FiPlus, FiSettings, FiTrash2, FiUsers, FiGitBranch } from 'react-icons/fi';
+import {  FiArrowLeft, FiEye, FiAlertTriangle, FiChevronRight, FiCopy, FiDatabase, FiExternalLink, FiGrid, FiHome, FiImage, FiInfo, FiLayout, FiLink, FiLock, FiLogIn, FiPlus, FiSettings, FiTrash2, FiUsers, FiGitBranch, FiEdit3 } from 'react-icons/fi';
 
 // Components
 import Stack from "../../style/Stack";
@@ -18,7 +18,7 @@ import 'moment/locale/ja';
 import moment from 'moment';
 
 // Firebase
-import { doc, updateDoc, deleteField,collection, getDocs, DocumentData } from "firebase/firestore";
+import { doc, updateDoc, deleteField,collection, getDocs, DocumentData, setDoc, deleteDoc } from "firebase/firestore";
 import { db } from "../../../src/service/firebase";
 import { useCollection } from "react-firebase-hooks/firestore";
 import DataSheetButton from "../../button/DataSheetButton";
@@ -26,6 +26,8 @@ import Input from "../../component/Input";
 import TextPreview from "../../component/TextPreview";
 import Heading from "../../component/Heading";
 import { styled } from "../../../stitches.config";
+import Toggle from "../../component/Toggle";
+import { ItemStyled } from "../../component/Menu";
 // import { SheetDataTypes } from "../../../pages/user/[userId]/sheet/[id]";
 
 export interface SheetDataTypes {
@@ -47,16 +49,17 @@ export interface EditorProps {
 
 export default function Editor(props:EditorProps) {
   const router = useRouter();
+  const sheetId:string = `${router.query.id}`;
+  let user = props.user;
+  let viewOnly = props.viewOnly;
+  let sheetData = props.sheetData;
 
   const [modalSection, setModalSection] = useState(0);
   const [selectCustomize, setSelectCustomize] = useState('banner');
 
+  const [sheetTitle, setSheetTitle] = useState<string>(sheetData.title);
   const [sheetBannerImageUrl, setSheetBannerImageUrl] = useState<string>();
-
-  // Props
-  let user = props.user;
-  let viewOnly = props.viewOnly;
-  let sheetData = props.sheetData;
+  const [shareSheetState, setShareSheetState] = useState<boolean>(sheetData.sharing);
 
   useEffect(() => {
     setSheetBannerImageUrl(sheetData && sheetData.bannerImageUrl);
@@ -85,15 +88,17 @@ export default function Editor(props:EditorProps) {
   //       }
   //     }}, { merge: true });    
   // }
-  // const shareSheet = async(prop) => {
-  //   setShareSheetState(prop)
-  //   const docRef = doc(db, "users", user.uid);
-  //   await setDoc(docRef, {sheets:{[sheetName]:{sharing:prop}}}, { merge: true });
-  // }
   // const copyAlert = (prop, message) => {
-  //   navigator.clipboard.writeText(`${prop} `);
-  //   toast(`${message}がコピーされました。`);
-  // }
+    //   navigator.clipboard.writeText(`${prop} `);
+    //   toast(`${message}がコピーされました。`);
+    // }
+  const sheetDocRef = doc(db, `users/${user.uid}/scheduleGrid/${sheetId}/`);
+    
+  const shareSheet = async(shareBoolean:boolean) => {
+    // preventDefault();
+    setShareSheetState(shareBoolean)
+    await setDoc(sheetDocRef, {sharing:shareBoolean}, { merge: true });
+  }
 
   // Datasheet fetching
   const [dataSheetData] = useCollection<DocumentData>(collection(db, "sheets"));
@@ -101,9 +106,34 @@ export default function Editor(props:EditorProps) {
 
   return (
     <>
-      <ImageContainer src={sheetBannerImageUrl}>
+      <ImageContainer
+        src={sheetBannerImageUrl}
+        menuChildren={
+          <>
+            <ItemStyled>
+              <AlignItems>
+                <FiImage/>
+                バナー画像を追加
+              </AlignItems>
+            </ItemStyled>
+            <Dialog
+              title={'名前を変更'}
+              trigger={
+                <ItemStyled>
+                  <AlignItems>
+                    <FiEdit3/>
+                    名前を変更
+                  </AlignItems>
+                </ItemStyled>
+              }
+            >
+              bruh
+            </Dialog>
+          </>
+        }
+      >
         <LargeHeading>
-          {sheetData.title}
+          {sheetTitle}
         </LargeHeading>
         <AlignItems
           marginBottom={'medium'}
@@ -135,7 +165,7 @@ export default function Editor(props:EditorProps) {
               </Button>
               <Dialog
                 title={'設定'}
-                openButton={
+                trigger={
                   <Button
                     size={'small'}
                     icon={<FiSettings/>}
@@ -295,23 +325,13 @@ export default function Editor(props:EditorProps) {
                           リンク共有を有効するとこのリンクにアクセスできる人は全て時間割を閲覧することができます。なお共有するとユーザー様がご指定しているテーマ・バナー画像等も共有されるのでご了承下さい。
                         </p>
                         <AlignItems justifyContent={'spaceBetween'}>
-                          <p>{sheetData.sharing ? ' 自分しか見えないようにする':'時間割の閲覧権限を与える'}</p>
-                          <AlignItems>
-                            {sheetData.sharing ? <Button
-                              icon={<FiLock/>}
-                              onClick={()=>shareSheet(false)}
-                            >
-                              ロック
-                            </Button>:
-                            <Button
-                              icon={<FiLink/>}
-                              onClick={()=>shareSheet(true)}
-                            >
-                              共有
-                            </Button>}
-                          </AlignItems>
+                          <p>{shareSheetState ? '現在共有中':'自分のみアクセス可能'}</p>
+                          <Toggle
+                            defaultChecked={shareSheetState}
+                            onClick={()=>shareSheet(!shareSheetState)}
+                          />
                         </AlignItems>
-                        {sheetData.sharing &&
+                        {shareSheetState &&
                           <Stack>
                             <p>
                               URLをコピーし他の人に送信することで時間割表を共有することができます。
@@ -329,19 +349,20 @@ export default function Editor(props:EditorProps) {
                     {modalSection === 4 &&         
                       <>
                         <h3>デインジャーゾーン</h3>
-                        <AlignItems style={{justifyContent: 'space-between'}}>
-                          <p>「{sheetData.title}」を消去</p>
+                        <AlignItems justifyContent={'spaceBetween'}>
+                          <p>「{sheetTitle}」を消去</p>
                           <Button
                             icon={<FiTrash2 />}
                             onClick={async() => {
                                 if (window.confirm("今開いている時間割表を消去したいですか？一度消去すると復旧することはできません。")) {
-                                  const docRef = doc(db, "users", user.uid);
-                                  await updateDoc(docRef, {[`sheets.${sheetData.title}`]: deleteField()});
                                   router.push('/app');
+                                  await deleteDoc(sheetDocRef);
                                 }
                               }
                             }
-                          >時間割表を消去</Button>
+                          >
+                            時間割表を消去
+                          </Button>
                         </AlignItems>
                       </>
                     }

@@ -3,7 +3,6 @@ import * as ContextMenu from '@radix-ui/react-context-menu';
 
 import gradient from 'random-gradient'
 import { FiArchive, FiEdit3, FiLink, FiUsers } from 'react-icons/fi'
-import { fadeIn, popOut, popOutLeftTop } from '../../ux/keyframes';
 import { FiTrash } from 'react-icons/fi';
 import { styled } from '../../../stitches.config';
 import AlignItems from '../../style/AlignItems';
@@ -12,8 +11,9 @@ import Tag from '../../component/Tag';
 import Stack from '../../style/Stack';
 import moment from 'moment';
 import Heading from '../../component/Heading';
+import Menu, { ItemStyled } from '../../component/Menu';
 
-const SheetButtonStyled = styled(ContextMenu.Trigger, {
+const SheetButtonStyled = styled('div', {
   fontSize:'$l',
   padding: '$2',
   cursor: 'pointer',
@@ -57,120 +57,116 @@ const ButtonImageStyled = styled('img', {
   boxShadow:'$light',
 });
 
-const ContentStyled = styled(ContextMenu.Content, {
-  padding:'$2',
-  borderRadius:'$2',
-  backgroundColor:'$gray1',
-  border:'1px solid $gray4',
-  width:'250px',
-  boxShadow:'$heavy',
-  animation: `${popOutLeftTop} 0.3s ease-out`,
-});
-
-const ItemStyled = styled(ContextMenu.Item, {
-  padding:'$1 $2',
-  borderRadius:'$1',
-  width:'100%',
-  border:'1px solid $gray1',
-  boxShadow:'none',
-  outline:'none',
-  cursor:'pointer',
-  fontSize:'$xm',
-  transition:'$speed1',
-  color:'$gray12',
-  '&:hover':{
-    backgroundColor:'$gray4',
-    border:'1px solid $gray4',
-    transform: 'scale(1.02)'
-  },
-  variants:{
-    color:{
-      red:{
-        color:'red'
-      }
-    }
-  }
-});
-
 export default function SheetButton(props:any) {
   return (
-    <ContextMenu.Root>
-      <SheetButtonStyled
-        key={props.key}
-        onClick={props.onClick}
-      >
-        <AlignItems justifyContent={'spaceBetween'}>
-          <AlignItems gap={'medium'}>
-            {props.imageSource ? 
-              <ButtonImageStyled
-                alt="no img found"
-                src={props.imageSource}
-              />:
-              <GradientPlaceholderStyled
-                css={{background:gradient(props.children)}}
-              />
-            }
-            <Stack>
-              <Heading type={'h2'}>{props.children}</Heading>
-              <time>{moment(props.date).format("MMM Do dddd")}</time>
-            </Stack>
+    <Menu
+      title={'表の編集'}
+      trigger={
+        <SheetButtonStyled
+          key={props.key}
+          onClick={props.onClick}
+        >
+          <AlignItems justifyContent={'spaceBetween'}>
+            <AlignItems gap={'medium'}>
+              {props.imageSource ? 
+                <ButtonImageStyled
+                  alt="no img found"
+                  src={props.imageSource}
+                />:
+                <GradientPlaceholderStyled
+                  css={{background:gradient(props.children)}}
+                />
+              }
+              <Stack>
+                <Heading type={'h2'}>{props.children}</Heading>
+                <time>{moment(props.date).format("MMM Do dddd")}</time>
+              </Stack>
+            </AlignItems>
+            <AlignItems>
+              {props.sharing && 
+                <Tag
+                  icon={<FiUsers/>}
+                  color={'blue'}
+                >
+                  共有中
+                </Tag>
+              }
+              {props.archived &&
+                <Tag
+                  icon={<FiArchive/>}
+                  color={'orange'}
+                >
+                  アーカイブ済み
+                </Tag>
+              }
+            </AlignItems>
           </AlignItems>
-          <AlignItems>
-            {props.sharing && 
-              <Tag
-                icon={<FiUsers/>}
-                color={'blue'}
-              >
-                共有中
-              </Tag>
-            }
-            {props.archived &&
-              <Tag
-                icon={<FiArchive/>}
-                color={'orange'}
-              >
-                アーカイブ済み
-              </Tag>
-            }
-          </AlignItems>
-        </AlignItems>
-      </SheetButtonStyled>
+        </SheetButtonStyled>
+      }
+    >
+     <ItemStyled>
+       <AlignItems>
+         <FiLink/>
+         URLをコピー
+       </AlignItems>
+     </ItemStyled>
+     <ItemStyled>
+       <AlignItems>
+         <FiEdit3/>
+         名前を変更
+       </AlignItems>
+     </ItemStyled>
+     <ItemStyled>
+       <AlignItems>
+         <FiArchive/>
+         アーカイブする
+       </AlignItems>
+     </ItemStyled>
+     <ItemStyled color={'red'}>
+       <AlignItems>
+         <FiTrash/>
+         削除
+       </AlignItems>
+     </ItemStyled>
+    </Menu>
+    // <ContextMenu.Root>
 
-      <ContextMenu.Portal>
-        <ContentStyled>
-          <ContextMenu.Label>
-            {props.title}
-          </ContextMenu.Label>
-          <ContextMenu.Item />
-          <ContextMenu.Group>
-            <ItemStyled>
-              <AlignItems>
-                <FiLink/>
-                URLをコピー
-              </AlignItems>
-            </ItemStyled>
-            <ItemStyled>
-              <AlignItems>
-                <FiEdit3/>
-                名前を変更
-              </AlignItems>
-            </ItemStyled>
-            <ItemStyled>
-              <AlignItems>
-                <FiArchive/>
-                アーカイブする
-              </AlignItems>
-            </ItemStyled>
-            <ItemStyled color={'red'}>
-              <AlignItems>
-                <FiTrash/>
-                削除
-              </AlignItems>
-            </ItemStyled>
-          </ContextMenu.Group>
-          <ContextMenu.Separator />
-        </ContentStyled>
-      </ContextMenu.Portal>
-    </ContextMenu.Root>
+
+    //   <ContextMenu.Portal>
+    //     <ContentStyled>
+    //       <ContextMenu.Label>
+    //         {props.title}
+    //       </ContextMenu.Label>
+    //       <ContextMenu.Item />
+    //       <ContextMenu.Group>
+    //         <ItemStyled>
+    //           <AlignItems>
+    //             <FiLink/>
+    //             URLをコピー
+    //           </AlignItems>
+    //         </ItemStyled>
+    //         <ItemStyled>
+    //           <AlignItems>
+    //             <FiEdit3/>
+    //             名前を変更
+    //           </AlignItems>
+    //         </ItemStyled>
+    //         <ItemStyled>
+    //           <AlignItems>
+    //             <FiArchive/>
+    //             アーカイブする
+    //           </AlignItems>
+    //         </ItemStyled>
+    //         <ItemStyled color={'red'}>
+    //           <AlignItems>
+    //             <FiTrash/>
+    //             削除
+    //           </AlignItems>
+    //         </ItemStyled>
+    //       </ContextMenu.Group>
+    //       <ContextMenu.Separator />
+    //     </ContentStyled>
+    //   </ContextMenu.Portal>
+    // </ContextMenu.Root>
   )
 }

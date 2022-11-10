@@ -56,7 +56,7 @@ export default function SettingDialogContent() {
               <p>UI全体が暗く表示されます。</p>
               <Toggle
                 defaultChecked={theme === "dark"}
-                onClick={toggleTheme}
+                onClick={()=>toggleTheme()}
               />
             </AlignItems>
           </Container>

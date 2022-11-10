@@ -36,8 +36,8 @@ const SwitchThumbStyled = styled(SwitchPrimitive.Thumb, {
 export default function Toggle(props:any){
   return(
     <SwitchStyled
+      // id="s1"
       defaultChecked={props.defaultChecked}
-      id="s1"
       onCheckedChange={props.onClick}
     >
       <SwitchThumbStyled />

@@ -41,8 +41,8 @@ const TimePeriodStyled = styled('div',{
   alignItems:'center',
   justifyContent:'center',
   '@bp1':{
-    width:'18px',
-    height:'18px',
+    width:'15px',
+    height:'15px',
   },
   '@bp2_':{
     width:'25px',
@@ -73,6 +73,7 @@ const TimeStyled = styled('div',{
   width: '100%',
   height: 'fit-content',
   '@bp1':{
+    padding: '$1 0',
     writingMode: 'vertical-rl',
     textOrientation: 'mixed'
   }
@@ -174,7 +175,7 @@ export default function TimeCell(props:TimeCellProps) {
   return (
     <Dialog
       title={viewOnly ? '編集不可能':displayPeriod+'限目の時間'}
-      openButton={
+      trigger={
         <TimeContainerStyled css={{borderRadius:`${timeContainerDynamicBorderRadius()}`}}>
           {timeStart ? 
             <TimeStyled>
