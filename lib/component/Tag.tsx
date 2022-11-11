@@ -6,6 +6,11 @@ const TagStyled = styled('div',{
   fontSize:'$s',
   padding:'$1 $2',
   borderRadius:'$rounded',
+  'span':{
+    '@bp1':{
+      display:'none'
+    }
+  },
   variants:{
     color:{
       none:{
@@ -44,7 +49,7 @@ export default function Tag(props:TagProps) {
     <TagStyled color={props.color}>
       <AlignItems>
         {props.icon}
-        {props.children}
+        <span>{props.children}</span>
       </AlignItems>
     </TagStyled>
   )

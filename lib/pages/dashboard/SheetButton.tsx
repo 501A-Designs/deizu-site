@@ -12,6 +12,9 @@ import Stack from '../../style/Stack';
 import moment from 'moment';
 import Heading from '../../component/Heading';
 import Menu, { ItemStyled } from '../../component/Menu';
+import { doc, updateDoc } from 'firebase/firestore';
+import { useRouter } from 'next/router';
+import { db } from '../../../src/service/firebase';
 
 const SheetButtonStyled = styled('div', {
   fontSize:'$l',
@@ -24,14 +27,8 @@ const SheetButtonStyled = styled('div', {
   borderImageSlice: 1,
   transition: '$speed1',
   'time':{
-    color:'$gray12',
-    fontSize:'0.8em',
-    '@bp1':{
-      display:'none'
-    },
-    '@bp2_':{
-      display:'block'
-    },
+    color:'$gray11',
+    fontSize:'$m',
   },
   '&:hover':{
     borderRadius:'$3',
@@ -42,22 +39,59 @@ const SheetButtonStyled = styled('div', {
 });
 const GradientPlaceholderStyled = styled('div', {
   borderRadius:'$2',
-  width:'5.2em',
-  height:'5.2em',
   border:'1px solid $gray2',
   boxShadow:'$light',
+
+  '@bp1':{
+    width:'4.2em',
+    height:'4.2em',    
+  },
+  '@bp2_':{
+    width:'5.2em',
+    height:'5.2em',
+  }
 });
 const ButtonImageStyled = styled('img', {
   borderRadius:'$2',
-  width:'5.2em',
-  height:'5.2em',
   objectFit:'cover',
   backgroundColor:'$gray4',
   border:'1px solid $gray2',
   boxShadow:'$light',
+
+  '@bp1':{
+    width:'4.2em',
+    height:'4.2em',    
+  },
+  '@bp2_':{
+    width:'5.2em',
+    height:'5.2em',
+  }
 });
 
+// interface
+
 export default function SheetButton(props:any) {
+  const router = useRouter();
+  let user = props.user;
+  let sheetTitle:string = props.children;
+  const sheetId:string = props.sheetId;
+  const sheetDocRef = doc(db, `users/${user.uid}/scheduleGrid/${sheetId}/`);
+
+
+  const updateTitle = async () => {
+    let newTitleValue = prompt('新しいタイトル')
+    if (newTitleValue) {
+      await updateDoc(sheetDocRef, {
+        title:newTitleValue
+      })
+      sheetTitle = newTitleValue;
+    }
+  }
+
+  const deleteSheet = () =>{
+    alert('delete')
+  }
+
   return (
     <Menu
       title={'表の編集'}
@@ -74,11 +108,11 @@ export default function SheetButton(props:any) {
                   src={props.imageSource}
                 />:
                 <GradientPlaceholderStyled
-                  css={{background:gradient(props.children)}}
+                  css={{background:gradient(sheetTitle)}}
                 />
               }
               <Stack>
-                <Heading type={'h2'}>{props.children}</Heading>
+                <Heading type={'h2'}>{sheetTitle}</Heading>
                 <time>{moment(props.date).format("MMM Do dddd")}</time>
               </Stack>
             </AlignItems>
@@ -104,30 +138,35 @@ export default function SheetButton(props:any) {
         </SheetButtonStyled>
       }
     >
-     <ItemStyled>
-       <AlignItems>
-         <FiLink/>
-         URLをコピー
-       </AlignItems>
-     </ItemStyled>
-     <ItemStyled>
-       <AlignItems>
-         <FiEdit3/>
-         名前を変更
-       </AlignItems>
-     </ItemStyled>
-     <ItemStyled>
-       <AlignItems>
-         <FiArchive/>
-         アーカイブする
-       </AlignItems>
-     </ItemStyled>
-     <ItemStyled color={'red'}>
-       <AlignItems>
-         <FiTrash/>
-         削除
-       </AlignItems>
-     </ItemStyled>
+      <ItemStyled>
+        <AlignItems>
+          <FiLink/>
+          URLをコピー
+        </AlignItems>
+      </ItemStyled>
+      <ItemStyled
+        onSelect={()=>updateTitle()}
+      >
+        <AlignItems>
+          <FiEdit3/>
+          名前を変更
+        </AlignItems>
+      </ItemStyled>
+      <ItemStyled>
+        <AlignItems>
+          <FiArchive/>
+          アーカイブする
+        </AlignItems>
+      </ItemStyled>
+      <ItemStyled
+        color={'red'}
+        onSelect={()=> deleteSheet()} 
+      >
+        <AlignItems>
+          <FiTrash/>
+          削除
+        </AlignItems>
+      </ItemStyled>
     </Menu>
     // <ContextMenu.Root>
 

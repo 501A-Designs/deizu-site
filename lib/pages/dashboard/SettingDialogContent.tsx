@@ -61,14 +61,6 @@ export default function SettingDialogContent() {
             </AlignItems>
           </Container>
         }
-        {modalSection !== 0 &&
-          <Button
-            icon={<FiSave/>}
-            // onClick={(e)=>saveThemeData(e)}
-          >
-            保存
-          </Button>
-        }
       </Stack>
     </Stack>
   )

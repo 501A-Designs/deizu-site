@@ -16,7 +16,7 @@ const popOutLeftTop = keyframes({
 
 const MenuTitleStyled = styled(ContextMenu.Label,{
   margin:'$1',
-  color:'$gray10',
+  color:'$gray9',
   fontSize:'$m',
   userSelect:'none'
 })
@@ -35,24 +35,34 @@ export const ItemStyled = styled(ContextMenu.Item, {
   padding:'$1 $2',
   borderRadius:'$1',
   width:'100%',
-  border:'1px solid $gray1',
   boxShadow:'none',
   outline:'none',
   cursor:'pointer',
   fontSize:'$xm',
   transition:'$speed1',
-  color:'$gray12',
-  '&:hover':{
-    backgroundColor:'$gray4',
-    border:'1px solid $gray4',
-    transform: 'scale(1.02)'
-  },
+  border:'1px solid $gray1',
   variants:{
     color:{
+      standard:{
+        color:'$gray12',
+        '&:hover':{
+          backgroundColor:'$gray4',
+          border:'1px solid $gray4',
+          transform: 'scale(1.02)'
+        }
+      },
       red:{
-        color:'red'
+        color:'$red11',
+        '&:hover':{
+          backgroundColor:'$red3',
+          border:'1px solid $red3',
+          transform: 'scale(1.02)'
+        }
       }
     }
+  },
+  defaultVariants:{
+    color:'standard'
   }
 });
 
@@ -70,11 +80,10 @@ export default function Menu(props:any) {
               {props.title}
             </MenuTitleStyled>
           }
-          <ContextMenu.Item />
           <ContextMenu.Group>
             {props.children}
           </ContextMenu.Group>
-          <ContextMenu.Separator />
+          {/* <ContextMenu.Separator /> */}
         </ContentStyled>
       </ContextMenu.Portal>
     </ContextMenu.Root>

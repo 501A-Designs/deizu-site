@@ -13,13 +13,13 @@ const ButtonStyled = styled('button', {
   variants:{
     styleType:{
       noFill:{
-        color: '$gray12',
+        color: '$gray11',
         backgroundColor: '$gray4',
         border: '1px solid $gray5',
         '&:hover': {
-          color: '$gray1',
-          backgroundColor: '$gray12',
-          border: '1px solid $gray12',
+          color: '$gray12',
+          backgroundColor: '$gray5',
+          border: '1px solid $gray6',
           boxShadow: '0 8px 10px $gray1',
           transform:'scale(1.02)'
         },
@@ -37,13 +37,24 @@ const ButtonStyled = styled('button', {
         },
       },
       outline:{
-        color: '$gray1',
-        backgroundColor: '$system1',
-        border: '1px solid $system3',
+        color: '$gray11',
+        backgroundColor: '$gray1',
+        border: '1px solid $gray3',
+        boxShadow: '0 0 2px $system2',
+        '&:hover': {
+          color: '$gray12',
+          backgroundColor: '$gray2',
+          transform:'scale(1.02)'
+        },
+      },
+      red:{
+        color: '$red11',
+        backgroundColor: '$red5',
+        border: '1px solid $red6',
         // boxShadow: '0 0 2px $system2',
         '&:hover': {
-          color: '$system1',
-          backgroundColor: '$system4',
+          backgroundColor: '$red4',
+          border: '1px solid $red5',
           transform:'scale(1.02)'
         },
       }

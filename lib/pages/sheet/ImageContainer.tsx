@@ -41,7 +41,6 @@ interface ImageContainerProps{
   src?:string,
   children:JSX.Element | JSX.Element[],
   menuChildren:JSX.Element | JSX.Element[],
-
 }
 
 

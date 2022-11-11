@@ -3,12 +3,11 @@ import { keyframes } from "@stitches/react";
 const slideInBottom = keyframes({
   '0%': {
     opacity: 0,
-		transform: 'translateY(0px) translateX(-50%)',
+		transform: 'translateY(0px) translateX(-50%) scale(0.5)',
   },
-  '60%': {
-    opacity: 1,
-		transform: 'translateY(-55%) translateX(-50%)',
-  },
+  // '30%': {
+	// 	transform: 'translateY(-65%) translateX(-50%)',
+  // },
 });
 
 const popOut = keyframes({

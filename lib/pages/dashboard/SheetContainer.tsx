@@ -45,11 +45,11 @@ const TotalText = styled('p',{
 export default function SheetContainer(props:SheetContainerProps) {
   const router = useRouter();
   const sheetDataArray = props.sheetDataArray
-  const userDoc = doc(db,`users/${props.user && props.user.uid}/`);
+  const userDoc = doc(db,`users/${props.user?.uid}/`);
   const [v2SheetData, loadingV2SheetData] = useDocument<DocumentData>(userDoc);
 
   const convertV2toV3 = async () =>{
-    const scheduleGridCollection:any = collection(db, `users/${props.user && props.user.uid}/scheduleGrid/`)
+    const scheduleGridCollection:any = collection(db, `users/${props.user?.uid}/scheduleGrid/`)
     await Object.keys(v2SheetData?.data()?.sheets).map(sheet => {
       addDoc(scheduleGridCollection,{
         title:sheet,
@@ -101,6 +101,7 @@ export default function SheetContainer(props:SheetContainerProps) {
           {sheetDataArray?.docs.map((sheetDoc:SheetDocTypes) =>
             <SheetButton
               key={sheetDoc.id}
+              sheetId={sheetDoc.id}
               imageSource={sheetDoc.data().bannerImageUrl}
               onClick={() =>{
                 // setLoadSheet(true);
@@ -108,7 +109,8 @@ export default function SheetContainer(props:SheetContainerProps) {
               }}
               sharing={sheetDoc.data().sharing}
               archived={sheetDoc.data().archived}
-              date={sheetDoc.data().date.toDate().toDateString()}
+              date={sheetDoc.data().date?.toDate().toDateString()}
+              user={props.user}
             >
               {sheetDoc.data().title}
             </SheetButton>

@@ -46,6 +46,7 @@ import { TooltipLabel } from '../../../lib/component/TooltipLabel';
 import Toggle from '../../../lib/component/Toggle';
 import Heading from '../../../lib/component/Heading';
 import SettingDialogContent from '../../../lib/pages/dashboard/SettingDialogContent';
+import CreateNewDialogContent from '../../../lib/pages/dashboard/CreateNewDialogContent';
 
 export interface SheetDocTypes{
   id:string,
@@ -219,7 +220,7 @@ function IndivisualUser() {
                     </SideButton>
                     <Dialog
                       title={'設定'}
-                      openButton={
+                      trigger={
                         <SideButton
                           icon={<FiSettings/>}
                         >
@@ -266,13 +267,18 @@ function IndivisualUser() {
                 <AlignItems
                   justifyContent={'center'}
                 >
-                  <CreateNewButton
-                    onClick={() => 
-                      router.push(`/user/${user.uid}/sheet`)
+                  <Dialog
+                    title={'新規作成'}
+                    trigger={
+                      <CreateNewButton>
+                        <FiPlus/>
+                      </CreateNewButton>
                     }
                   >
-                    <FiPlus/>
-                  </CreateNewButton>
+                    <CreateNewDialogContent
+                      user={user}
+                    />
+                  </Dialog>
                 </AlignItems>
               </Footer>
             </BodyMargin>

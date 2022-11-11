@@ -69,6 +69,7 @@ export default function Editor(props:EditorProps) {
     fontSize:'2em',
     margin:'0 0 15px 5%',
     color:'gray12',
+    textShadow:'$heavy'
   })
 
   // Functions
@@ -99,6 +100,16 @@ export default function Editor(props:EditorProps) {
     setShareSheetState(shareBoolean)
     await setDoc(sheetDocRef, {sharing:shareBoolean}, { merge: true });
   }
+  
+  const updateTitle = async () => {
+    let newTitleValue = prompt('新しいタイトル')
+    if (newTitleValue) {
+      await updateDoc(sheetDocRef, {
+        title:newTitleValue
+      })
+      setSheetTitle(newTitleValue);
+    }
+  }
 
   // Datasheet fetching
   const [dataSheetData] = useCollection<DocumentData>(collection(db, "sheets"));
@@ -116,19 +127,15 @@ export default function Editor(props:EditorProps) {
                 バナー画像を追加
               </AlignItems>
             </ItemStyled>
-            <Dialog
-              title={'名前を変更'}
-              trigger={
-                <ItemStyled>
-                  <AlignItems>
-                    <FiEdit3/>
-                    名前を変更
-                  </AlignItems>
-                </ItemStyled>
-              }
+            <ItemStyled
+              // asChild
+              onSelect={()=>updateTitle()}
             >
-              bruh
-            </Dialog>
+              <AlignItems>
+                <FiEdit3/>
+                名前を変更
+              </AlignItems>
+            </ItemStyled>
           </>
         }
       >
@@ -352,6 +359,7 @@ export default function Editor(props:EditorProps) {
                         <AlignItems justifyContent={'spaceBetween'}>
                           <p>「{sheetTitle}」を消去</p>
                           <Button
+                            styleType={'red'}
                             icon={<FiTrash2 />}
                             onClick={async() => {
                                 if (window.confirm("今開いている時間割表を消去したいですか？一度消去すると復旧することはできません。")) {
