@@ -2,6 +2,8 @@ import { styled } from '@stitches/react'
 import React from 'react'
 
 const ColorButtonStyled = styled('button', {
+  userSelect: 'none',
+  outlineColor:'$gray12',
   height:'20px',
   width:'20px',
   borderRadius: '$2',

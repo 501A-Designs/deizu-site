@@ -6,10 +6,10 @@ import { TooltipLabel } from '../../component/TooltipLabel';
 import { popOut } from '../../ux/keyframes';
 
 const SideButtonStyled = styled('button', {
+  userSelect: 'none',
+  outlineColor:'$gray12',
   fontSize:'$xm',
   padding:'$2',
-  userSelect: 'none',
-  outline: 'none',
   cursor: 'pointer',
   display:'flex',
   alignItems:'center',

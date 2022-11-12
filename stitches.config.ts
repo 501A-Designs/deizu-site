@@ -53,8 +53,8 @@ export const { styled, css, createTheme } = createStitches({
     },
     shadows:{
       light:'0 3px 10px rgba(150, 150, 150, 0.12)',
-      medium:'0 6px 20px rgba(100, 100, 100, 0.12)',
-      heavy:'0 8px 30px rgba(50, 50, 50, 0.12)',
+      medium:'0 6px 15px rgba(140, 140, 140, 0.12)',
+      heavy:'0 8px 20px rgba(130, 130, 130, 0.12)',
     },
     transitions:{
       speed1: '0.3s',

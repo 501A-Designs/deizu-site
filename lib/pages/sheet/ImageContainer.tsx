@@ -1,8 +1,8 @@
+import randomGradient from 'random-gradient'
 import React from 'react'
 import { FiEdit3, FiImage } from 'react-icons/fi'
 import { styled } from '../../../stitches.config'
 import Menu, { ItemStyled } from '../../component/Menu'
-import AlignItems from '../../style/AlignItems'
 
 const ImageContainerStyled = styled('div',{
   backgroundAttachment:'fixed',
@@ -14,7 +14,6 @@ const ImageContainerStyled = styled('div',{
 })
 
 const ImageContainerOverlay = styled('div',{
-  // backdropFilter:'blur(5px)',
   display:'flex',
   background:'linear-gradient(30deg, $gray3, transparent)',
   alignItems:'end',
@@ -41,7 +40,9 @@ interface ImageContainerProps{
   src?:string,
   children:JSX.Element | JSX.Element[],
   menuChildren:JSX.Element | JSX.Element[],
+  id:string
 }
+
 
 
 export default function ImageContainer(props:ImageContainerProps) {
@@ -53,13 +54,14 @@ export default function ImageContainer(props:ImageContainerProps) {
         <ImageContainerStyled
           css={{
             backgroundImage:`${props.src ? `url(${props.src})` :'none'}`,
-            backgroundColor:`${props.src ? '$gray2':'transparent'}`,
-            height: `${props.src ? '200px':'130px'}`,
+            // backgroundColor:`${props.src ? '$gray2':'transparent'}`,
+            background:`${!props.src && randomGradient(props.id)}`,
+            height: `${props.src ? '250px':'130px'}`,
           }}
         >
           <ImageContainerOverlay
             css={{
-              height: `${props.src ? '200px':'130px'}`,
+              height: `${props.src ? '250px':'130px'}`,
             }}
           >
             {props.children}

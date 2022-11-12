@@ -13,7 +13,7 @@ const slideInBottom = keyframes({
 const popOut = keyframes({
   '0%': {
     transform: 'scale(0.5)',
-    opacity: 0
+    opacity: 0.5
   },
   '50%':{
     transform: 'scale(1.03)'

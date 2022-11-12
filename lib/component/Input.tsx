@@ -3,7 +3,8 @@ import { styled } from '../../stitches.config'
 import Stack from '../style/Stack'
 
 const InputStyled = styled('input', {
-  outline: 'none',
+  userSelect: 'none',
+  outline:'none',
   color: '$gray12',
   transition: '$speed1',
   variants:{
@@ -24,8 +25,9 @@ const InputStyled = styled('input', {
         padding: '$2',
         borderRadius: '$2',
         '&:focus':{
-          boxShadow: '$light',
-          border: '1px solid $gray5',
+          boxShadow: '$light',     
+          backgroundColor: '$gray2',
+          border: '1px solid $gray6',
         },
       },
       extraLarge:{
@@ -33,7 +35,10 @@ const InputStyled = styled('input', {
         border: 'none',
         fontSize:'$xxl',
         padding: '$2',
-        // borderRadius: '$2',
+        borderRadius: '$2',
+        // '&:focus':{   
+        //   outline:'none',
+        // }
       }
     }
   },

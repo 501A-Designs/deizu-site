@@ -128,6 +128,8 @@ function IndivisualUser() {
   })
 
   const CreateNewButton = styled('button',{
+    userSelect: 'none',
+    outlineColor:'$gray12',
     cursor:'pointer',
     padding: '$3',
     fontSize:'$xxl',

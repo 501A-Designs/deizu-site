@@ -14,6 +14,31 @@ import Input from '../../component/Input';
 import { db } from '../../../src/service/firebase';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { useRouter } from 'next/router';
+import { styled } from '../../../stitches.config';
+
+
+const SelectBackdropContainerStyled = styled('section',{
+  display:'flex',
+  alignItems:'center',
+  backgroundColor:'$gray1',
+})
+
+// const SelectBackdropStyled = styled('div',{
+//   backgroundColor:'$gray11',
+//   color:'$gray1'
+// })
+
+// function SelectBackdrop() {
+//   return (
+//     <SelectBackdropContainerStyled>
+//       <SelectBackdropStyled
+//         onClick={()=>setContainerStyle('')}
+//       >
+//         Bruh
+//       </SelectBackdropStyled>
+//     </SelectBackdropContainerStyled>
+//   )
+// }
 
 interface CreateNewDialogContentProps{
   user:any,
@@ -60,7 +85,9 @@ export default function CreateNewDialogContent(props:CreateNewDialogContentProps
               }
             />
           </AlignItems>
+          {/* <SelectBackdrop/> */}
           <Button
+            disabled={sheetName ? false:true}
             icon={<FiPlus/>}
             onClick={(e)=> createScheduleGridSheet(e)}
           >

@@ -14,6 +14,7 @@ const BodyMarginStyled = styled('div',{
 	'@bp4':{
     padding:'4% 15% 0 15%',
   },
+  backgroundColor:'$gray1'
   // minHeight:'100vh',
 })
 

@@ -3,6 +3,8 @@ import { styled } from '@stitches/react';
 import * as SwitchPrimitive from '@radix-ui/react-switch';
 
 const SwitchStyled = styled(SwitchPrimitive.Root, {
+  userSelect: 'none',
+  outlineColor:'$gray12',
   cursor:'pointer',
   all: 'unset',
   width: 42,
@@ -19,6 +21,8 @@ const SwitchStyled = styled(SwitchPrimitive.Root, {
 });
 
 const SwitchThumbStyled = styled(SwitchPrimitive.Thumb, {
+  userSelect: 'none',
+  outlineColor:'$gray12',
   display: 'block',
   width: 21,
   height: 21,

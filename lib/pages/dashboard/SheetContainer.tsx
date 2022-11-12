@@ -119,7 +119,7 @@ export default function SheetContainer(props:SheetContainerProps) {
             <>
               {
                 sheetDataArray.docs.length === 0 &&
-                <Container>
+                <Container styleType={'gradient'}>
                   <AlignItems
                     justifyContent={'center'}
                   >

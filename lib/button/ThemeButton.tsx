@@ -37,7 +37,8 @@ const ThemePreviewStyled = styled('div', {
 })
 
 interface ThemeButtonProps extends React.ComponentProps<typeof ThemeButtonStyled>{
-  data?:string[],
+  key:string,
+  data?:any,
   currentTheme?:string | string[],
 }
 
@@ -45,6 +46,7 @@ export default function ThemeButton(props:ThemeButtonProps) {
 
   return (
     <ThemeButtonStyled
+      key={props.key}
       onClick={props.onClick}
       currentTheme={props.currentTheme == props.data}
     >

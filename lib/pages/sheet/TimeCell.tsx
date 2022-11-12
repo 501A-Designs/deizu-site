@@ -11,8 +11,9 @@ import TextPreview from '../../component/TextPreview';
 import AlignItems from '../../style/AlignItems';
 import Stack from '../../style/Stack';
 
-const TimeContainerStyled = styled('div', {
+const TimeContainerStyled = styled('button', {
   userSelect: 'none',
+  outlineColor:'$gray12',
   display: 'flex',
   alignItems:'center',
   justifyContent: 'space-between',
@@ -58,14 +59,14 @@ const TimePeriodStyled = styled('div',{
       fontSize:'$s',
     },
     '@bp2_':{
-      fontSize:'$l',
+      fontSize:'$m',
     }
   },
 })
 
 const TimeStyled = styled('div',{
-  color: '$gray12',
-  fontSize: '$s',
+  color: '$gray11',
+  fontSize: '$m',
   fontWeight:'bold',
   float: 'right',
   padding: '$1',

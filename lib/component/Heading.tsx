@@ -2,9 +2,8 @@ import React from 'react'
 import { styled } from '../../stitches.config'
 
 const HeadingStyled = styled('h1',{
-  color:'$system4',
 	margin: '0.3em 0 0.3em 0',
-
+  color:'$gray12',
   variants:{
     type:{
       h1:{
@@ -30,7 +29,8 @@ const HeadingStyled = styled('h1',{
 })
 
 interface HeadingProps extends React.ComponentProps<typeof HeadingStyled>{
-  margin?:string
+  margin?:string,
+  color?:string
 }
 
 export default function Heading(props:HeadingProps) {
@@ -38,6 +38,7 @@ export default function Heading(props:HeadingProps) {
     <HeadingStyled
       type={props.type}
       css={{
+        color:props.color,
         margin:props.margin
       }}
     >

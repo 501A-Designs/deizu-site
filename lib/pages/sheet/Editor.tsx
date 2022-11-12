@@ -68,35 +68,28 @@ export default function Editor(props:EditorProps) {
   const LargeHeading = styled('h1',{
     fontSize:'2em',
     margin:'0 0 15px 5%',
-    color:'gray12',
-    textShadow:'$heavy'
+    color:'$gray12',
+    fontWeight:'500',
+    $$textShadowColor:'#989898',
+    textShadow:'0px 0px 30px $$textShadowColor'
   })
 
   // Functions
-
-  // const saveDataSheetId = async() =>{
-  //   const docRef = doc(db, "users", user.uid);
-  //   await setDoc(docRef, {sheets:{[sheetName]:{dataSheetId:dataSheetId}}}, { merge: true });
-  //   fetchDataSheet(dataSheetId)
-  // }
-  // const saveSheetImageUrl = async() =>{
-  //   const docRef = doc(db, "users", user.uid);
-  //   await setDoc(docRef, {
-  //     sheets:{[sheetName]:
-  //       {
-  //         bannerImageUrl:sheetBannerImageUrl,
-  //         backgroundImageUrl:sheetBackgroundImageUrl,
-  //       }
-  //     }}, { merge: true });    
-  // }
-  // const copyAlert = (prop, message) => {
-    //   navigator.clipboard.writeText(`${prop} `);
-    //   toast(`${message}がコピーされました。`);
-    // }
   const sheetDocRef = doc(db, `users/${user.uid}/scheduleGrid/${sheetId}/`);
-    
+
+  const saveDataSheetId = async() =>{
+    await setDoc(sheetDocRef, {dataSheetId:dataSheetId}, { merge: true });
+  }
+
+  const saveSheetImageUrl = async () => {
+    let url = prompt('バナー画像URL')
+    if (url) {
+      await setDoc(sheetDocRef, {bannerImageUrl:url}, { merge: true });
+      setSheetBannerImageUrl(url)
+    }
+  }
+
   const shareSheet = async(shareBoolean:boolean) => {
-    // preventDefault();
     setShareSheetState(shareBoolean)
     await setDoc(sheetDocRef, {sharing:shareBoolean}, { merge: true });
   }
@@ -118,10 +111,13 @@ export default function Editor(props:EditorProps) {
   return (
     <>
       <ImageContainer
+        id={sheetId}
         src={sheetBannerImageUrl}
         menuChildren={
           <>
-            <ItemStyled>
+            <ItemStyled
+              onSelect={()=>saveSheetImageUrl()}
+            >
               <AlignItems>
                 <FiImage/>
                 バナー画像を追加
@@ -193,20 +189,13 @@ export default function Editor(props:EditorProps) {
                   </SectionButton>
                   <SectionButton
                     onClick={()=>setModalSection(2)}
-                    leftIcon={<FiImage/>}
-                    rightIcon={<FiChevronRight/>}
-                  >
-                    画像を編集・追加
-                  </SectionButton>
-                  <SectionButton
-                    onClick={()=>setModalSection(3)}
                     leftIcon={<FiUsers/>}
                     rightIcon={<FiChevronRight/>}
                   >
                     共有設定
                   </SectionButton>
                   <SectionButton
-                    onClick={()=>setModalSection(4)}
+                    onClick={()=>setModalSection(3)}
                     leftIcon={<FiAlertTriangle/>}
                     rightIcon={<FiChevronRight/>}
                   >
@@ -258,7 +247,7 @@ export default function Editor(props:EditorProps) {
                         </p>
                         <Stack>
                           {sheetData.dataSheetId && 
-                            <TextPreview style={{textAlign: 'center'}}>
+                            <TextPreview>
                               「{dataSheetName}」のデータシートに繋がっています
                             </TextPreview>
                           }
@@ -276,56 +265,7 @@ export default function Editor(props:EditorProps) {
                         </Stack>
                       </>
                     }
-                    {modalSection === 2 && 
-                      <>
-                        <h3>画像を追加・編集</h3>
-                        <p>インターネット上にある画像URLを追加するとバナー画像・背景画像として追加されます。</p>
-                        <Stack grid={'1fr 1fr'}>
-                          <ImageSelect
-                            src="/banner.png"
-                            alt="Banner image"
-                            selected={selectCustomize === 'banner'}
-                            onClick={()=>{
-                              setSelectCustomize('banner');
-                            }}
-                          />
-                          <ImageSelect
-                            src="/background.png"
-                            alt="Background image"
-                            selected={selectCustomize === 'background'}
-                            onClick={()=>{
-                              setSelectCustomize('background');
-                            }}
-                          />
-                        </Stack>
-                        <Stack style={{marginTop: '10px'}}>
-                          {selectCustomize === 'banner' &&
-                            <Input
-                              placeholder={'バナー画像URL'}
-                              value={sheetBannerImageUrl}
-                              onChange={(e)=>setSheetBannerImageUrl(e.target.value)}
-                            />
-                          }
-                          {selectCustomize === 'background' &&
-                            <Input
-                              placeholder={'背景画像URL'}
-                              value={sheetBackgroundImageUrl}
-                              onChange={(e)=>setSheetBackgroundImageUrl(e.target.value)}
-                            />
-                          }
-                          <Button
-                            onClick={()=>{
-                              saveSheetImageUrl();
-                              closeModal();
-                              toast('保存完了！');
-                            }}
-                          >
-                            保存
-                          </Button>
-                        </Stack>
-                      </>
-                    }
-                    {modalSection === 3 &&         
+                    {modalSection === 2 &&         
                       <>
                         <h3>共有設定</h3>
                         <p>
@@ -353,7 +293,7 @@ export default function Editor(props:EditorProps) {
                         }
                       </>
                     }
-                    {modalSection === 4 &&         
+                    {modalSection === 3 &&         
                       <>
                         <h3>デインジャーゾーン</h3>
                         <AlignItems justifyContent={'spaceBetween'}>

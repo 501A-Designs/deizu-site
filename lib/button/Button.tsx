@@ -5,11 +5,14 @@ import AlignItems from '../style/AlignItems';
 
 const ButtonStyled = styled('button', {
   userSelect: 'none',
-  outline: 'none',
+  outlineColor:'$gray12',
+  // $gray7
   cursor: 'pointer',
   fontWeight:'bold',
   transition: '$speed1',
-
+  '&[disabled]':{
+    opacity:'0.2'
+  },
   variants:{
     styleType:{
       noFill:{
@@ -22,7 +25,7 @@ const ButtonStyled = styled('button', {
           border: '1px solid $gray6',
           boxShadow: '0 8px 10px $gray1',
           transform:'scale(1.02)'
-        },
+        }
       },
       fill:{
         color: '$gray1',
@@ -51,7 +54,6 @@ const ButtonStyled = styled('button', {
         color: '$red11',
         backgroundColor: '$red5',
         border: '1px solid $red6',
-        // boxShadow: '0 0 2px $system2',
         '&:hover': {
           backgroundColor: '$red4',
           border: '1px solid $red5',
@@ -88,7 +90,7 @@ const ButtonStyled = styled('button', {
     styleType:'noFill',
     size:'medium',
     shape:'standard'
-  }
+  },
 })
 
 interface ButtonProps extends React.ComponentProps<typeof ButtonStyled>{
@@ -99,6 +101,7 @@ interface ButtonProps extends React.ComponentProps<typeof ButtonStyled>{
 export default function Button(props:ButtonProps) {
   return (
     <ButtonStyled
+      disabled={props.disabled}
       styleType={props.styleType}
       size={props.size}
       shape={props.shape}

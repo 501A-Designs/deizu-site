@@ -24,8 +24,8 @@ const MockupCellNameStyled = styled('h4',{
 const MockupCellDescriptionStyled = styled('p',{
   fontWeight: 'normal',
   fontSize: '0.8em',
-  backgroundColor: '$gray12',
-  color: '$gray1',
+  backgroundColor: '$gray1',
+  color: '$gray12',
   borderRadius:'$1',
   padding: '5px 10px',
   width: 'fit-content',

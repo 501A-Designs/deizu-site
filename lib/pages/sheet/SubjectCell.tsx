@@ -8,16 +8,18 @@ import { db } from '../../../src/service/firebase';
 import { styled } from '../../../stitches.config';
 import Button from '../../button/Button';
 import ColorButton from '../../button/ColorButton';
+import Container from '../../component/Container';
 import Dialog from '../../component/Dialog';
+import Heading from '../../component/Heading';
 import Input from '../../component/Input';
 import MockupCell from '../../component/MockupCell';
 import { buttonColor } from '../../data/buttonColor';
 import AlignItems from '../../style/AlignItems';
 import Stack from '../../style/Stack';
 
-
-const SubjectCellStyled= styled('div', {
+const SubjectCellStyled= styled('button', {
   userSelect: 'none',
+  outlineColor:'$gray12',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
@@ -30,7 +32,6 @@ const SubjectCellStyled= styled('div', {
     transform:'scale(0.95)',
     boxShadow:'$light',
     border:'1px solid $gray5',
-    // borderRadius: '$2',
   },
   justifyContent: 'space-between',
   '@bp1':{
@@ -52,13 +53,13 @@ const SubjectCellNameStyled = styled('h5', {
   textAlign: 'center',
   margin:'0',
   '@bp1':{
-    fontSize:'$s',
-  },
-  '@bp2':{
     fontSize:'$m',
   },
+  '@bp2':{
+    fontSize:'$xm',
+  },
   '@bp3_':{
-    fontSize:'$l',
+    fontSize:'$xl',
   },
 })
 const SubjectCellDescriptionStyled = styled('p', {
@@ -70,17 +71,22 @@ const SubjectCellDescriptionStyled = styled('p', {
   backgroundColor: '$gray1',
   borderRadius: '$1',
   '@bp1_2':{
-    fontSize: '0.5em',
+    fontSize: '$s',
     padding:'2.5px $1'
   },
   '@bp3':{
-    fontSize: '$s',
+    fontSize: '$m',
     padding:'3px $1'
   },
   '@bp4':{
-    fontSize: '$m',
+    fontSize: '$l',
     padding:'$1 $2'
   },
+})
+
+const ScrollX = styled(AlignItems,{
+  overflowX:'scroll',
+  padding:'1em'
 })
 
 
@@ -195,12 +201,13 @@ export default function SubjectCell(props:SubjectCellProps) {
             subjectCellLink = {subjectCellLink}
             subjectCellColor = {subjectCellColor}
             subjectCellDescription = {subjectCellDescription}
-          />
-          {/* 
-          {dataSheetName &&
+          />          
+          {/* {dataSheetName &&
             <>
-              <h4 style={{textAlign: 'center', marginBottom:'0'}}>「{dataSheetName}」データシートより</h4>
-              <AlignItems style={{overflowX:'scroll', padding:'1em'}}>
+              <Heading type={'h4'}>
+                「{dataSheetName}」データシートより
+              </Heading>
+              <ScrollX>
                 {dataSheet.map(prop => {
                   return <MockupCell
                     onClick={() => {
@@ -217,7 +224,7 @@ export default function SubjectCell(props:SubjectCellProps) {
                     subjectCellDescription = {prop.subjectDescription}
                   />})
                 }
-              </AlignItems>
+              </ScrollX>
             </>
           } */}
           <AlignItems justifyContent={'center'}>
