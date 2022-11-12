@@ -22,7 +22,7 @@ import {
 } from '@radix-ui/colors';
 import { createStitches } from '@stitches/react';
 
-export const { styled, css, createTheme } = createStitches({
+export const { styled, css, createTheme, globalCss } = createStitches({
   theme: {
     colors: {
       // system1: '$gray1',

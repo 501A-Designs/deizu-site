@@ -39,6 +39,7 @@ export interface SheetDataTypes {
   location:string,
   bannerImageUrl?:string,
   backgroundImageUrl?:string,
+  dataSheetId?:string
 }
 
 export interface EditorProps {
@@ -74,8 +75,20 @@ export default function Editor(props:EditorProps) {
     textShadow:'0px 0px 30px $$textShadowColor'
   })
 
+  const ScrollY = styled('div',{
+    overflowY:'scroll',
+    height:'250px',
+    padding:'0.5em'
+  })
+
   // Functions
   const sheetDocRef = doc(db, `users/${user.uid}/scheduleGrid/${sheetId}/`);
+  
+  // Datasheet fetching
+  const [dataSheetData] = useCollection<DocumentData>(collection(db, "sheets"));
+  const [dataSheetId, setDataSheetId] = useState(
+    sheetData?.dataSheetId ? sheetData?.dataSheetId:''
+  );
 
   const saveDataSheetId = async() =>{
     await setDoc(sheetDocRef, {dataSheetId:dataSheetId}, { merge: true });
@@ -103,10 +116,6 @@ export default function Editor(props:EditorProps) {
       setSheetTitle(newTitleValue);
     }
   }
-
-  // Datasheet fetching
-  const [dataSheetData] = useCollection<DocumentData>(collection(db, "sheets"));
-  const [dataSheetId, setDataSheetId] = useState('')
 
   return (
     <>
@@ -210,7 +219,7 @@ export default function Editor(props:EditorProps) {
                   </SectionButton></>
                 }
                 {modalSection !== 0 &&
-                  <Stack gap={'0'}>
+                  <Stack>
                     <SectionButton
                       onClick={()=>setModalSection(0)}
                       leftIcon={<FiArrowLeft/>}
@@ -218,8 +227,13 @@ export default function Editor(props:EditorProps) {
                       戻る
                     </SectionButton>
                     {modalSection === 1 && 
-                      <>
-                        <div style={{overflowY:'scroll',height:'250px', padding:'0.5em'}}>
+                      <Stack>
+                        {sheetData?.dataSheetId && 
+                          <TextPreview justifyContent={'center'}>
+                            データシートに繋がっています
+                          </TextPreview>
+                        }
+                        <ScrollY>
                           <Stack>
                             {
                               dataSheetData?.docs.map((datasheet) =>{
@@ -241,36 +255,26 @@ export default function Editor(props:EditorProps) {
                               })
                             }
                           </Stack>
-                        </div>
-                        <p>
-                          データシートを繋げることで科目を時間割表に入力する作業がより早まります。
-                        </p>
+                        </ScrollY>
                         <Stack>
-                          {sheetData.dataSheetId && 
-                            <TextPreview>
-                              「{dataSheetName}」のデータシートに繋がっています
-                            </TextPreview>
-                          }
                           <Input
+                            fullWidth
                             placeholder={'データシートID'}
                             value={dataSheetId}
                             onChange={(e)=>setDataSheetId(e.target.value)}
                           />
                           <Button
+                            disabled={dataSheetId ? false:true}
                             icon={<FiGitBranch/>}
                             onClick={()=>saveDataSheetId()}
                           >
                             データシートを繋げる
                           </Button>
                         </Stack>
-                      </>
+                      </Stack>
                     }
                     {modalSection === 2 &&         
                       <>
-                        <h3>共有設定</h3>
-                        <p>
-                          リンク共有を有効するとこのリンクにアクセスできる人は全て時間割を閲覧することができます。なお共有するとユーザー様がご指定しているテーマ・バナー画像等も共有されるのでご了承下さい。
-                        </p>
                         <AlignItems justifyContent={'spaceBetween'}>
                           <p>{shareSheetState ? '現在共有中':'自分のみアクセス可能'}</p>
                           <Toggle
@@ -337,7 +341,7 @@ export default function Editor(props:EditorProps) {
             {!viewOnly ?
               <>
                 <h5>
-                  {/* 最終変更時：{sheetData.date.toDate().toDateString()} */}
+                  最終変更時：{sheetData?.date?.toDate().toDateString()}
                 </h5>
                 <Heading type={'h5'}>
                   {moment().format('LT')}｜

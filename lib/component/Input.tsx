@@ -36,9 +36,6 @@ const InputStyled = styled('input', {
         fontSize:'$xxl',
         padding: '$2',
         borderRadius: '$2',
-        // '&:focus':{   
-        //   outline:'none',
-        // }
       }
     }
   },

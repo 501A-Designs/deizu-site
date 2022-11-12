@@ -3,10 +3,24 @@ import { AppProps } from 'next/app';
 import { ThemeProvider } from "next-themes";
 // import { ToastContainer } from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css';
-import { css, darkTheme, styled } from '../stitches.config';
+import { darkTheme, globalCss } from '../stitches.config';
 import * as Toast from '@radix-ui/react-toast';
 
+const globalStyles = globalCss({
+  html:{
+    margin: 0,
+    padding: 0,
+    backgroundColor:'$gray1'    
+  },
+  body: {
+    margin: 0,
+    padding: 0,
+    backgroundColor:'$gray1'
+  },
+});
+
 function MyApp({ Component, pageProps }: AppProps) {
+  globalStyles();
   return (
     <>
       {/* <ToastContainer

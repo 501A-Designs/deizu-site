@@ -12,7 +12,7 @@ import Container from '../../component/Container';
 import Dialog from '../../component/Dialog';
 import Heading from '../../component/Heading';
 import Input from '../../component/Input';
-import MockupCell from '../../component/MockupCell';
+import MockupCell, { MockupCellProps } from '../../component/MockupCell';
 import { buttonColor } from '../../data/buttonColor';
 import AlignItems from '../../style/AlignItems';
 import Stack from '../../style/Stack';
@@ -84,7 +84,10 @@ const SubjectCellDescriptionStyled = styled('p', {
   },
 })
 
-const ScrollX = styled(AlignItems,{
+const ScrollX = styled('div',{
+  display:'flex',
+  gap:'$1',
+  alignItems:'center',
   overflowX:'scroll',
   padding:'1em'
 })
@@ -94,8 +97,10 @@ interface SubjectCellProps{
   viewOnly:boolean,
   cellData:any,
   cellId:any,
+  dataSheetData:any,
   user?:any
 }
+
 
 export default function SubjectCell(props:SubjectCellProps) {
   const router = useRouter();
@@ -103,27 +108,28 @@ export default function SubjectCell(props:SubjectCellProps) {
   let viewOnly = props.viewOnly
   let cellData = props.cellData;
   let cellId = props.cellId;
+  let dataSheetData = props.dataSheetData;
   let user = props.user;
 
-  const [subjectCellName, setSubjectCellName] = useState<string>(
+  const [subjectName, setSubjectName] = useState<string>(
     cellData && 
     cellData != undefined && 
     cellData[cellId] ?
     cellData[cellId]:''
   );
-  const [subjectCellDescription, setSubjectCellDescription] = useState<string>(
+  const [subjectDescription, setSubjectDescription] = useState<string>(
     cellData &&
     cellData != undefined && 
     cellData[cellId+'Dscrp'] ?
     cellData[cellId+'Dscrp']:''
   );
-  const [subjectCellColor, setSubjectCellColor] = useState<string>(
+  const [subjectColor, setSubjectColor] = useState<string>(
     cellData &&
     cellData != undefined && 
     cellData[cellId+'Color'] ?
     cellData[cellId+'Color']:''
   );
-  const [subjectCellLink, setSubjectCellLink] = useState<string>(
+  const [subjectLink, setSubjectLink] = useState<string>(
     cellData &&
     cellData != undefined && 
     cellData[cellId+'Link'] ?
@@ -149,10 +155,10 @@ export default function SubjectCell(props:SubjectCellProps) {
       {
         cells:{
           [cellId]: {
-            [cellId]: subjectCellName,
-            [cellId + 'Dscrp']: subjectCellDescription,
-            [cellId + 'Link']: subjectCellLink,
-            [cellId + 'Color']: subjectCellColor
+            [cellId]: subjectName,
+            [cellId + 'Dscrp']: subjectDescription,
+            [cellId + 'Link']: subjectLink,
+            [cellId + 'Color']: subjectColor
           }
         },
         date: serverTimestamp(),
@@ -166,28 +172,23 @@ export default function SubjectCell(props:SubjectCellProps) {
       trigger={
         <SubjectCellStyled
           css={{
-            '@bp1':{
-              borderRadius: '$1',
-            },
-            '@bp2_':{
-              borderRadius: `${dynamicBorderRadius()}`,
-            },
-            border: `1px solid ${subjectCellColor ? subjectCellColor:'$gray3'}`,
-            backgroundColor: `${subjectCellColor ? subjectCellColor:'$gray3'}`,
+            borderRadius: `${dynamicBorderRadius()}`,
+            border: `1px solid ${subjectColor ? subjectColor:'$gray3'}`,
+            backgroundColor: `${subjectColor ? subjectColor:'$gray3'}`,
           }}
         >
           <SubjectCellNameContainerStyled>
             <SubjectCellNameStyled
               onClick={() => {
-                subjectCellLink && window.open(subjectCellLink, "_blank")
+                subjectLink && window.open(subjectLink, "_blank")
               }}
             >
-              {subjectCellName}
+              {subjectName}
             </SubjectCellNameStyled>
           </SubjectCellNameContainerStyled>
-          {subjectCellDescription && 
+          {subjectDescription && 
             <SubjectCellDescriptionStyled>
-              {subjectCellDescription}
+              {subjectDescription}
             </SubjectCellDescriptionStyled>
           }
         </SubjectCellStyled>
@@ -196,68 +197,71 @@ export default function SubjectCell(props:SubjectCellProps) {
       {viewOnly ?
         <p>編集するにはオーナーにDeizuのユーザーIDを共有する必要があります。</p>:
         <Stack gap={'1em'}>
-          <MockupCell
-            subjectCellName = {subjectCellName}
-            subjectCellLink = {subjectCellLink}
-            subjectCellColor = {subjectCellColor}
-            subjectCellDescription = {subjectCellDescription}
-          />          
-          {/* {dataSheetName &&
-            <>
-              <Heading type={'h4'}>
-                「{dataSheetName}」データシートより
-              </Heading>
-              <ScrollX>
-                {dataSheet.map(prop => {
-                  return <MockupCell
-                    onClick={() => {
-                      setSubjectCellName(prop.subjectName);
-                      setSubjectCellLink(prop.subjectLink)
-                      setSubjectCellColor(prop.subjectColor);
-                      setSubjectCellDescription(prop.subjectDescription)
-                    }}
-                    key={prop}
-                    padding={'0 0.5em'}
-                    subjectCellName = {prop.subjectName}
-                    subjectCellLink = {prop.subjectLink}
-                    subjectCellColor = {prop.subjectColor}
-                    subjectCellDescription = {prop.subjectDescription}
-                  />})
-                }
-              </ScrollX>
-            </>
-          } */}
+          <AlignItems justifyContent={'center'}>
+            <MockupCell
+              styleType={'display'}
+              subjectName = {subjectName}
+              subjectLink = {subjectLink}
+              subjectColor = {subjectColor}
+              subjectDescription = {subjectDescription}
+            />          
+          </AlignItems>
+            {!dataSheetData || dataSheetData !== '' &&
+              <>
+                <Heading type={'h4'}>
+                  「{dataSheetData?.dataSheetName}」データシートより
+                </Heading>
+                <ScrollX>
+                  {dataSheetData?.dataSheet?.map((dataSheetCell:MockupCellProps) => {
+                    return <MockupCell
+                      styleType={'button'}
+                      onClick={() => {
+                        setSubjectName(dataSheetCell.subjectName);
+                        setSubjectLink(dataSheetCell.subjectLink)
+                        setSubjectColor(dataSheetCell.subjectColor);
+                        setSubjectDescription(dataSheetCell.subjectDescription)
+                      }}
+                      key={dataSheetCell.subjectName}
+                      subjectName = {dataSheetCell.subjectName}
+                      subjectLink = {dataSheetCell.subjectLink}
+                      subjectColor = {dataSheetCell.subjectColor}
+                      subjectDescription = {dataSheetCell.subjectDescription}
+                    />})
+                  }
+                </ScrollX>
+              </>
+            }
           <AlignItems justifyContent={'center'}>
             <ColorButton
               color={'$gray3'}
-              onClick={() => setSubjectCellColor('')}
+              onClick={() => setSubjectColor('')}
             />
             {buttonColor.map((props)=>
               <ColorButton
                 key={props}
                 color={props}
-                selected={subjectCellColor == props}
-                onClick={() => setSubjectCellColor(props)}
+                selected={subjectColor == props}
+                onClick={() => setSubjectColor(props)}
               />
             )}
           </AlignItems>
           <Stack>
             <Input
               fullWidth
-              value={subjectCellName}
-              onChange={(e)=>setSubjectCellName(e.target.value)}
+              value={subjectName}
+              onChange={(e)=>setSubjectName(e.target.value)}
               placeholder={'科目名'}
             />
             <Input
               fullWidth
-              value={subjectCellLink}
-              onChange={(e)=>setSubjectCellLink(e.target.value)}
+              value={subjectLink}
+              onChange={(e)=>setSubjectLink(e.target.value)}
               placeholder={'URLリンク'}
             />
             <Input
               fullWidth
-              value={subjectCellDescription}
-              onChange={(e)=>setSubjectCellDescription(e.target.value)}
+              value={subjectDescription}
+              onChange={(e)=>setSubjectDescription(e.target.value)}
               placeholder={'概要・教室名等'}
             />
           </Stack>

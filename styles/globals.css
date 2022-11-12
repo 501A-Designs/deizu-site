@@ -1,29 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500&display=swap');
 
-html,
-body {
-	padding: 0;
-	margin: 0;
-}
 *{
 	font-family:'Lato', 'Zen Kaku Gothic New', sans-serif;
 	box-sizing: border-box;
 }
-
-/* ::-webkit-scrollbar {
-	width: 5px;
-	height: 5px;
-}
-
-::-webkit-scrollbar-thumb {
-	background: var(--system1);
-	border-radius: var(--borderRadius0);
-}
-
-::-webkit-scrollbar-track {
-	margin: 5px;
-	width: 5px;
-	height: 5px;
-	background-color: transparent;
-} */

@@ -7,13 +7,12 @@ import SheetButton from './SheetButton';
 import Container from '../../component/Container';
 import AlignItems from '../../style/AlignItems';
 import Stack from '../../style/Stack';
-import { addDoc, collection, deleteField, doc, DocumentData, DocumentSnapshot, getDoc, serverTimestamp, updateDoc } from 'firebase/firestore';
+import { addDoc, collection, deleteField, doc, DocumentData,serverTimestamp, updateDoc } from 'firebase/firestore';
 import { db } from '../../../src/service/firebase';
 
 import { useDocument } from 'react-firebase-hooks/firestore';
 import Alert from '../../component/Alert';
-import StaticScene from '../../style/StaticScene';
-import { ClipLoader, MoonLoader } from 'react-spinners';
+import { MoonLoader } from 'react-spinners';
 import { scheduleCellId } from '../../data/scheduleCellId';
 import { SheetDocTypes } from '../../../pages/user/[userId]';
 import { SheetDataTypes } from '../sheet/Editor';

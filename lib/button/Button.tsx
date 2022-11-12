@@ -32,9 +32,6 @@ const ButtonStyled = styled('button', {
         backgroundColor: '$gray12',
         border: '1px solid $gray12',
         '&:hover': {
-          color: '$gray12',
-          border: '1px solid $gray4',
-          backgroundColor: '$gray3',
           boxShadow: '0 8px 10px $gray1',
           transform:'scale(1.02)'
         },

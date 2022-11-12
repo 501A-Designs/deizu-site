@@ -71,6 +71,7 @@ export default function DataSheetButton(props:DataSheetButtonProps) {
           <>
           {props.dataSheetId === props.currentDataSheetId ?
             <Button
+              styleType={'fill'}
               size={'small'}
               icon={<FiCheck/>}
             >
@@ -79,7 +80,7 @@ export default function DataSheetButton(props:DataSheetButtonProps) {
             <Button
               size={'small'}
               icon={<FiPlus/>}
-              onClick={()=>props.onClick}
+              onClick={props.onClick}
             >
               IDをコピー
             </Button>
