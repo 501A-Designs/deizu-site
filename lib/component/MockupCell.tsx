@@ -9,7 +9,7 @@ const MockupCellStyled = styled('button',{
   alignItems: 'center',
   color: '$gray12',
   borderRadius:'$2',
-  maxWidth:'250px',
+  maxWidth:'100%',
   padding:'$1',
   minHeight: '85px',
   fontWeight: 'bold',

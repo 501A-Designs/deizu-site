@@ -16,23 +16,23 @@ import { useRouter } from 'next/router';
 import { copyAlert, db } from '../../../src/service/firebase';
 import randomGradient from 'random-gradient';
 
-
-
 const SheetButtonStyled = styled('button', {
+  cursor: 'pointer',
+  padding: '$2',
   userSelect: 'none',
   outlineColor:'$gray12',
   textAlign:'left',
-  backgroundColor:'transparent',
   fontSize:'$l',
-  padding: '$2',
-  cursor: 'pointer',
   height: 'fit-content',
   width:'100%',
   border:'none',
+  borderRadius:'$3',
+  backgroundColor:'transparent',
+
   borderBottom: '1px solid transparent',
   borderImage: 'linear-gradient(90deg, $gray1 0%, $gray5 50%, $gray1 100%)',
   borderImageSlice: 1,
-  borderRadius:'$3',    
+  
   transition: '$speed1',
   'time':{
     color:'$gray11',
@@ -48,11 +48,9 @@ const GradientPlaceholderStyled = styled('div', {
   borderRadius:'$2',
   border:'1px solid $gray2',
   boxShadow:'$light',
-  // background:'linear-gradient(60deg, $gray6,$gray1)',
-
   '@bp1':{
     width:'4.2em',
-    height:'4.2em',    
+    height:'4.2em',
   },
   '@bp2_':{
     width:'5.2em',
@@ -84,8 +82,7 @@ export default function SheetButton(props:any) {
   let sheetTitle:string = props.children;
   const sheetId:string = props.sheetId;
   const sheetDocRef = doc(db, `users/${user.uid}/scheduleGrid/${sheetId}/`);
-
-
+  
   const updateTitle = async () => {
     let newTitleValue = prompt('新しいタイトル')
     if (newTitleValue) {

@@ -84,7 +84,7 @@ export default function Dialog(props:DialogProps){
           <StyledTitle>{props.title}</StyledTitle>
           <DialogPrimitive.Close asChild>
             <Button
-              size={'small'}
+              size={'icon'}
               styleType={'noFill'}
               aria-label="Close"
               icon={<FiX/>}

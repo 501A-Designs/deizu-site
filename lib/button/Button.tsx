@@ -60,9 +60,15 @@ const ButtonStyled = styled('button', {
     },
     size:{
       medium:{
+        fontSize:'$m',
         padding: '$2 $3',
       },
       small:{
+        fontSize:'$s',
+        padding: 'calc($1*1.3) calc($2*1.3)',
+      },
+      icon:{
+        fontSize:'$xm',
         padding: '8px',
         'span':{
           display:'none'

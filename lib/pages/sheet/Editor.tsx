@@ -5,7 +5,6 @@ import {  FiArrowLeft, FiEye, FiAlertTriangle, FiChevronRight, FiCopy, FiDatabas
 // Components
 import Stack from "../../style/Stack";
 import AlignItems from "../../style/AlignItems"
-import MediaQuery from "../../style/MediaQuery";
 import BodyMargin from "../../style/BodyMargin"
 import ImageContainer from "./ImageContainer";
 import SheetGrid from "./SheetGrid";
@@ -28,6 +27,7 @@ import Heading from "../../component/Heading";
 import { styled } from "../../../stitches.config";
 import Toggle from "../../component/Toggle";
 import { ItemStyled } from "../../component/Menu";
+import { DataSheetDataTypes } from "../../../pages/user/[userId]";
 // import { SheetDataTypes } from "../../../pages/user/[userId]/sheet/[id]";
 
 export interface SheetDataTypes {
@@ -56,8 +56,6 @@ export default function Editor(props:EditorProps) {
   let sheetData = props.sheetData;
 
   const [modalSection, setModalSection] = useState(0);
-  const [selectCustomize, setSelectCustomize] = useState('banner');
-
   const [sheetTitle, setSheetTitle] = useState<string>(sheetData.title);
   const [sheetBannerImageUrl, setSheetBannerImageUrl] = useState<string>();
   const [shareSheetState, setShareSheetState] = useState<boolean>(sheetData.sharing);
@@ -169,7 +167,7 @@ export default function Editor(props:EditorProps) {
             </>:
             <>
               <Button
-                size={'small'}
+                size={'icon'}
                 icon={<FiHome/>}
                 onClick={() => router.push(`/user/${user.uid}/`)}
               >
@@ -179,7 +177,7 @@ export default function Editor(props:EditorProps) {
                 title={'設定'}
                 trigger={
                   <Button
-                    size={'small'}
+                    size={'icon'}
                     icon={<FiSettings/>}
                   >
                     設定
@@ -236,7 +234,7 @@ export default function Editor(props:EditorProps) {
                         <ScrollY>
                           <Stack>
                             {
-                              dataSheetData?.docs.map((datasheet) =>{
+                              dataSheetData?.docs.map((datasheet:DataSheetDataTypes) =>{
                                 return (
                                   <DataSheetButton
                                     key={datasheet.id}

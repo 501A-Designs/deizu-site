@@ -3,7 +3,6 @@ import { MdArrowBack,MdOutlineViewList,MdOutlineViewModule,MdContentCopy } from 
 import { NextSeo } from 'next-seo';
 
 import Button from '../../lib/button/Button';
-import IconButton from '../../lib/button/IconButton'
 import ColorButton from '../../lib/button/ColorButton';
 
 import AlignItems from '../../lib/style/AlignItems';
@@ -15,40 +14,46 @@ import MockupCell from '../../lib/component/MockupCell';
 import { useRouter } from 'next/router'
 
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth,db } from "../../src/service/firebase"
-import { doc, getDoc,setDoc,arrayUnion } from "firebase/firestore";
+import { auth,copyAlert,db } from "../../src/service/firebase"
+import { doc, getDoc,setDoc,arrayUnion, DocumentData } from "firebase/firestore";
 
 import { buttonColor } from '../../lib/data/buttonColor'
 
 import Input from '../../lib/component/Input';
 import Stack from '../../lib/style/Stack';
 
-import DataGrid from 'react-data-grid';
-
 import {isMobile} from 'react-device-detect';
 import { toast } from 'react-toastify';
-import { FiArrowLeft } from 'react-icons/fi';
+import { FiArrowLeft, FiLink2 } from 'react-icons/fi';
+import { useDocument } from 'react-firebase-hooks/firestore';
+import Heading from '../../lib/component/Heading';
+import { TooltipLabel } from '../../lib/component/TooltipLabel';
+import Footer from '../../lib/component/Footer';
+import Dialog from '../../lib/component/Dialog';
+import CreateNewButton from '../../lib/component/CreateNewButton';
+import { styled } from '../../stitches.config';
+
+const HexGrid = styled('div',{
+  display:'grid',
+  gap:'$1',
+  '@bp1':{
+    gridTemplateColumns:'1fr 1fr'
+  },
+  '@bp2':{
+    gridTemplateColumns:'1fr 1fr 1fr 1fr'
+  },
+  '@bp3':{
+    gridTemplateColumns:'1fr 1fr 1fr 1fr 1fr'
+  },
+  '@bp4':{
+    gridTemplateColumns:'1fr 1fr 1fr 1fr 1fr 1fr'
+  }
+})
 
 function IndivisualSheet() {
   const router = useRouter();
-  const dataSheetId = router.query.id;
-
-  const [dataSheetData, setDataSheetData] = useState()
-  const [rowState, setRowState] = useState([])
-  
-  const fetchData = () => {
-    const docRef = doc(db, "sheets", dataSheetId);
-    getDoc(docRef).then((doc) => {
-      setDataSheetData(doc.data());
-      setRowState(doc.data().dataSheet);
-    })
-    console.log('test')
-  }
-
-  useEffect(() => {
-    fetchData()
-  },[]);
-
+  const dataSheetId:string = `${router.query.id}`;
+  const [dataSheetData] = useDocument<DocumentData>(doc(db, `sheets/${dataSheetId}`))
   const [user] = useAuthState(auth);
 
   const [subjectNameInput, setSubjectNameInput] = useState('')
@@ -87,16 +92,11 @@ function IndivisualSheet() {
     setSubjectColorInput('');
   }
 
-  const copySheetId = () =>{
-    navigator.clipboard.writeText(`${dataSheetId}`);
-    toast(`${dataSheetData.dataSheetName}のIDがコピーされました。`);
-  }
-
   return (
     <>
       <NextSeo
-        title={dataSheetData && dataSheetData.dataSheetName}
-        description="DEIZU上のデータシート"
+        title={dataSheetData?.data()?.dataSheetName}
+        description="Deizu上のデータシート"
       />
       {!dataSheetData ?
         <StaticScene type="loading"/>:
@@ -104,38 +104,50 @@ function IndivisualSheet() {
           {user ? 
             <BodyMargin>
               <AlignItems
-                style={{
-                  marginBottom:'2em',
-                  justifyContent: 'space-between'
-                }}
+                justifyContent={'spaceBetween'}
               >
-                <AlignItems gap={'1em'}>
-                  <IconButton
-                    fill
+                <AlignItems
+                  gap={'medium'}
+                >
+                  <Button
+                    size={'icon'}
                     icon={<FiArrowLeft/>}
                     onClick={()=>router.push('/datasheet')}
                   >
                     戻る
-                  </IconButton>
-                  <h1>{dataSheetData.dataSheetName}</h1>
+                  </Button>
+                  <Heading type={'h1'}>{dataSheetData?.data()?.dataSheetName}</Heading>
                 </AlignItems>
-                <p>
-                  {dataSheetData.dataSheetDescription}
-                </p>
+                <Button
+                  size={'small'}
+                  onClick={() => copyAlert(dataSheetId)}
+                  icon={<FiLink2/>}
+                >
+                  IDをコピー
+                </Button>
               </AlignItems>
-              <div className="grid-1fr-2fr">
-                <Container>
-                  {user ?               
-                    <Stack gap={'1em'}>
-                      <AlignItems style={{justifyContent: 'space-between'}}>
-                        <h3>データを追加</h3>
-                        <IconButton
-                          onClick={() => copySheetId()}
-                          icon={<MdContentCopy/>}
-                        >
-                          IDをコピー
-                        </IconButton>
-                      </AlignItems>
+              <p>
+                {dataSheetData?.data()?.dataSheetDescription}
+              </p>
+              <HexGrid>
+                {dataSheetData?.data()?.dataSheet.map(props =>{
+                    return <MockupCell
+                      key={props}
+                      subjectName = {props.subjectName}
+                      subjectLink = {props.subjectLink}
+                      subjectColor = {props.subjectColor}
+                      subjectDescription = {props.subjectDescription}
+                    />
+                  })
+                }
+              </HexGrid>
+              {user &&
+                <Footer shadow>
+                  <AlignItems justifyContent={'center'}>
+                    <Dialog
+                      title={'データを追加'}
+                      trigger={<CreateNewButton/>}
+                    >
                       <p>
                         データを一度追加すると消去することができませんのでご了承下さい。
                       </p>
@@ -176,40 +188,10 @@ function IndivisualSheet() {
                           追加
                         </Button>
                       }
-                    </Stack>:
-                    <Stack>
-                      <h3>
-                        閲覧のみ
-                      </h3>
-                      <p>データを追加するにはログインをする必要がございます。</p>
-                      <Button onClick={()=> router.push('/app')}>ログイン・新規登録へ</Button>
-                    </Stack>
-                  }
-                </Container>
-                <div
-                  style={{
-                    display: 'grid',
-                    gridTemplateColumns:`${isMobile ? '1fr 1fr':'1fr 1fr 1fr'}`,
-                    height: 'fit-content',
-                    gap: '0.5em'
-                  }}
-                >
-                  {rowState && 
-                    rowState.map(props =>{
-                      return <MockupCell
-                        key={props}
-                        margin={0}
-                        width={'100%'}
-                        padding={'none'}
-                        subjectCellName = {props.subjectName}
-                        subjectCellLink = {props.subjectLink}
-                        subjectCellColor = {props.subjectColor}
-                        subjectCellDescription = {props.subjectDescription}
-                      />
-                    })
-                  }
-                </div>
-              </div>
+                    </Dialog>
+                  </AlignItems>
+                </Footer>
+              }
             </BodyMargin>:
             <StaticScene type="notLoggedIn"/>
           }

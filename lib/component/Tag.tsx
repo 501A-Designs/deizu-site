@@ -32,7 +32,7 @@ const TagStyled = styled('div',{
         backgroundColor:'$red3',
         border:'1px solid $red7',
         color:'$red10'
-      }
+      },
     }
   },
   defaultVariants:{

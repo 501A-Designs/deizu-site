@@ -124,7 +124,7 @@ export default function SheetContainer(props:SheetContainerProps) {
                   >
                     <FiCalendar/>
                     <h4>
-                      時間割表が作成されていません
+                      時間割表なし
                     </h4>
                   </AlignItems>
                 </Container>

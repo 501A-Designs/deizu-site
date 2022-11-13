@@ -2,7 +2,6 @@ import React,{useState} from 'react'
 
 // Button Component
 import Button from '../../lib/button/Button'
-import IconButton from '../../lib/button/IconButton'
 
 import Container from '../../lib/component/Container'
 import Input from '../../lib/component/Input'
@@ -51,15 +50,15 @@ export default function Create() {
                 <AlignItems style={{justifyContent: 'center', height: '100vh'}}>
                     <Container style={{maxWidth:'600px'}}>
                         <AlignItems gap={'1em'}>
-                            <IconButton
-                                fill
+                            <Button
+                                size={'icon'}
                                 icon={<FiArrowLeft/>}
                                 onClick={() =>
                                     router.push('/datasheet')
                                 }
                             >
                                 戻る
-                            </IconButton>
+                            </Button>
                             <h2 style={{margin: 0,padding:0}}>新規作成</h2>
                         </AlignItems>
                         <p>
