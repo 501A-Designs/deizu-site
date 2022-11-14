@@ -24,7 +24,7 @@ import Stack from '../../lib/style/Stack';
 
 import {isMobile} from 'react-device-detect';
 import { toast } from 'react-toastify';
-import { FiArrowLeft, FiLink2 } from 'react-icons/fi';
+import { FiArrowLeft, FiLink2, FiPlus } from 'react-icons/fi';
 import { useDocument } from 'react-firebase-hooks/firestore';
 import Heading from '../../lib/component/Heading';
 import { TooltipLabel } from '../../lib/component/TooltipLabel';
@@ -32,6 +32,7 @@ import Footer from '../../lib/component/Footer';
 import Dialog from '../../lib/component/Dialog';
 import CreateNewButton from '../../lib/component/CreateNewButton';
 import { styled } from '../../stitches.config';
+import ImageContainer from '../../lib/pages/sheet/ImageContainer';
 
 const HexGrid = styled('div',{
   display:'grid',
@@ -102,45 +103,55 @@ function IndivisualSheet() {
         <StaticScene type="loading"/>:
         <>
           {user ? 
-            <BodyMargin>
-              <AlignItems
-                justifyContent={'spaceBetween'}
+            <>
+              <ImageContainer
+                id={dataSheetId}
               >
                 <AlignItems
                   gap={'medium'}
+                  marginBottom={'small'}
                 >
                   <Button
                     size={'icon'}
+                    styleType={'fill'}
                     icon={<FiArrowLeft/>}
                     onClick={()=>router.push('/datasheet')}
                   >
                     戻る
                   </Button>
-                  <Heading type={'h1'}>{dataSheetData?.data()?.dataSheetName}</Heading>
+                  <Heading type={'h1'}>
+                    {dataSheetData?.data()?.dataSheetName}
+                  </Heading>
                 </AlignItems>
-                <Button
-                  size={'small'}
-                  onClick={() => copyAlert(dataSheetId)}
-                  icon={<FiLink2/>}
+                <AlignItems
+                  marginBottom={'medium'}
                 >
-                  IDをコピー
-                </Button>
-              </AlignItems>
-              <p>
-                {dataSheetData?.data()?.dataSheetDescription}
-              </p>
-              <HexGrid>
-                {dataSheetData?.data()?.dataSheet.map(props =>{
-                    return <MockupCell
-                      key={props}
-                      subjectName = {props.subjectName}
-                      subjectLink = {props.subjectLink}
-                      subjectColor = {props.subjectColor}
-                      subjectDescription = {props.subjectDescription}
-                    />
-                  })
-                }
-              </HexGrid>
+                  <Button
+                    size={'small'}
+                    onClick={() => copyAlert(dataSheetId)}
+                    icon={<FiLink2/>}
+                  >
+                    IDをコピー
+                  </Button>
+                </AlignItems>
+              </ImageContainer>
+              <BodyMargin minHeight={'100vh'}>
+                <p>
+                  {dataSheetData?.data()?.dataSheetDescription}
+                </p>
+                <HexGrid>
+                  {dataSheetData?.data()?.dataSheet.map(props =>{
+                      return <MockupCell
+                        key={props}
+                        subjectName = {props.subjectName}
+                        subjectLink = {props.subjectLink}
+                        subjectColor = {props.subjectColor}
+                        subjectDescription = {props.subjectDescription}
+                      />
+                    })
+                  }
+                </HexGrid>
+              </BodyMargin>
               {user &&
                 <Footer shadow>
                   <AlignItems justifyContent={'center'}>
@@ -152,47 +163,52 @@ function IndivisualSheet() {
                         データを一度追加すると消去することができませんのでご了承下さい。
                       </p>
                       <Stack>
-                        <Input
-                          value={subjectNameInput}
-                          onChange={(e)=>setSubjectNameInput(e.target.value)}
-                          placeholder={'科目名'}
-                        />
-                        <Input
-                          value={subjectDescriptionInput}
-                          onChange={(e)=>setSubjectDescriptionInput(e.target.value)}
-                          placeholder={'科目の概要'}
-                        />
-                        <Input
-                          value={subjectLinkInput}
-                          onChange={(e)=>setSubjectLinkInput(e.target.value)}
-                          placeholder={'URLリンク'}
-                        />
-                        {subjectColorInput && <p>科目の色：{subjectColorInput}</p>}
-                        <Stack grid={'1fr 1fr 1fr 1fr 1fr 1fr'}>
+                        <AlignItems
+                          marginTop={'medium'}
+                          marginBottom={'medium'}
+                          justifyContent={'center'}
+                        >
                           {buttonColor.map((props)=>
                             <ColorButton
                               key={props}
-                              width={'100%'}
                               color={props}
                               onClick={() => {
                                 setSubjectColorInput(props);
                               }}
                             />
                           )}
-                        </Stack>
-                      </Stack>
-                      {subjectNameInput && 
+                        </AlignItems>
+                        <Input
+                          fullWidth
+                          value={subjectNameInput}
+                          onChange={(e)=>setSubjectNameInput(e.target.value)}
+                          placeholder={'科目名'}
+                        />
+                        <Input
+                          fullWidth
+                          value={subjectDescriptionInput}
+                          onChange={(e)=>setSubjectDescriptionInput(e.target.value)}
+                          placeholder={'科目の概要'}
+                        />
+                        <Input
+                          fullWidth
+                          value={subjectLinkInput}
+                          onChange={(e)=>setSubjectLinkInput(e.target.value)}
+                          placeholder={'URLリンク'}
+                        />
                         <Button
-                          onClick={(e) => insertNewSubjectData(e)} width="full"
+                          disabled={subjectNameInput ? false:true}
+                          onClick={(e) => insertNewSubjectData(e)}
+                          icon={<FiPlus/>}
                         >
                           追加
                         </Button>
-                      }
+                      </Stack>
                     </Dialog>
                   </AlignItems>
                 </Footer>
               }
-            </BodyMargin>:
+            </>:
             <StaticScene type="notLoggedIn"/>
           }
         </>

@@ -10,7 +10,6 @@ let TextPreviewStyled = styled('div',{
   overflowX:'scroll',
   width: 'max-width',
   minHeight: '50px',
-  // marginBottom:'$2',
   padding: '$2 $3',
   variants:{
     justifyContent:{
@@ -24,10 +23,17 @@ let TextPreviewStyled = styled('div',{
   }
 })
 
-export default function TextPreview(props:React.ComponentProps<typeof TextPreviewStyled>) {
+interface TextPreviewProps extends React.ComponentProps<typeof TextPreviewStyled>{
+  margin?:string
+}
+
+export default function TextPreview(props:TextPreviewProps) {
   return (
     <TextPreviewStyled
       justifyContent={props.justifyContent}
+      css={{
+        margin:`${props.margin}`
+      }}
     >
       {props.children}
     </TextPreviewStyled>

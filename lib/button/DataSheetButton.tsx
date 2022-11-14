@@ -9,6 +9,7 @@ import { useRouter } from 'next/router';
 import Heading from '../component/Heading';
 import Stack from '../style/Stack';
 import { TooltipLabel } from '../component/TooltipLabel';
+import randomGradient from 'random-gradient';
 
 const DataSheetButtonStyled = styled('div',{
   cursor: 'pointer',
@@ -43,6 +44,26 @@ const DataSheetButtonStyled = styled('div',{
 })
 
 // Nested Image
+// const DataSheetButtonGradientStyled = styled('div', {
+//   borderRadius:'$2',
+//   border: '1px solid $gray2',
+//   variants:{
+//     size:{
+//       small:{
+//         width:'3.5em',
+//         height:'3.5em',
+//       },
+//       large:{
+//         width:'4em',
+//         height:'4em',
+//       }
+//     }
+//   },
+//   defaultVariants:{
+//     size:'small'
+//   }
+// })
+
 const DataSheetButtonImageStyled = styled('div', {
   borderRadius:'$2',
   border: '1px solid $gray2',
@@ -50,7 +71,8 @@ const DataSheetButtonImageStyled = styled('div', {
     imageSource:{
       true:{
         objectFit: 'cover',
-      },
+        backgroundSize: 'cover',
+      }
     },
     size:{
       small:{
@@ -117,16 +139,17 @@ export default function DataSheetButton(props:DataSheetButtonProps) {
             size={props.size}
             imageSource={props.imageSource ? true:false}
             css={{
-              background:gradient(props.dataSheetId),
-              backgroundImage:props.imageSource,
+              backgroundImage:props.imageSource ? `url(${props.imageSource})`:'none',
+              background:`${!props.imageSource && randomGradient(props.dataSheetId)}`,
             }}
           >
-          {!props.public && props.size == 'large' &&
-            <DataSheetButtonIconStyled>
-              <FiLock/>
-            </DataSheetButtonIconStyled>
-          }
+            {!props.public && props.size == 'large' &&
+              <DataSheetButtonIconStyled>
+                <FiLock/>
+              </DataSheetButtonIconStyled>
+            }
           </DataSheetButtonImageStyled>
+
           <Stack>
             <Heading type={'h3'}>
               {props.children}

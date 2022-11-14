@@ -14,10 +14,9 @@ const BodyMarginStyled = styled('div',{
 	'@bp4':{
     padding:'4% 15% 0 15%',
   },
-  backgroundColor:'$gray1'
-  // minHeight:'100vh',
+  backgroundColor:'$gray1',
 })
 
-export default function BodyMargin({children}:any | JSX.Element | JSX.Element[]) {
-  return <BodyMarginStyled>{children}</BodyMarginStyled>
+export default function BodyMargin(props:any | JSX.Element | JSX.Element[]) {
+  return <BodyMarginStyled css={{minHeight:props.minHeight}}>{props.children}</BodyMarginStyled>
 }

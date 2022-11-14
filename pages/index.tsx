@@ -10,18 +10,19 @@ import AlignItems from '../lib/style/AlignItems'
 
 import appIcon from '../public/deizuAppIconUpdated.png'
 import { useRouter } from 'next/router'
-import Link from 'next/link'
 
 import { FiArrowUpCircle } from 'react-icons/fi';
 import Stack from '../lib/style/Stack';
 import { styled } from '../stitches.config';
 import MockUp from '../lib/pages/landing/MockUp';
 import BodyMargin from '../lib/style/BodyMargin';
+import LinkTag from '../lib/component/LinkTag';
 
 
 const BlockListStyled = styled('li',{
   borderRadius: '$2',
-  backgroundColor: '$gray2',
+  backgroundColor: '$gray3',
+  border:'1px solid $gray4',
   padding: '0.5em 1em',
   fontSize: '1rem',
   width: 'fit-content'
@@ -126,7 +127,7 @@ export default function Home() {
               <li>データシートによる効率的な時間割入力</li>
               <li>時間割表のリスト表示</li>
             </ul>
-            <p>詳しい情報については<Link href='/updates'>こちらから</Link></p>
+            <p>詳しい情報については<LinkTag href='/updates'>こちらから</LinkTag></p>
           </Container>
         </AlignItems>
       </DuoGridStyled>

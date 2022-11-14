@@ -57,12 +57,8 @@ export default function Editor(props:EditorProps) {
 
   const [modalSection, setModalSection] = useState(0);
   const [sheetTitle, setSheetTitle] = useState<string>(sheetData.title);
-  const [sheetBannerImageUrl, setSheetBannerImageUrl] = useState<string>();
+  const [sheetBannerImageUrl, setSheetBannerImageUrl] = useState<string>(sheetData && sheetData.bannerImageUrl);
   const [shareSheetState, setShareSheetState] = useState<boolean>(sheetData.sharing);
-
-  useEffect(() => {
-    setSheetBannerImageUrl(sheetData && sheetData.bannerImageUrl);
-  }, [sheetData])
   
   const LargeHeading = styled('h1',{
     fontSize:'2em',

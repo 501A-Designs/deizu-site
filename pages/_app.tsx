@@ -5,6 +5,7 @@ import { ThemeProvider } from "next-themes";
 // import 'react-toastify/dist/ReactToastify.css';
 import { darkTheme, globalCss } from '../stitches.config';
 import * as Toast from '@radix-ui/react-toast';
+import Link from 'next/link';
 
 const globalStyles = globalCss({
   html:{
@@ -15,7 +16,14 @@ const globalStyles = globalCss({
   body: {
     margin: 0,
     padding: 0,
-    backgroundColor:'$gray1'
+    backgroundColor:'$gray1',
+  },
+  hr:{
+    width:'100%',
+    backgroundColor:'$gray5',
+    borderRadius:'$rounded',
+    border:'1px solid $gray5',
+    margin:'$3 0'
   },
 });
 

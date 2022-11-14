@@ -223,6 +223,7 @@ function IndivisualUser() {
                               dataSheetId={datasheet.id}
                               imageSource={datasheet.data().dataSheetImageUrl}
                               subtitle={datasheet.data().dataSheetDescription}
+                              onClick={()=>router.push(`/datasheet/${datasheet.id}/`)}
                             >
                               {datasheet.data().dataSheetName}
                             </DataSheetButton>

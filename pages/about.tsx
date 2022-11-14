@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Container from '../lib/component/Container';
 import Heading from '../lib/component/Heading';
+import LinkTag from '../lib/component/LinkTag';
 
 import NavFooter from '../lib/component/NavFooter'
 import AlignItems from '../lib/style/AlignItems';
@@ -15,7 +16,11 @@ export default function About() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <BodyMargin>
-        <AlignItems flexDirection={'column'} marginBottom={'extraLarge'}>
+        <AlignItems
+          flexDirection={'column'}
+          justifyContent={'center'}
+          marginBottom={'extraLarge'}
+        >
           <Heading type={'h1'}>Deizuについて</Heading>
           <Heading type={'h4'}>プライバシーポリシー</Heading>
         </AlignItems>
@@ -54,7 +59,7 @@ export default function About() {
         <h5>Firebase (Google Cloud Platform)</h5>
         <p>当サイトは、Firebase (Google Cloud Platform) を通し、ユーザーのアカウント・時間割表のデータを管理させていただいています。ログインし使用する際はFirebaseにデータが保存されます。</p>
         <p>
-          ※Google Inc.の<a href="https://policies.google.com/?hl=ja">プライバシーポリシー</a>
+          ※Google Inc.の<LinkTag href="https://policies.google.com/?hl=ja">プライバシーポリシー</LinkTag>
         </p>
         <h3>これらの情報収集の目的について</h3>
         <p>
