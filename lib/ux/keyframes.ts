@@ -6,7 +6,7 @@ const slideInBottom = keyframes({
 		transform: 'translateY(0px) translateX(-50%) scale(0.5)',
   },
   // '30%': {
-	// 	transform: 'translateY(-65%) translateX(-50%)',
+	// 	transform: 'translateY(0px) translateX(-50%) scale(0.5)',
   // },
 });
 

@@ -16,6 +16,7 @@ const StyledOverlay = styled(DialogPrimitive.Overlay, {
   backdropFilter: `blur(3px)`,
   position: 'fixed',
   inset: 0,
+  zIndex:1,
   '@media (prefers-reduced-motion: no-preference)': {
     animation: `${fadeIn} 150ms cubic-bezier(0.16, 1, 0.3, 1)`,
   },
@@ -34,6 +35,8 @@ const StyledContent = styled(DialogPrimitive.Content, {
   maxWidth: '450px',
   maxHeight: '85vh',
   padding: '$3',
+  overflowY:'scroll',
+  zIndex:2,
   '@media (prefers-reduced-motion: no-preference)': {
     animation: `${slideInBottom} 300ms cubic-bezier(0.16, 1, 0.3, 1)`,
   },

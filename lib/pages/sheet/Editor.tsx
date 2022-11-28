@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import {  FiArrowLeft, FiEye, FiAlertTriangle, FiChevronRight, FiCopy, FiDatabase, FiExternalLink, FiGrid, FiHome, FiImage, FiInfo, FiLayout, FiLink, FiLock, FiLogIn, FiPlus, FiSettings, FiTrash2, FiUsers, FiGitBranch, FiEdit3 } from 'react-icons/fi';
+import {  FiArrowLeft, FiEye, FiAlertTriangle, FiChevronRight, FiCopy, FiDatabase, FiExternalLink, FiGrid, FiHome, FiImage, FiInfo, FiLayout, FiLink, FiLock, FiLogIn, FiPlus, FiSettings, FiTrash2, FiUsers, FiGitBranch, FiEdit3, FiArchive } from 'react-icons/fi';
 
 // Components
 import Stack from "../../style/Stack";
@@ -28,6 +28,7 @@ import { styled } from "../../../stitches.config";
 import Toggle from "../../component/Toggle";
 import { ItemStyled } from "../../component/Menu";
 import { DataSheetDataTypes } from "../../../pages/user/[userId]";
+import StatusBar from "../../component/StatusBar";
 // import { SheetDataTypes } from "../../../pages/user/[userId]/sheet/[id]";
 
 export interface SheetDataTypes {
@@ -113,6 +114,18 @@ export default function Editor(props:EditorProps) {
 
   return (
     <>
+      {sheetData?.sharing &&
+        <StatusBar
+          icon={<FiUsers/>}
+          status={'sharing'}
+        />
+      }
+      {sheetData?.archived &&
+        <StatusBar
+          icon={<FiArchive/>}
+          status={'archived'}
+        />
+      }
       <ImageContainer
         id={sheetId}
         src={sheetBannerImageUrl}

@@ -21,8 +21,8 @@ let ContainerStyled = styled('div',{
         border:'1px solid transparent',
       },
       gradient:{
-        background:'linear-gradient(45deg, $gray1, $gray3)',
-        border:'1px solid $gray3',
+        background:'linear-gradient(45deg, $gray2, $gray4)',
+        border:'1px solid $gray4',
       }
     },
     index:{

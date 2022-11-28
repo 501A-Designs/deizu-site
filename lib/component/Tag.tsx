@@ -6,38 +6,40 @@ const TagStyled = styled('div',{
   fontSize:'$s',
   padding:'$1 $2',
   borderRadius:'$rounded',
-  'span':{
+  'p':{
+    padding:'0',
+    margin:'0',
     '@bp1':{
       display:'none'
     }
   },
   variants:{
-    color:{
-      none:{
-        border:'1px solid $system3',
-        backgroundColor:'$system1',
-        color:'$system4'
-      },
-      blue:{
+    status:{
+      // none:{
+      //   border:'1px solid $system3',
+      //   backgroundColor:'$system1',
+      //   color:'$system4'
+      // },
+      sharing:{
         backgroundColor:'$blue3',
-        border:'1px solid $blue7',
-        color:'$blue10'
+        border:'1px solid $blue6',
+        color:'$blue9'
       },
-      orange:{
+      archived:{
         backgroundColor:'$orange3',
-        border:'1px solid $orange7',
-        color:'$orange10'
+        border:'1px solid $orange6',
+        color:'$orange9'
       },
       red:{
         backgroundColor:'$red3',
-        border:'1px solid $red7',
-        color:'$red10'
+        border:'1px solid $red6',
+        color:'$red9'
       },
     }
   },
-  defaultVariants:{
-    color:'none'
-  }
+  // defaultVariants:{
+  //   color:'none'
+  // }
 })
 
 interface TagProps extends React.ComponentProps<typeof TagStyled>{
@@ -46,10 +48,10 @@ interface TagProps extends React.ComponentProps<typeof TagStyled>{
 
 export default function Tag(props:TagProps) {
   return (
-    <TagStyled color={props.color}>
+    <TagStyled status={props.status}>
       <AlignItems>
         {props.icon}
-        <span>{props.children}</span>
+        <p>{props.children}</p>
       </AlignItems>
     </TagStyled>
   )

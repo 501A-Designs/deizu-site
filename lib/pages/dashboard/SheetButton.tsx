@@ -30,7 +30,7 @@ const SheetButtonStyled = styled('button', {
   backgroundColor:'transparent',
 
   borderBottom: '1px solid transparent',
-  borderImage: 'linear-gradient(90deg, $gray1 0%, $gray5 50%, $gray1 100%)',
+  borderImage: 'linear-gradient(90deg, $gray1 0%, $gray6 50%, $gray1 100%)',
   borderImageSlice: 1,
   
   transition: '$speed1',
@@ -40,7 +40,7 @@ const SheetButtonStyled = styled('button', {
   },
   '&:hover':{
     borderImage:'none',
-    backgroundColor: '$gray3',
+    backgroundColor: '$gray4',
     transform: 'scale(1.01)'
   },
 });
@@ -95,7 +95,8 @@ export default function SheetButton(props:any) {
 
   const moveToArchive = async() =>{
     await updateDoc(sheetDocRef, {
-      archived:true
+      archived:true,
+      sharing:false,
     })
   }
   const moveOutOfArchive = async() =>{
@@ -139,7 +140,7 @@ export default function SheetButton(props:any) {
               {props.sharing && 
                 <Tag
                   icon={<FiUsers/>}
-                  color={'blue'}
+                  status={'sharing'}
                 >
                   共有中
                 </Tag>
@@ -147,7 +148,7 @@ export default function SheetButton(props:any) {
               {props.archived &&
                 <Tag
                   icon={<FiArchive/>}
-                  color={'orange'}
+                  status={'archived'}
                 >
                   アーカイブ済み
                 </Tag>
@@ -159,14 +160,16 @@ export default function SheetButton(props:any) {
     >
       {!props.archived &&      
         <>
-          <ItemStyled
-            onSelect={()=>copyAlert(`deizu.vercel.app/user/${user?.uid}/sheet/${sheetId}`)}
-          >
-            <AlignItems>
-              <FiLink/>
-              URLをコピー
-            </AlignItems>
-          </ItemStyled>
+          {props.sharing &&          
+            <ItemStyled
+              onSelect={()=>copyAlert(`deizu.vercel.app/user/${user?.uid}/sheet/${sheetId}`)}
+            >
+              <AlignItems>
+                <FiLink/>
+                URLをコピー
+              </AlignItems>
+            </ItemStyled>
+          }
           <ItemStyled
             onSelect={()=>updateTitle()}
           >

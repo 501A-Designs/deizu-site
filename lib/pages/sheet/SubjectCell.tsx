@@ -31,7 +31,7 @@ const SubjectCellStyled= styled('button', {
   '&:hover':{
     transform:'scale(0.95)',
     boxShadow:'$light',
-    border:'1px solid $gray5',
+    border:'1px solid $gray7',
   },
   justifyContent: 'space-between',
   '@bp1':{
@@ -173,8 +173,8 @@ export default function SubjectCell(props:SubjectCellProps) {
         <SubjectCellStyled
           css={{
             borderRadius: `${dynamicBorderRadius()}`,
-            border: `1px solid ${subjectColor ? subjectColor:'$gray3'}`,
             backgroundColor: `${subjectColor ? subjectColor:'$gray3'}`,
+            border: `1px solid ${subjectColor ? subjectColor:'$gray5'}`,
           }}
         >
           <SubjectCellNameContainerStyled>

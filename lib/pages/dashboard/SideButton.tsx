@@ -30,8 +30,8 @@ const SideButtonStyled = styled('button', {
         border: '1px solid transparent',
         '&:hover': {
           transform:'scale(1.05)',
-          backgroundColor: '$gray4',
-          border: '1px solid $gray4',
+          backgroundColor: '$gray5',
+          border: '1px solid $gray5',
         },
       },
     },

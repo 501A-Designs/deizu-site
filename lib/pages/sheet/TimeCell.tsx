@@ -23,20 +23,20 @@ const TimeContainerStyled = styled('button', {
   minHeight: '85px',
   width:'100%',
   borderRadius:'$1',
-  backgroundColor: '$gray2',
-  border:'1px solid $gray3',
+  backgroundColor: '$gray3',
+  border:'1px solid $gray5',
   transition: '$speed1',
   '&:hover':{
     transform:'scale(0.95)',
-    backgroundColor: '$gray3',
-    border:'1px solid $gray5',
+    backgroundColor: '$gray1',
+    border:'1px solid $gray6',
     boxShadow:'$light'
   }
 })
 
 const TimePeriodStyled = styled('div',{
-  backgroundColor:'$gray5',
-  border:'1px solid $gray6',
+  backgroundColor:'$gray6',
+  border:'1px solid $gray7',
   borderRadius:'$rounded',
   display:'flex',
   alignItems:'center',
@@ -51,10 +51,10 @@ const TimePeriodStyled = styled('div',{
   },
   'h3':{
     textAlign:'center',
-    fontWeight:'normal',
+    // fontWeight:'normal',
     margin:0,
     padding:0,
-    color:'$gray10',
+    color:'$gray12',
     '@bp1':{
       fontSize:'$s',
     },

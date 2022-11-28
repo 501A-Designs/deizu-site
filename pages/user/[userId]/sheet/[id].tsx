@@ -13,6 +13,8 @@ import { doc, DocumentData } from "firebase/firestore";
 
 import Editor from '../../../../lib/pages/sheet/Editor';
 import { styled } from '../../../../stitches.config';
+import StatusBar from '../../../../lib/component/StatusBar';
+import { FiArchive, FiUsers } from 'react-icons/fi';
 
 function IndivisualSheet() {
   const router = useRouter();
