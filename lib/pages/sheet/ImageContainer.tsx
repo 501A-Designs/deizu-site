@@ -47,7 +47,6 @@ interface ImageContainerProps{
 
 export default function ImageContainer(props:ImageContainerProps) {
   return (
-
     <Menu
       title={'基本設定'}
       trigger={

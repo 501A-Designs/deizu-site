@@ -52,7 +52,7 @@ export default function SheetGrid(props:EditorProps) {
   const rows:number[] = [1,2,3,4,5,6,7]; // Or something else
   const dayOfWeek:string[] = ['月','火','水','木','金','土']
 
-  const [dataSheetData, loadingDataSheetData] = useDocument<DocumentData>(doc(db, `sheets/${props.sheetData?.dataSheetId}/`));
+  const [dataSheetData, loadingDataSheetData] = useDocument<DocumentData>(doc(db, `sheets/${props?.sheetData?.dataSheetId}/`));
   console.log(dataSheetData?.data())
 
   return (

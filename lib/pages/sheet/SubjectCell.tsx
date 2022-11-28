@@ -1,14 +1,13 @@
 import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
 import moment from 'moment';
 import Router, { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { FiSave } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 import { db } from '../../../src/service/firebase';
 import { styled } from '../../../stitches.config';
 import Button from '../../button/Button';
 import ColorButton from '../../button/ColorButton';
-import Container from '../../component/Container';
 import Dialog from '../../component/Dialog';
 import Heading from '../../component/Heading';
 import Input from '../../component/Input';
@@ -79,7 +78,7 @@ const SubjectCellDescriptionStyled = styled('p', {
     padding:'3px $1'
   },
   '@bp4':{
-    fontSize: '$l',
+    fontSize: '$xm',
     padding:'$1 $2'
   },
 })
@@ -166,116 +165,146 @@ export default function SubjectCell(props:SubjectCellProps) {
     );
   }
 
-  return (
-    <Dialog
-      title={viewOnly ? '編集不可能':'編集中'}
-      trigger={
-        <SubjectCellStyled
-          css={{
-            borderRadius: `${dynamicBorderRadius()}`,
-            backgroundColor: `${subjectColor ? subjectColor:'$gray3'}`,
-            border: `1px solid ${subjectColor ? subjectColor:'$gray5'}`,
-          }}
-        >
-          <SubjectCellNameContainerStyled>
-            <SubjectCellNameStyled
-              onClick={() => {
-                subjectLink && window.open(subjectLink, "_blank")
-              }}
-            >
-              {subjectName}
-            </SubjectCellNameStyled>
-          </SubjectCellNameContainerStyled>
-          {subjectDescription && 
-            <SubjectCellDescriptionStyled>
-              {subjectDescription}
-            </SubjectCellDescriptionStyled>
-          }
-        </SubjectCellStyled>
-      }
-    >
-      {viewOnly ?
-        <p>編集するにはオーナーにDeizuのユーザーIDを共有する必要があります。</p>:
-        <Stack gap={'1em'}>
-          <AlignItems justifyContent={'center'}>
-            <MockupCell
-              styleType={'display'}
-              subjectName = {subjectName}
-              subjectLink = {subjectLink}
-              subjectColor = {subjectColor}
-              subjectDescription = {subjectDescription}
-            />          
-          </AlignItems>
-            {!dataSheetData || dataSheetData !== '' &&
-              <>
-                <Heading type={'h4'}>
-                  「{dataSheetData?.dataSheetName}」データシートより
-                </Heading>
-                <ScrollX>
-                  {dataSheetData?.dataSheet?.map((dataSheetCell:MockupCellProps) => {
-                    return <MockupCell
-                      styleType={'button'}
-                      onClick={() => {
-                        setSubjectName(dataSheetCell.subjectName);
-                        setSubjectLink(dataSheetCell.subjectLink)
-                        setSubjectColor(dataSheetCell.subjectColor);
-                        setSubjectDescription(dataSheetCell.subjectDescription)
-                      }}
-                      key={dataSheetCell.subjectName}
-                      subjectName = {dataSheetCell.subjectName}
-                      subjectLink = {dataSheetCell.subjectLink}
-                      subjectColor = {dataSheetCell.subjectColor}
-                      subjectDescription = {dataSheetCell.subjectDescription}
-                    />})
-                  }
-                </ScrollX>
-              </>
-            }
-          <AlignItems justifyContent={'center'}>
-            <ColorButton
-              color={'$gray3'}
-              onClick={() => setSubjectColor('')}
-            />
-            {buttonColor.map((props)=>
-              <ColorButton
-                key={props}
-                color={props}
-                selected={subjectColor == props}
-                onClick={() => setSubjectColor(props)}
-              />
-            )}
-          </AlignItems>
-          <Stack>
-            <Input
-              fullWidth
-              value={subjectName}
-              onChange={(e)=>setSubjectName(e.target.value)}
-              placeholder={'科目名'}
-            />
-            <Input
-              fullWidth
-              value={subjectLink}
-              onChange={(e)=>setSubjectLink(e.target.value)}
-              placeholder={'URLリンク'}
-            />
-            <Input
-              fullWidth
-              value={subjectDescription}
-              onChange={(e)=>setSubjectDescription(e.target.value)}
-              placeholder={'概要・教室名等'}
-            />
-          </Stack>
-          <Button
-            icon={<FiSave/>}
-            onClick={(e:any)=>{
-              saveSubjectData(e);
-              toast('保存完了！');
+  function SubjectCellDisplay() {
+    return (
+      <SubjectCellStyled
+        css={{
+          borderRadius: `${dynamicBorderRadius()}`,
+          backgroundColor: `${subjectColor ? subjectColor:'$gray3'}`,
+          border: `1px solid ${subjectColor ? subjectColor:'$gray5'}`,
+        }}
+      >
+        <SubjectCellNameContainerStyled>
+          <SubjectCellNameStyled
+            onClick={() => {
+              subjectLink && window.open(subjectLink, "_blank")
             }}
           >
-            保存
-          </Button>
-        </Stack>
+            {subjectName}
+          </SubjectCellNameStyled>
+        </SubjectCellNameContainerStyled>
+        {subjectDescription && 
+          <SubjectCellDescriptionStyled>
+            {subjectDescription}
+          </SubjectCellDescriptionStyled>
+        }
+      </SubjectCellStyled>
+    )
+  }
+  
+
+  return (
+    <>
+      {viewOnly ?
+        <p>オーナーで無い為編集することはできません。</p>:
+        <Dialog
+          title={'編集中'}
+          trigger={
+            <SubjectCellStyled
+            css={{
+              borderRadius: `${dynamicBorderRadius()}`,
+              backgroundColor: `${subjectColor ? subjectColor:'$gray3'}`,
+              border: `1px solid ${subjectColor ? subjectColor:'$gray5'}`,
+            }}
+          >
+            <SubjectCellNameContainerStyled>
+              <SubjectCellNameStyled
+                onClick={() => {
+                  subjectLink && window.open(subjectLink, "_blank")
+                }}
+              >
+                {subjectName}
+              </SubjectCellNameStyled>
+            </SubjectCellNameContainerStyled>
+            {subjectDescription && 
+              <SubjectCellDescriptionStyled>
+                {subjectDescription}
+              </SubjectCellDescriptionStyled>
+            }
+          </SubjectCellStyled>
+          }
+        >
+          <Stack gap={'1em'}>
+            <AlignItems justifyContent={'center'}>
+              <MockupCell
+                styleType={'display'}
+                subjectName = {subjectName}
+                subjectLink = {subjectLink}
+                subjectColor = {subjectColor}
+                subjectDescription = {subjectDescription}
+              />
+            </AlignItems>
+              {!dataSheetData || dataSheetData !== '' &&
+                <>
+                  <Heading type={'h4'}>
+                    「{dataSheetData?.dataSheetName}」データシートより
+                  </Heading>
+                  <ScrollX>
+                    {dataSheetData?.dataSheet?.map((dataSheetCell:MockupCellProps) => {
+                      return <MockupCell
+                        styleType={'button'}
+                        onClick={() => {
+                          setSubjectName(dataSheetCell.subjectName);
+                          setSubjectLink(dataSheetCell.subjectLink)
+                          setSubjectColor(dataSheetCell.subjectColor);
+                          setSubjectDescription(dataSheetCell.subjectDescription)
+                        }}
+                        key={dataSheetCell.subjectName}
+                        subjectName = {dataSheetCell.subjectName}
+                        subjectLink = {dataSheetCell.subjectLink}
+                        subjectColor = {dataSheetCell.subjectColor}
+                        subjectDescription = {dataSheetCell.subjectDescription}
+                      />})
+                    }
+                  </ScrollX>
+                </>
+              }
+            <AlignItems justifyContent={'center'}>
+              <ColorButton
+                color={'$gray3'}
+                onClick={() => setSubjectColor('')}
+              />
+              {buttonColor.map((props)=>
+                <ColorButton
+                  key={props}
+                  color={props}
+                  selected={subjectColor == props}
+                  onClick={() => setSubjectColor(props)}
+                />
+              )}
+            </AlignItems>
+            <Stack>
+              <Input
+                fullWidth
+                value={subjectName}
+                onChange={(e)=>setSubjectName(e.target.value)}
+                placeholder={'科目名'}
+              />
+              <Input
+                fullWidth
+                value={subjectLink}
+                onChange={(e)=>setSubjectLink(e.target.value)}
+                placeholder={'URLリンク'}
+              />
+              <Input
+                fullWidth
+                value={subjectDescription}
+                onChange={(e)=>setSubjectDescription(e.target.value)}
+                placeholder={'概要・教室名等'}
+              />
+            </Stack>
+            <Button
+              icon={<FiSave/>}
+              onClick={(e:any)=>{
+                saveSubjectData(e);
+                toast('保存完了！');
+              }}
+            >
+              保存
+            </Button>
+          </Stack>
+        </Dialog>
       }
-    </Dialog>
+    </>
   )
 }

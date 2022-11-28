@@ -24,7 +24,7 @@ import Stack from '../../lib/style/Stack';
 
 import {isMobile} from 'react-device-detect';
 import { toast } from 'react-toastify';
-import { FiArrowLeft, FiLink2, FiPlus } from 'react-icons/fi';
+import { FiArrowLeft, FiEdit, FiLink2, FiLock, FiPlus } from 'react-icons/fi';
 import { useDocument } from 'react-firebase-hooks/firestore';
 import Heading from '../../lib/component/Heading';
 import { TooltipLabel } from '../../lib/component/TooltipLabel';
@@ -33,6 +33,9 @@ import Dialog from '../../lib/component/Dialog';
 import CreateNewButton from '../../lib/component/CreateNewButton';
 import { styled } from '../../stitches.config';
 import ImageContainer from '../../lib/pages/sheet/ImageContainer';
+import StatusBar from '../../lib/component/StatusBar';
+import Menu, { ItemStyled } from '../../lib/component/Menu';
+import Toggle from '../../lib/component/Toggle';
 
 const HexGrid = styled('div',{
   display:'grid',
@@ -62,35 +65,31 @@ function IndivisualSheet() {
   const [subjectDescriptionInput, setSubjectDescriptionInput] = useState('')
   const [subjectColorInput, setSubjectColorInput] = useState('')
 
-  const insertNewSubjectData = async (e) => {
+  const insertNewSubjectData = async (e:any) => {
     e.preventDefault();
     const docRef = doc(db, "sheets", dataSheetId);
-    await getDoc(docRef).then((doc) => {
-      console.log('inserting')
-      setDoc(docRef,
-        {
-          dataSheet:
-            arrayUnion({
-              subjectName: subjectNameInput,
-              subjectDescription: subjectDescriptionInput,
-              subjectLink: subjectLinkInput,
-              subjectColor: subjectColorInput,
-            })
-        }, { merge: true }
-      );
-    })
-    setRowState([...rowState, 
+    // await getDoc(docRef).then((doc) => {
+    //   console.log('inserting')
+    // })
+    setDoc(docRef,
       {
-        subjectName: subjectNameInput,
-        subjectDescription: subjectDescriptionInput,
-        subjectLink: subjectLinkInput,
-        subjectColor: subjectColorInput,
-      }
-    ])
+        dataSheet:
+          arrayUnion({
+            subjectName: subjectNameInput,
+            subjectDescription: subjectDescriptionInput,
+            subjectLink: subjectLinkInput,
+            subjectColor: subjectColorInput,
+          })
+      }, { merge: true }
+    );
     setSubjectNameInput('');
     setSubjectLinkInput('');
     setSubjectDescriptionInput('');
     setSubjectColorInput('');
+  }
+
+  const updatePublicView = () =>{
+
   }
 
   return (
@@ -104,6 +103,30 @@ function IndivisualSheet() {
         <>
           {user ? 
             <>
+              {!dataSheetData?.data()?.public &&
+                <Dialog
+                  title={'権限を切り替える'}
+                  trigger={
+                    <StatusBar
+                      status={'private'}
+                      icon={<FiLock/>}
+                    />
+                  }
+                >
+                  <Container index={'inner'}>
+                    <Heading type={'h3'}>
+                      公開設定
+                    </Heading>
+                    <AlignItems justifyContent={'spaceBetween'}>
+                      <p>一般公開</p>
+                      <Toggle
+                        defaultChecked={false}
+                        onClick={()=>updatePublicView()}
+                      />
+                    </AlignItems>
+                  </Container>
+                </Dialog>
+              }
               <ImageContainer
                 id={dataSheetId}
               >
@@ -111,14 +134,6 @@ function IndivisualSheet() {
                   gap={'medium'}
                   marginBottom={'small'}
                 >
-                  <Button
-                    size={'icon'}
-                    styleType={'fill'}
-                    icon={<FiArrowLeft/>}
-                    onClick={()=>router.push('/datasheet')}
-                  >
-                    戻る
-                  </Button>
                   <Heading type={'h1'}>
                     {dataSheetData?.data()?.dataSheetName}
                   </Heading>
@@ -140,15 +155,89 @@ function IndivisualSheet() {
                   {dataSheetData?.data()?.dataSheetDescription}
                 </p>
                 <HexGrid>
-                  {dataSheetData?.data()?.dataSheet.map(props =>{
-                      return <MockupCell
-                        key={props}
-                        subjectName = {props.subjectName}
-                        subjectLink = {props.subjectLink}
-                        subjectColor = {props.subjectColor}
-                        subjectDescription = {props.subjectDescription}
-                      />
-                    })
+                  {dataSheetData?.data()?.ownerId == user.uid ?
+                    <>
+                      <>
+                        {dataSheetData?.data()?.dataSheet.map(props =>{
+                          return <Dialog
+                            title={'科目を編集'}
+                            trigger={
+                              <MockupCell
+                                styleType={'button'}
+                                key={props}
+                                subjectName = {props.subjectName}
+                                subjectLink = {props.subjectLink}
+                                subjectColor = {props.subjectColor}
+                                subjectDescription = {props.subjectDescription}
+                              />
+                            }
+                          >
+                            <Stack>
+                              <AlignItems justifyContent={'center'}>
+                                <MockupCell
+                                  key={props}
+                                  subjectName = {props.subjectName}
+                                  subjectLink = {props.subjectLink}
+                                  subjectColor = {props.subjectColor}
+                                  subjectDescription = {props.subjectDescription}
+                                />
+                              </AlignItems>
+                              <AlignItems
+                                marginTop={'medium'}
+                                marginBottom={'medium'}
+                                justifyContent={'center'}
+                              >
+                                {buttonColor.map((colorProps)=>
+                                  <ColorButton
+                                    key={colorProps}
+                                    color={colorProps}
+                                    onClick={() => {
+                                      setSubjectColorInput(colorProps);
+                                    }}
+                                  />
+                                )}
+                              </AlignItems>
+                              <Input
+                                fullWidth
+                                value={subjectNameInput}
+                                onChange={(e)=>setSubjectNameInput(e.target.value)}
+                                placeholder={'科目名'}
+                              />
+                              <Input
+                                fullWidth
+                                value={subjectDescriptionInput}
+                                onChange={(e)=>setSubjectDescriptionInput(e.target.value)}
+                                placeholder={'科目の概要'}
+                              />
+                              <Input
+                                fullWidth
+                                value={subjectLinkInput}
+                                onChange={(e)=>setSubjectLinkInput(e.target.value)}
+                                placeholder={'URLリンク'}
+                              />
+                              <Button
+                                disabled={subjectNameInput ? false:true}
+                                onClick={(e) => insertNewSubjectData(e)}
+                                icon={<FiPlus/>}
+                              >
+                                追加
+                              </Button>
+                            </Stack>
+                          </Dialog>
+                        })}
+                      </>
+                    </>:
+                    <>
+                      {/* {dataSheetData?.data()?.dataSheet.map(props =>{
+                        return <MockupCell
+                          key={props}
+                          subjectName = {props.subjectName}
+                          subjectLink = {props.subjectLink}
+                          subjectColor = {props.subjectColor}
+                          subjectDescription = {props.subjectDescription}
+                        />
+                      })} */}
+                    </>
                   }
                 </HexGrid>
               </BodyMargin>
@@ -159,10 +248,16 @@ function IndivisualSheet() {
                       title={'データを追加'}
                       trigger={<CreateNewButton/>}
                     >
-                      <p>
-                        データを一度追加すると消去することができませんのでご了承下さい。
-                      </p>
                       <Stack>
+                        <AlignItems justifyContent={'center'}>
+                          <MockupCell
+                            styleType={'display'}
+                            subjectName = {subjectNameInput}
+                            subjectLink = {subjectLinkInput}
+                            subjectColor = {subjectColorInput}
+                            subjectDescription = {subjectDescriptionInput}
+                          />
+                        </AlignItems>
                         <AlignItems
                           marginTop={'medium'}
                           marginBottom={'medium'}

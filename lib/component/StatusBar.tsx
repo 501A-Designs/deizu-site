@@ -33,6 +33,11 @@ const StatusBarStyled = styled('div',{
         border:'1px solid $orange6',
         color:'$orange9'
       },
+      private:{
+        backgroundColor:'$gray3',
+        border:'1px solid $gray6',
+        color:'$gray9'
+      }
     },
     compact:{
       true:{
@@ -40,7 +45,11 @@ const StatusBarStyled = styled('div',{
         marginTop:'10px',
         borderRadius:'$rounded',
         padding:'calc($1*1.5)',
-        boxShadow:'$heavy'
+        boxShadow:'$heavy',
+        '&:hover':{
+          transform:'scale(1.03)',
+          boxShadow:'$light',
+        }
       },
       false:{
         width:'100%',
@@ -65,7 +74,9 @@ export default function StatusBar(props:any) {
   }, [compact]);
 
   return (
-    <StatusBarContainerStyled>
+    <StatusBarContainerStyled
+      onClick={props.onClick}
+    >
       <StatusBarStyled
         status={props.status}
         compact={window.scrollY !== 0}
@@ -74,6 +85,7 @@ export default function StatusBar(props:any) {
           {props.icon}
           {props.status == 'sharing' && '現在共有中'}
           {props.status == 'archived' && 'アーカイブ済み'}
+          {props.status == 'private' && '自分のみ編集可能'}
         </AlignItems>
       </StatusBarStyled>
     </StatusBarContainerStyled>

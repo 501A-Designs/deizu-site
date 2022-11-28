@@ -30,6 +30,9 @@ const MockupCellStyled = styled('button',{
         minWidth:'230px',
       }
     }
+  },
+  defaultVariants:{
+    styleType:'display'
   }
 })
 
@@ -57,7 +60,6 @@ export interface MockupCellProps extends React.ComponentProps<typeof MockupCellS
 }
 
 export default function MockupCell(props:MockupCellProps) {
-
   return (
     <MockupCellStyled
       styleType={props.styleType}

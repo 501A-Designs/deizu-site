@@ -26,6 +26,7 @@ function IndivisualSheet() {
   const [user] = useAuthState(auth);  
   const [userData, userDataLoading] = useDocument<DocumentData>(doc(db, `users/${sheetOwnerId && sheetOwnerId}`));
   const [sheetData, sheetDataLoading, error] = useDocument<DocumentData>(doc(db,`users/${sheetOwnerId && sheetOwnerId}/scheduleGrid/${sheetId && sheetId}`));
+  console.log(sheetData)
 
   useEffect(() => {
     setSheetBackgroundImageUrl(sheetData?.data()?.backgroundImageUrl);
@@ -45,8 +46,7 @@ function IndivisualSheet() {
       <NextSeo
         title={
           sheetDataLoading ? '更新中・・・':
-          'bruh'
-          // sheetData ? sheetData?.data:':P'
+          sheetData?.data() ? sheetData?.data()?.title:':P'
         }
         description={"Deizuで作成した時間割表"}
       />

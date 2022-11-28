@@ -15,11 +15,6 @@ const TagStyled = styled('div',{
   },
   variants:{
     status:{
-      // none:{
-      //   border:'1px solid $system3',
-      //   backgroundColor:'$system1',
-      //   color:'$system4'
-      // },
       sharing:{
         backgroundColor:'$blue3',
         border:'1px solid $blue6',
@@ -37,9 +32,6 @@ const TagStyled = styled('div',{
       },
     }
   },
-  // defaultVariants:{
-  //   color:'none'
-  // }
 })
 
 interface TagProps extends React.ComponentProps<typeof TagStyled>{

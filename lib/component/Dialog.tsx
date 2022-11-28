@@ -36,6 +36,7 @@ const StyledContent = styled(DialogPrimitive.Content, {
   maxHeight: '85vh',
   padding: '$3',
   overflowY:'scroll',
+  overflowX:'hidden',
   zIndex:2,
   '@media (prefers-reduced-motion: no-preference)': {
     animation: `${slideInBottom} 300ms cubic-bezier(0.16, 1, 0.3, 1)`,
