@@ -22,7 +22,6 @@ const DayOfWeekStyled = styled('div',{
   textAlign: 'center',
   padding: '0.5em',
   color: '$gray1',
-  borderRadius: '$2 $2 $1 $1',
   '@bp1':{
     fontSize:'$s',
   },
@@ -32,16 +31,13 @@ const DayOfWeekStyled = styled('div',{
   variants:{
     today:{
       true:{
-        border: '1px solid $gray3',
-        backgroundColor: '$gray3',
-        fontWeight: 'bold',
         color: '$gray12',
       },
       false:{
-        border: '1px solid transparent',
+        color: '$gray8',
       }
     },
-  }
+  },
 })
 
 export default function SheetGrid(props:EditorProps) {

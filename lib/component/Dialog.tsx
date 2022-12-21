@@ -9,8 +9,7 @@ import AlignItems from '../style/AlignItems';
 const StyledOverlay = styled(DialogPrimitive.Overlay, {
   background: `radial-gradient(
     86.36% 107.55% at 6.49% 12.32%,
-    var(--system0) 0%,
-    rgba(255, 255, 255, 0.5) 100%
+    transparent 0%, $gray1 100%
   )`,
   cursor: 'pointer',
   backdropFilter: `blur(3px)`,
@@ -25,7 +24,7 @@ const StyledOverlay = styled(DialogPrimitive.Overlay, {
 const StyledContent = styled(DialogPrimitive.Content, {
   backgroundColor: '$gray1',
   borderRadius: '$3',
-  border: '1px solid $gray3',
+  border: '1px solid $gray4',
   boxShadow: '$heavy',
   position: 'fixed',
   top: '50%',

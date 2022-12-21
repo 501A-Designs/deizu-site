@@ -11,7 +11,7 @@ import AlignItems from '../lib/style/AlignItems'
 import appIcon from '../public/deizuAppIconUpdated.png'
 import { useRouter } from 'next/router'
 
-import { FiArrowUpCircle } from 'react-icons/fi';
+import { FiArrowRightCircle, FiArrowUpCircle } from 'react-icons/fi';
 import Stack from '../lib/style/Stack';
 import { styled } from '../stitches.config';
 import MockUp from '../lib/pages/landing/MockUp';
@@ -40,8 +40,18 @@ const DuoGridStyled = styled('div',{
 })
 
 export default function Home() {
-  let router = useRouter();
+  const router = useRouter();
 
+  let featureList = [
+    "シンプルでわかりやすいUI",
+    "Googleでログイン",
+    "Web上で使用",
+    "科目のセルの色、リンク、概要欄可",
+    "時間割の時間を指定",
+    "何枚もの時間割表を作成・保存可",
+    "リンクを通した時間割表の共有",
+    "GitHubにてオープンソース",
+  ]
 
   return (
     <BodyMargin>
@@ -88,29 +98,41 @@ export default function Home() {
           justifyContent={'center'}
         >
           <AlignItems
-            marginTop={'extraLarge'}
+            marginTop={'small'}
             gap={'medium'}
           >
             <Image
               src={appIcon}
-              width={50}
-              height={50}
+              width={45}
+              height={45}
               alt={'Application Icon'}
             />
             <h1 style={{fontWeight:'900'}}>Deizu</h1>
           </AlignItems>
           <p>時間割作成、履修の記録を効率的に。</p>
           <MockUp/>
+          <AlignItems
+            marginTop={'medium'}
+            gap={'medium'}
+          >
+            <Button
+              styleType={'fill'}
+              onClick={() =>router.push('/app')}
+              icon={<FiArrowRightCircle/>}
+            >
+              今すぐ始める
+            </Button>
+          </AlignItems>
         </AlignItems>
       </div>
       {/* <hr/> */}
       <DuoGridStyled>
         <AlignItems style={{justifyContent: 'center'}}>
           <Container styleType={'transparent'}>
-            <h2>より早く。効率的に。</h2>
-            <h1>v2.0.0で激的な変化。</h1>
+            <h2>ピュアで。端的に。</h2>
+            <h1>ミニマルかつ機能的に。</h1>
             <p>
-              テンプレートの作成で時間をかけてしまい、大事だった「時間割」を作れなかった日々はもう終わり。v2.0.0ではDeizuを根本的に作り直しました。これによって様々な機能の搭載が可能となり、ユーザー様に最適なUXをお届け。
+              テンプレートの作成で時間をかけてしまい、大事だった「時間割」を作れなかった日々はもう終わり。Deizuはシンプルな時間割表作成に特化したアプリです。ユーザー様に最適なUXをお届けするほか、学生限らず、誰もが使用できる汎用性のあるソフトを目指しております。
             </p>
           </Container>
         </AlignItems>
@@ -119,13 +141,13 @@ export default function Home() {
             xDegree={'5deg'}
             yDegree={'-2deg'}
           >
-            <h2>v2.0.0</h2>
-            <h4>デザインと技術面での進歩</h4>
+            <h2>v3.0.0</h2>
+            {/* <h4>ミニマル</h4> */}
             <ul>
               <li>APIコールの削減</li>
-              <li>見やすさを重視し見直されたテーマ</li>
-              <li>データシートによる効率的な時間割入力</li>
-              <li>時間割表のリスト表示</li>
+              <li>モバイルに適したレイアウト</li>
+              <li>データシートのセルの消去・編集</li>
+              <li>配色を2種類にまで削減</li>
             </ul>
             <p>詳しい情報については<LinkTag href='/updates'>こちらから</LinkTag></p>
           </Container>
@@ -136,14 +158,9 @@ export default function Home() {
         <AlignItems>
           <Container styleType={'transparent'}>
             <Stack gap={'$2'}>
-              <BlockListStyled>シンプルでわかりやすいUI</BlockListStyled>
-              <BlockListStyled>Googleでログイン</BlockListStyled>
-              <BlockListStyled>Web上で使用</BlockListStyled>
-              <BlockListStyled>科目のセルの色、リンク、概要欄可</BlockListStyled>
-              <BlockListStyled>時間割の時間を指定</BlockListStyled>
-              <BlockListStyled>何枚もの時間割表を作成・保存可</BlockListStyled>
-              <BlockListStyled>リンクを通した時間割表の共有</BlockListStyled>
-              <BlockListStyled>GitHubにてオープンソース</BlockListStyled>
+              {featureList.map(listContent => {
+                return <BlockListStyled>{listContent}</BlockListStyled>
+              })}
             </Stack>
           </Container>
         </AlignItems>
@@ -175,8 +192,9 @@ export default function Home() {
             <h2>Web &rarr;</h2>
             <p>Next.Js等のモダンなウェブテクノロジーで構成された時間割作成アプリケーション。バックエンドではFirebaseを使用し、充実したユーザーエクスピリエンスとデザインを兼ね備えた唯一無二な時間割表作成プラットフォームです。</p>
             <Button
+              styleType={'fill'}
               onClick={() =>router.push('/app')}
-              icon={<FiArrowUpCircle/>}
+              icon={<FiArrowRightCircle/>}
             >
               Webアプリを開く
             </Button>

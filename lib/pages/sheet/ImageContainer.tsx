@@ -1,8 +1,6 @@
 import randomGradient from 'random-gradient'
-import React from 'react'
-import { FiEdit3, FiImage } from 'react-icons/fi'
+import React,{useState} from 'react'
 import { styled } from '../../../stitches.config'
-import Menu, { ItemStyled } from '../../component/Menu'
 
 const ImageContainerStyled = styled('div',{
   backgroundAttachment:'fixed',
@@ -11,6 +9,11 @@ const ImageContainerStyled = styled('div',{
   color: '$gray12',
   textShadow:'$heavy',
   objectFit: 'cover',
+})
+
+const DisplayOnHover = styled('div',{
+  opacity:'0',
+  transition:'$speed1',
 })
 
 const ImageContainerOverlay = styled('div',{
@@ -34,41 +37,46 @@ const ImageContainerOverlay = styled('div',{
 	'@bp4':{
     padding:'0 15%',
   },
+  '&:hover':{
+    [`& ${DisplayOnHover}`]: {
+      opacity:'1'
+    },
+  }
+})
+
+const LargeHeading = styled('h1',{
+  fontSize:'2em',
+  margin:'0 0 15px 5%',
+  color:'$gray12',
+  fontWeight:'500',
+  $$textShadowColor:'#989898',
+  textShadow:'0px 0px 30px $$textShadowColor',
 })
 
 interface ImageContainerProps{
   src?:string,
   children:JSX.Element | JSX.Element[],
-  menuChildren:JSX.Element | JSX.Element[],
-  id:string
+  id:string,
+  title:string
 }
-
-
 
 export default function ImageContainer(props:ImageContainerProps) {
   return (
-    <Menu
-      title={'基本設定'}
-      trigger={
-        <ImageContainerStyled
-          css={{
-            backgroundImage:`${props.src ? `url(${props.src})` :'none'}`,
-            // backgroundColor:`${props.src ? '$gray2':'transparent'}`,
-            background:`${!props.src && randomGradient(props.id)}`,
-            height: `${props.src ? '250px':'130px'}`,
-          }}
-        >
-          <ImageContainerOverlay
-            css={{
-              height: `${props.src ? '250px':'130px'}`,
-            }}
-          >
-            {props.children}
-          </ImageContainerOverlay>
-        </ImageContainerStyled>
-      }
+    <ImageContainerStyled
+      css={{
+        backgroundImage:`${props.src ? `url(${props.src})` :'none'}`,
+        background:`${!props.src && randomGradient(props.id)}`,
+        height: '250px',
+      }}
     >
-      {props.menuChildren}
-    </Menu>
+      <ImageContainerOverlay
+        css={{
+          height: '250px'
+        }}
+      >
+        <LargeHeading>{props.title}</LargeHeading>
+        <DisplayOnHover>{props.children}</DisplayOnHover>
+      </ImageContainerOverlay>
+    </ImageContainerStyled>
   )
 }

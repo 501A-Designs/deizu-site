@@ -9,12 +9,14 @@ let StackStyled = styled('div',{
 interface StackProp extends React.ComponentProps<typeof StackStyled>{
   grid?: string,
   gap?: string,
+  margin?:string
 }
 
 export default function Stack(props:StackProp) {
   return (
     <StackStyled
       css={{
+        margin:`${props.margin}`,
         gridTemplateColumns:`${props.grid ? props.grid:'1fr'}`,
         gap: `${props.gap ? props.gap :'$1'}`,
       }}

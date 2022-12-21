@@ -2,6 +2,8 @@ import React from 'react'
 import * as ContextMenu from '@radix-ui/react-context-menu';
 import { styled } from '../../stitches.config';
 import { keyframes } from '@stitches/react';
+import Alert from './Alert';
+import AlignItems from '../style/AlignItems';
 
 const popOutLeftTop = keyframes({
   '0%': {
@@ -14,24 +16,26 @@ const popOutLeftTop = keyframes({
   }
 });
 
-const MenuTitleStyled = styled(ContextMenu.Label,{
+const ContextMenuLabelStyled = styled(ContextMenu.Label,{
   margin:'$1',
   color:'$gray9',
   fontSize:'$m',
   userSelect:'none'
 })
 
-const ContentStyled = styled(ContextMenu.Content, {
+const ContextMenuContentStyled = styled(ContextMenu.Content, {
   padding:'$2',
   borderRadius:'$2',
   backgroundColor:'$gray1',
+  // background: `radial-gradient(86.36% 107.55% at 6.49% 12.32%,$grayA5 0%,$grayA5 100%)`,
+  // backdropFilter:'blur(16px)',
   border:'1px solid $gray4',
   width:'250px',
   boxShadow:'$heavy',
   animation: `${popOutLeftTop} 0.3s ease-out`,
 });
 
-export const ItemStyled = styled(ContextMenu.Item, {
+const ContextMenuItemStyled = styled(ContextMenu.Item, {
   padding:'$1 $2',
   borderRadius:'$1',
   width:'100%',
@@ -40,7 +44,7 @@ export const ItemStyled = styled(ContextMenu.Item, {
   cursor:'pointer',
   fontSize:'$xm',
   transition:'$speed1',
-  border:'1px solid $gray1',
+  border:'1px solid transparent',
   variants:{
     color:{
       standard:{
@@ -66,6 +70,20 @@ export const ItemStyled = styled(ContextMenu.Item, {
   }
 });
 
+Menu.Item = (menuItemProps:any) => {
+  return(
+    <ContextMenuItemStyled
+      color={menuItemProps.color}
+      onSelect={menuItemProps.onSelect}
+    >
+      <AlignItems>
+        {menuItemProps.icon}
+        <span>{menuItemProps.children}</span>
+      </AlignItems>
+    </ContextMenuItemStyled>
+  )
+};
+
 export default function Menu(props:any) {
   return (
     <ContextMenu.Root>
@@ -74,17 +92,17 @@ export default function Menu(props:any) {
       </ContextMenu.Trigger>
 
       <ContextMenu.Portal>
-        <ContentStyled>
+        <ContextMenuContentStyled>
           {props.title &&
-            <MenuTitleStyled>
+            <ContextMenuLabelStyled>
               {props.title}
-            </MenuTitleStyled>
+            </ContextMenuLabelStyled>
           }
           <ContextMenu.Group>
             {props.children}
           </ContextMenu.Group>
           {/* <ContextMenu.Separator /> */}
-        </ContentStyled>
+        </ContextMenuContentStyled>
       </ContextMenu.Portal>
     </ContextMenu.Root>
   )

@@ -20,7 +20,7 @@ import 'moment/locale/ja';
 import Stack from '../../../lib/style/Stack';
 
 import { NextSeo } from 'next-seo';
-import { FiChevronLeft, FiChevronRight, FiEdit2, FiImage, FiPlus, FiSave, FiSmile,FiArchive, FiCircle, FiExternalLink, FiFolder, FiFolderPlus, FiHeart, FiMoreHorizontal, FiDatabase, FiUsers, FiSettings, FiGrid } from 'react-icons/fi';
+import { FiChevronLeft, FiChevronRight, FiEdit2, FiImage, FiPlus, FiSave, FiSmile,FiArchive, FiCircle, FiExternalLink, FiFolder, FiFolderPlus, FiHeart, FiMoreHorizontal, FiDatabase, FiUsers, FiSettings, FiGrid, FiCalendar } from 'react-icons/fi';
 
 import SheetContainer from '../../../lib/pages/dashboard/SheetContainer';
 import Dialog from '../../../lib/component/Dialog';
@@ -36,6 +36,7 @@ import SettingDialogContent from '../../../lib/pages/dashboard/SettingDialogCont
 import CreateNewDialogContent from '../../../lib/pages/dashboard/CreateNewDialogContent';
 import DataSheetButton from '../../../lib/button/DataSheetButton';
 import CreateNewButton from '../../../lib/component/CreateNewButton';
+import Container from '../../../lib/component/Container';
 
 const DashBoardAlignStyled = styled('div',{
   minHeight:'100vh',
@@ -116,10 +117,10 @@ function IndivisualUser() {
               <DashBoardAlignStyled>
                 <SideBarContainerStyled>
                   <TooltipLabel
-                    trigger={                     
+                    trigger={                
                       <ProfileImage
-                        width='45px'
-                        height='45px'
+                        width='45'
+                        height='45'
                         src={user.photoURL}
                         onClick={() => router.push('/user')}
                       />
@@ -229,6 +230,18 @@ function IndivisualUser() {
                             </DataSheetButton>
                           )
                         })
+                      }
+                      {dataSheetData?.docs.length == 0 &&
+                        <Container styleType={'gradient'}>
+                          <AlignItems
+                            justifyContent={'center'}
+                          >
+                            <FiDatabase/>
+                            <h4>
+                              データシートなし
+                            </h4>
+                          </AlignItems>
+                        </Container>
                       }
                     </Stack>
                   </Stack>

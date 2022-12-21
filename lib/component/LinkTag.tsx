@@ -2,7 +2,7 @@ import Link from 'next/link'
 import React from 'react'
 import { styled } from '../../stitches.config'
 
-const LinkStyled = styled('a',{
+const LinkStyled = styled(Link,{
   cursor:'pointer',
   color:'$gray12',
   textDecoration:'underline',
@@ -12,14 +12,12 @@ const LinkStyled = styled('a',{
 
 export default function LinkTag(props:React.ComponentProps<typeof Link>) {
 return (
-    <Link
+    <LinkStyled
       href={props.href}
       target={props.target}
       rel={props.rel}
     >
-      <LinkStyled>
-        {props.children}
-      </LinkStyled>
-    </Link>
+      {props.children}
+    </LinkStyled>
   )
 }

@@ -25,6 +25,20 @@ const HeadingStyled = styled('h1',{
         fontSize:'$s'
       }
     },
+    align:{
+      right:{
+        textAlign:'right'
+      },
+      left:{
+        textAlign:'left'
+      },
+      center:{
+        textAlign:'center'
+      }
+    },
+  },
+  defaultVariants:{
+    align:'left'
   }
 })
 
@@ -37,6 +51,7 @@ export default function Heading(props:HeadingProps) {
   return (
     <HeadingStyled
       type={props.type}
+      align={props.align}
       css={{
         color:props.color,
         margin:props.margin

@@ -11,7 +11,9 @@ const ButtonStyled = styled('button', {
   fontWeight:'bold',
   transition: '$speed1',
   '&[disabled]':{
-    opacity:'0.2'
+    // filter:'brightness(40%)',
+    opacity:'0.4',
+    cursor:'not-allowed'
   },
   variants:{
     styleType:{
@@ -19,43 +21,50 @@ const ButtonStyled = styled('button', {
         color: '$gray11',
         backgroundColor: '$gray4',
         border: '1px solid $gray5',
-        '&:hover': {
-          color: '$gray12',
-          backgroundColor: '$gray5',
-          border: '1px solid $gray6',
-          boxShadow: '0 8px 10px $gray1',
-          transform:'scale(1.02)'
+        '&[!disabled]':{
+          '&:hover': {
+            color: '$gray12',
+            backgroundColor: '$gray5',
+            border: '1px solid $gray6',
+            boxShadow: '0 8px 10px $gray1',
+            transform:'scale(1.02)'
+          }
         }
       },
       fill:{
         color: '$gray1',
         backgroundColor: '$gray12',
         border: '1px solid $gray12',
-        '&:hover': {
-          boxShadow: '0 8px 10px $gray1',
-          transform:'scale(1.02)'
-        },
+        '&[!disabled]':{
+          '&:hover': {
+            boxShadow: '0 8px 10px $gray1',
+            transform:'scale(1.02)'
+          },
+        }
       },
       outline:{
         color: '$gray11',
         backgroundColor: '$gray1',
         border: '1px solid $gray3',
         boxShadow: '0 0 2px $system2',
-        '&:hover': {
-          color: '$gray12',
-          backgroundColor: '$gray2',
-          transform:'scale(1.02)'
-        },
+        '&[!disabled]':{
+          '&:hover': {
+            color: '$gray12',
+            backgroundColor: '$gray2',
+            transform:'scale(1.02)'
+          },
+        }
       },
       red:{
-        color: '$red11',
-        backgroundColor: '$red5',
-        border: '1px solid $red6',
-        '&:hover': {
-          backgroundColor: '$red4',
-          border: '1px solid $red5',
-          transform:'scale(1.02)'
-        },
+        color: '$red1',
+        backgroundColor: '$red10',
+        border: '1px solid $red9',
+        // '&[!disabled]':{
+          '&:hover': {
+            backgroundColor: '$red9',
+            transform:'scale(1.02)'
+          },
+        // }
       }
     },
     size:{
@@ -68,7 +77,7 @@ const ButtonStyled = styled('button', {
         padding: 'calc($1*1.3) calc($2*1.3)',
       },
       icon:{
-        fontSize:'$xm',
+        fontSize:'$m',
         padding: '8px',
         'span':{
           display:'none'
@@ -111,6 +120,7 @@ export default function Button(props:ButtonProps) {
       fullWidth={props.fullWidth}
       title={props.children}
       onClick={props.onClick}
+      css={props.css}
     >
       <AlignItems
         gap={'small'}

@@ -9,7 +9,9 @@ const MockupCellStyled = styled('button',{
   alignItems: 'center',
   color: '$gray12',
   borderRadius:'$2',
-  maxWidth:'100%',
+  // maxWidth:'230px',
+  // minWidth:'150px',
+  width:'100%',
   padding:'$1',
   minHeight: '85px',
   fontWeight: 'bold',
@@ -19,7 +21,6 @@ const MockupCellStyled = styled('button',{
       button:{
         cursor: 'pointer',
         outlineColor:'$gray12',
-        minWidth:'150px',
         '&:hover':{
           transform:'scale(1.02)',
           boxShadow:'$light'
@@ -27,8 +28,7 @@ const MockupCellStyled = styled('button',{
       },
       display:{
         outline:'none',
-        minWidth:'230px',
-      }
+      },
     }
   },
   defaultVariants:{

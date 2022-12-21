@@ -8,7 +8,7 @@ import { MoonLoader } from 'react-spinners';
 const StyledOverlay = styled(AlertDialog.Overlay, {
   background: `radial-gradient(
     86.36% 107.55% at 6.49% 12.32%,
-    var(--system0) 0%,
+    transparent 0%,
     rgba(255, 255, 255, 0.5) 100%
   )`,
   cursor: 'pointer',
@@ -21,9 +21,9 @@ const StyledOverlay = styled(AlertDialog.Overlay, {
 });
 
 const StyledContent = styled(AlertDialog.Content, {
-  backgroundColor: '$system4',
+  backgroundColor: '$gray1',
   borderRadius: '$3',
-  border: '1px solid $system1',
+  border: '1px solid $gray4',
   color:'$textColor2',
   boxShadow: '$heavy',
   position: 'fixed',
@@ -40,19 +40,11 @@ const StyledContent = styled(AlertDialog.Content, {
   '&:focus': { outline: 'none' },
 });
 
-function Content({children, ...props}:{children:any}) {
+function Content({children}:{children:any}) {
   return (
     <AlertDialog.Portal>
       <StyledOverlay>
         <StyledContent>
-          {/* <form
-            onSubmit={async () => {
-              // props.on
-              mockPromise().then(() => setOpen(false));
-            }}
-          >
-            <AlertDialog.Action type="submit">Submit</AlertDialog.Action>
-          </form> */}
           {children}
         </StyledContent>
       </StyledOverlay>
@@ -61,15 +53,15 @@ function Content({children, ...props}:{children:any}) {
 }
 
 const StyledTitle = styled(AlertDialog.Title, {
+  color: '$gray12',
   margin: 0,
   fontWeight: 500,
-  color:'$textColor2',
   fontSize: 17,
 });
 
 const StyledDescription = styled(AlertDialog.Description, {
   margin: '10px 0 20px',
-  color:'$textColor2',
+  color: '$gray12',
   fontSize: 15,
   lineHeight: 1.5,
 });

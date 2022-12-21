@@ -105,3 +105,8 @@ export const darkTheme = createTheme({
     ...purpleDark,
   },
 });
+
+// cursor:'pointer',
+// color:'$gray12',
+// textDecoration:'underline',
+// textDecorationColor:'$gray9'

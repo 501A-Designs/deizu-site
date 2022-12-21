@@ -12,7 +12,6 @@ export default function MockUp() {
       <MediaQuery hide={'mobile'}>
         <Container
           index={'inner'}
-          xDegree={'2deg'}
           styleType={'gradient'}
         >
           <FrameContentStyled
@@ -31,7 +30,6 @@ export default function MockUp() {
       <MediaQuery hide={'desktop'}>
         <Container
           index={'inner'}
-          xDegree={'2deg'}
           styleType={'gradient'}
         >
           <FrameContentStyled

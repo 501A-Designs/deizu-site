@@ -137,9 +137,6 @@ export default function SubjectCell(props:SubjectCellProps) {
 
   const dynamicBorderRadius = () =>{
     if (cellId == 'f1') {
-      if (moment().format('d') == '6') {
-        return '$1';
-      }
       return '$1 $3 $1 $1';
     }if (cellId == 'f7') {
       return '$1 $1 $3 $1';
@@ -196,7 +193,7 @@ export default function SubjectCell(props:SubjectCellProps) {
   return (
     <>
       {viewOnly ?
-        <p>オーナーで無い為編集することはできません。</p>:
+        <SubjectCellDisplay/>:
         <Dialog
           title={'編集中'}
           trigger={
@@ -236,7 +233,10 @@ export default function SubjectCell(props:SubjectCellProps) {
             </AlignItems>
               {!dataSheetData || dataSheetData !== '' &&
                 <>
-                  <Heading type={'h4'}>
+                  <Heading 
+                    type={'h4'}
+                    align={'center'}
+                  >
                     「{dataSheetData?.dataSheetName}」データシートより
                   </Heading>
                   <ScrollX>

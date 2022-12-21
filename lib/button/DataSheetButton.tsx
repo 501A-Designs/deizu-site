@@ -2,13 +2,11 @@ import React from 'react'
 import AlignItems from '../style/AlignItems'
 
 import { FiPlus, FiCheck, FiLock } from "react-icons/fi";
-import gradient from 'random-gradient'
 import Button from './Button';
 import { styled } from '../../stitches.config';
 import { useRouter } from 'next/router';
 import Heading from '../component/Heading';
 import Stack from '../style/Stack';
-import { TooltipLabel } from '../component/TooltipLabel';
 import randomGradient from 'random-gradient';
 
 const DataSheetButtonStyled = styled('div',{
@@ -116,8 +114,7 @@ const Subtitle = styled('p',{
 interface DataSheetButtonProps extends React.ComponentProps<typeof DataSheetButtonStyled>{
   imageSource?:string,
   dataSheetId:string,
-  displayAddButton:boolean,
-  currentDataSheetId:string,
+  currentDataSheetId?:string,
   subtitle?:string,
   public:boolean,
   onClick?:any

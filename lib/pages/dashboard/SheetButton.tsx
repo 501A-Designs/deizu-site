@@ -10,7 +10,7 @@ import Tag from '../../component/Tag';
 import Stack from '../../style/Stack';
 import moment from 'moment';
 import Heading from '../../component/Heading';
-import Menu, { ItemStyled } from '../../component/Menu';
+import Menu from '../../component/Menu';
 import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { useRouter } from 'next/router';
 import { copyAlert, db } from '../../../src/service/firebase';
@@ -28,12 +28,10 @@ const SheetButtonStyled = styled('button', {
   border:'none',
   borderRadius:'$3',
   backgroundColor:'transparent',
-
   borderBottom: '1px solid transparent',
   borderImage: 'linear-gradient(90deg, $gray1 0%, $gray6 50%, $gray1 100%)',
-  borderImageSlice: 1,
-  
   transition: '$speed1',
+  borderImageSlice: 1,
   'time':{
     color:'$gray11',
     fontSize:'$m',
@@ -63,7 +61,6 @@ const ButtonImageStyled = styled('img', {
   backgroundColor:'$gray4',
   border:'1px solid $gray2',
   boxShadow:'$light',
-
   '@bp1':{
     width:'4.2em',
     height:'4.2em',    
@@ -75,7 +72,6 @@ const ButtonImageStyled = styled('img', {
 });
 
 // interface
-
 export default function SheetButton(props:any) {
   const router = useRouter();
   let user = props.user;
@@ -161,52 +157,42 @@ export default function SheetButton(props:any) {
       {!props.archived &&      
         <>
           {props.sharing &&          
-            <ItemStyled
+            <Menu.Item
               onSelect={()=>copyAlert(`deizu.vercel.app/user/${user?.uid}/sheet/${sheetId}`)}
+              icon={<FiLink/>}
             >
-              <AlignItems>
-                <FiLink/>
-                URLをコピー
-              </AlignItems>
-            </ItemStyled>
+              URLをコピー
+            </Menu.Item>
           }
-          <ItemStyled
+          <Menu.Item
             onSelect={()=>updateTitle()}
+            icon={<FiEdit3/>}
           >
-            <AlignItems>
-              <FiEdit3/>
-              名前を変更
-            </AlignItems>
-          </ItemStyled>
+            名前を変更
+          </Menu.Item>
         </>
       }
       {props.archived ?
-        <ItemStyled
+        <Menu.Item
           onSelect={()=>moveOutOfArchive()}
+          icon={<FiCornerUpLeft/>}
         >
-          <AlignItems>
-            <FiCornerUpLeft/>
-            アーカイブから出す
-          </AlignItems>
-        </ItemStyled>:
-        <ItemStyled
+          アーカイブから出す
+        </Menu.Item>:
+        <Menu.Item
           onSelect={()=> moveToArchive()}
-        >
-          <AlignItems>
-            <FiArchive/>
-            アーカイブする
-          </AlignItems>
-        </ItemStyled>
+          icon={<FiArchive/>}
+        >   
+          アーカイブする
+        </Menu.Item>
       }
-      <ItemStyled
+      <Menu.Item
         color={'red'}
-        onSelect={()=> deleteSheet()} 
+        onSelect={()=> deleteSheet()}
+        icon={<FiTrash/>}
       >
-        <AlignItems>
-          <FiTrash/>
-          削除
-        </AlignItems>
-      </ItemStyled>
+        削除
+      </Menu.Item>
     </Menu>
   )
 }

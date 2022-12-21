@@ -56,7 +56,7 @@ export default function App() {
         marginTop={'1em'}
       >
         <p>
-          Deizuのv2.0.3以来時間割表を開けないエラーが出回っています。また、今後バグ等の告知は<LinkTag href="https://forms.gle/XrqF7XsibpWtoK6bA">こちら</LinkTag>のグーグルフォームからご報告ください。
+          v3.0.0が新しくリリースされました。Deizuの最新版、ぜひお試しください。また、バグ等の告知は<LinkTag href="https://forms.gle/XrqF7XsibpWtoK6bA">こちら</LinkTag>のグーグルフォームからご報告ください。
         </p>
       </Container>
       <p>

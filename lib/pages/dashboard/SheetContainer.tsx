@@ -1,6 +1,6 @@
-import React,{useEffect, useState} from 'react'
+import React from 'react'
 import { useRouter } from 'next/router';
-import { FiCalendar, FiPlus, FiSave } from 'react-icons/fi';
+import { FiCalendar, FiCheck } from 'react-icons/fi';
 import { styled } from '../../../stitches.config';
 import Button from '../../button/Button';
 import SheetButton from './SheetButton';
@@ -13,10 +13,10 @@ import { db } from '../../../src/service/firebase';
 import { useDocument } from 'react-firebase-hooks/firestore';
 import Alert from '../../component/Alert';
 import { MoonLoader } from 'react-spinners';
-import { scheduleCellId } from '../../data/scheduleCellId';
 import { SheetDocTypes } from '../../../pages/user/[userId]';
 import { SheetDataTypes } from '../sheet/Editor';
 import Heading from '../../component/Heading';
+import LinkTag from '../../component/LinkTag';
 
 interface SheetContainerProps {
   title:string,
@@ -40,6 +40,17 @@ const TotalText = styled('p',{
   borderRadius:'$3',
   fontSize:'$s'
 })
+
+const tagsData = [
+  {
+    type:'archived',
+    name:'共有中'
+  },
+  {
+    type:'sharing',
+    name:'アーカイブ'
+  },
+]
 
 export default function SheetContainer(props:SheetContainerProps) {
   const router = useRouter();
@@ -77,26 +88,131 @@ export default function SheetContainer(props:SheetContainerProps) {
             <Button
               fullWidth
               styleType={'fill'}
-              icon={<FiSave/>}
+              icon={<FiCheck/>}
               onClick={()=>convertV2toV3()}
             >
-              変更
+              完了
             </Button>
           }
           title={'v3へ対応'}
           description={
-            'Deizu v3のリリース基づき時間割表の保存の方法を大幅に変更いたしました。今まで作成した時間割表を引き続き使用するには以下の変更ボタンを押す必要があります。'
+            'Deizu v3のリリース基づき時間割表の保存の方法を大幅に変更いたしました。今まで作成した時間割表を引き続き使用するができますのでご安心ください。'
           }
-          // loading={convertV2toV3State == 'loading'}
         >
+          <ul>
+            <li><LinkTag href={'/'}>v3の変更一覧</LinkTag></li>
+            <li><LinkTag href={'/'}>具体的な技術的な変更（ブログ記事）</LinkTag></li>
+          </ul>
         </Alert>:
         <Stack gap={'0'}>
-          <Heading
-            type={'h1'}
-            margin={'0 0 0.5em 0.5em'}
-          >
-            {props?.title}
-          </Heading>
+          <AlignItems justifyContent={'spaceBetween'}>
+            <Heading
+              type={'h1'}
+              margin={'0 0 0.5em 0.5em'}
+            >
+              {props?.title}
+            </Heading>
+            {/* <AlignItems gap={'small'}>
+              <Dropdown
+                icon={<FiFilter/>}
+                align={'left'}
+                name={'フィルター'}
+              >
+                <Dropdown.Label>
+                  表示
+                </Dropdown.Label>
+                <Dropdown.Item
+                  icon={<FiZap/>}
+                >
+                  最近の表
+                </Dropdown.Item>
+                <Dropdown.Item
+                  icon={<FiUsers/>}
+                >
+                  共有中
+                </Dropdown.Item>
+                <Dropdown.Item
+                  icon={<FiArchive/>}
+                >
+                  アーカイブ済
+                </Dropdown.Item>
+                <Dropdown.Item
+                  icon={<FiFolder/>}
+                >
+                  全ての表
+                </Dropdown.Item>
+              </Dropdown>
+              <Dropdown
+                icon={<FiFilter/>}
+                align={'center'}
+                name={'フィルター'}
+              >
+                <Dropdown.Label>
+                  表示
+                </Dropdown.Label>
+                <Dropdown.Item
+                  icon={<FiZap/>}
+                >
+                  最近の表
+                </Dropdown.Item>
+                <Dropdown.Item
+                  icon={<FiUsers/>}
+                >
+                  共有中
+                </Dropdown.Item>
+                <Dropdown.Item
+                  icon={<FiArchive/>}
+                >
+                  アーカイブ済
+                </Dropdown.Item>
+                <Dropdown.Item
+                  icon={<FiFolder/>}
+                >
+                  全ての表
+                </Dropdown.Item>
+              </Dropdown>
+              <Dropdown
+                icon={<FiShuffle/>}
+                align={'right'}
+                name={'フィルター'}
+              >
+                <Dropdown.Label>
+                  順番
+                </Dropdown.Label>
+                <Dropdown.SubMenu
+                  name={'最終変更時'}
+                  icon={<FiClock/>}
+                >
+                  <Dropdown.Item
+                    icon={<FiShuffle/>}
+                  >
+                    古い順
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    icon={<FiShuffle/>}
+                  >
+                    新しい順
+                  </Dropdown.Item>
+                </Dropdown.SubMenu>
+                <Dropdown.SubMenu
+                  name={'タイトル名'}
+                  icon={<FiType/>}
+                >
+                  <Dropdown.Item
+                    icon={<FiShuffle/>}
+                  >
+                    AからZ
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    icon={<FiShuffle/>}
+                  >
+                    ZからA
+                  </Dropdown.Item>
+                </Dropdown.SubMenu>
+              </Dropdown>
+            </AlignItems> */}
+
+          </AlignItems>
           {sheetDataArray?.docs.map((sheetDoc:SheetDocTypes) =>
             <SheetButton
               key={sheetDoc.id}

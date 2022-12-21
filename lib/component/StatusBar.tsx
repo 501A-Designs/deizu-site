@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { FiArchive, FiEye, FiKey, FiLock, FiUsers } from 'react-icons/fi'
 import { styled } from '../../stitches.config'
 import AlignItems from '../style/AlignItems'
 
@@ -33,11 +34,6 @@ const StatusBarStyled = styled('div',{
         border:'1px solid $orange6',
         color:'$orange9'
       },
-      private:{
-        backgroundColor:'$gray3',
-        border:'1px solid $gray6',
-        color:'$gray9'
-      }
     },
     compact:{
       true:{
@@ -57,9 +53,6 @@ const StatusBarStyled = styled('div',{
       }
     }
   },
-  defaultVariants:{
-    status:'sharing'
-  }
 })
 
 export default function StatusBar(props:any) {
@@ -78,14 +71,39 @@ export default function StatusBar(props:any) {
       onClick={props.onClick}
     >
       <StatusBarStyled
-        status={props.status}
+        status={
+          props.status == 'private' ||
+          props.status == 'viewOnly' ?
+          'standard':
+          props.status
+        }
         compact={window.scrollY !== 0}
       >
         <AlignItems justifyContent={'center'}>
-          {props.icon}
-          {props.status == 'sharing' && '現在共有中'}
-          {props.status == 'archived' && 'アーカイブ済み'}
-          {props.status == 'private' && '自分のみ編集可能'}
+          {props.status == 'sharing' && 
+            <>
+              <FiUsers/>
+              現在共有中
+            </>
+          }
+          {props.status == 'archived' && 
+            <>
+              <FiArchive/>
+              アーカイブ済み
+            </>
+          }
+          {props.status == 'private' && 
+            <>
+              <FiLock/>
+              自分のみ編集
+            </>
+          }
+          {props.status == 'viewOnly' && 
+            <>
+              <FiEye/>
+              閲覧のみ可能
+            </>
+          }
         </AlignItems>
       </StatusBarStyled>
     </StatusBarContainerStyled>

@@ -3,7 +3,7 @@ import { styled } from '../../stitches.config'
 
 let ContainerStyled = styled('div',{
   color: '$gray12',
-  minWidth:'300px',
+  minWidth:'200px',
   height: 'fit-content',
   variants:{
     styleType:{
