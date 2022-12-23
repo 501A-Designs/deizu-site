@@ -3,7 +3,7 @@ import Container from '../lib/component/Container';
 import Heading from '../lib/component/Heading';
 import LinkTag from '../lib/component/LinkTag';
 
-import NavFooter from '../lib/component/NavFooter'
+import NavFooter from '../lib/component/BlurHeader'
 import AlignItems from '../lib/style/AlignItems';
 import BodyMargin from '../lib/style/BodyMargin';
 

@@ -15,10 +15,12 @@ import {
   amberDark,
   pink,
   pinkDark,
-  brown,
-  brownDark,
   purple,
   purpleDark,
+  brown,
+  brownDark,
+  teal,
+  tealDark,
 } from '@radix-ui/colors';
 import { createStitches } from '@stitches/react';
 
@@ -38,6 +40,8 @@ export const { styled, css, createTheme, globalCss } = createStitches({
       ...pink,
       ...brown,
       ...purple,
+      ...teal,
+
     },
     space:{
       1:'5px',
@@ -101,8 +105,9 @@ export const darkTheme = createTheme({
     ...orangeDark,
     ...amberDark,
     ...pinkDark,
-    ...brownDark,
     ...purpleDark,
+    ...brownDark,
+    ...tealDark,
   },
 });
 

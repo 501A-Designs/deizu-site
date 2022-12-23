@@ -114,7 +114,7 @@ const itemStyles = {
 };
 
 const DropdownMenuItemStyled = styled(DropdownMenu.Item, itemStyles);
-Dropdown.Item = (menuItemProps:any) => {
+const DropdownItem = (menuItemProps:any) => {
   return (
     <DropdownMenuItemStyled>
       <AlignItems>
@@ -124,6 +124,7 @@ Dropdown.Item = (menuItemProps:any) => {
     </DropdownMenuItemStyled>
   )
 }
+Dropdown.Item = DropdownItem;
 
 const DropdownMenuSubTriggerStyled = styled(DropdownMenu.SubTrigger, {
   '&[data-state="open"]': {
@@ -145,7 +146,7 @@ Dropdown.Separator = styled(DropdownMenu.Separator, {
   margin: 5,
 });
 
-Dropdown.SubMenu =(subMenuProp:any)=>{
+const DropdownSubMenu =(subMenuProp:any)=>{
   return(
     <>
       <DropdownMenu.Sub>
@@ -171,6 +172,7 @@ Dropdown.SubMenu =(subMenuProp:any)=>{
   )
 }
 
+Dropdown.SubMenu = DropdownSubMenu;
 export default function Dropdown(props:any){
   return (
     <DropdownMenu.Root>

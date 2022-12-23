@@ -2,7 +2,6 @@ import React from 'react'
 import * as ContextMenu from '@radix-ui/react-context-menu';
 import { styled } from '../../stitches.config';
 import { keyframes } from '@stitches/react';
-import Alert from './Alert';
 import AlignItems from '../style/AlignItems';
 
 const popOutLeftTop = keyframes({
@@ -27,8 +26,6 @@ const ContextMenuContentStyled = styled(ContextMenu.Content, {
   padding:'$2',
   borderRadius:'$2',
   backgroundColor:'$gray1',
-  // background: `radial-gradient(86.36% 107.55% at 6.49% 12.32%,$grayA5 0%,$grayA5 100%)`,
-  // backdropFilter:'blur(16px)',
   border:'1px solid $gray4',
   width:'250px',
   boxShadow:'$heavy',
@@ -50,7 +47,7 @@ const ContextMenuItemStyled = styled(ContextMenu.Item, {
       standard:{
         color:'$gray12',
         '&:hover':{
-          backgroundColor:'$gray4',
+          backgroundColor:'$gray3',
           border:'1px solid $gray4',
           transform: 'scale(1.02)'
         }
@@ -59,7 +56,7 @@ const ContextMenuItemStyled = styled(ContextMenu.Item, {
         color:'$red11',
         '&:hover':{
           backgroundColor:'$red3',
-          border:'1px solid $red3',
+          border:'1px solid $red4',
           transform: 'scale(1.02)'
         }
       }
@@ -70,7 +67,7 @@ const ContextMenuItemStyled = styled(ContextMenu.Item, {
   }
 });
 
-Menu.Item = (menuItemProps:any) => {
+const MenuItem = (menuItemProps:any) => {
   return(
     <ContextMenuItemStyled
       color={menuItemProps.color}
@@ -84,6 +81,7 @@ Menu.Item = (menuItemProps:any) => {
   )
 };
 
+Menu.Item = MenuItem;
 export default function Menu(props:any) {
   return (
     <ContextMenu.Root>

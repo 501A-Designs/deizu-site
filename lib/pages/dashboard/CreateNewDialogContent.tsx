@@ -57,9 +57,7 @@ export default function CreateNewDialogContent(props:CreateNewDialogContentProps
     const createdDoc = await addDoc(scheduleGridCollection, {
       title:sheetName,
       sharing: false,
-      cells:{},
       date: serverTimestamp(),
-      bannerImageUrl: '',
       archived:false
     });
     router.push(`/user/${user?.uid}/sheet/${createdDoc.id}`);

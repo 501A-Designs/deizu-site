@@ -1,7 +1,8 @@
 import React from 'react'
 import { isMobile } from 'react-device-detect'
 import AlignItems from '../style/AlignItems'
-import CloseButton from '../button/CloseButton'
+import Button from '../button/Button'
+import { FiX } from 'react-icons/fi'
 
 export default function ModalHeader(props:any) {
   return (
@@ -11,9 +12,13 @@ export default function ModalHeader(props:any) {
     >
       <h4>{props.header}</h4>
       {isMobile &&
-        <CloseButton onClick={props.onClick}>
+        <Button
+          icon={<FiX/>}
+          size={'icon'}
+          onClick={props.onClick}
+        >
           閉じる
-        </CloseButton>
+        </Button>
       }
     </AlignItems>
   )

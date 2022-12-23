@@ -9,7 +9,7 @@ const StyledOverlay = styled(AlertDialog.Overlay, {
   background: `radial-gradient(
     86.36% 107.55% at 6.49% 12.32%,
     transparent 0%,
-    rgba(255, 255, 255, 0.5) 100%
+    $gray1 100%
   )`,
   cursor: 'pointer',
   backdropFilter: `blur(3px)`,

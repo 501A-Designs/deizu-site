@@ -27,9 +27,7 @@ import Heading from "../../component/Heading";
 import { styled } from "../../../stitches.config";
 import Toggle from "../../component/Toggle";
 import Menu from "../../component/Menu";
-import { DataSheetDataTypes } from "../../../pages/user/[userId]";
 import StatusBar from "../../component/StatusBar";
-// import { SheetDataTypes } from "../../../pages/user/[userId]/sheet/[id]";
 
 export interface SheetDataTypes {
   title:string,
@@ -217,11 +215,11 @@ export default function Editor(props:EditorProps) {
                             <ScrollY>
                               <Stack>
                                 {
-                                  dataSheetData?.docs.map((datasheet:DataSheetDataTypes) =>{
+                                  dataSheetData?.docs.map(datasheet =>{
                                     return (
                                       <DataSheetButton
                                         key={datasheet.id}
-                                        displayAddButton={true}
+                                        // displayAddButton={true}
                                         dataSheetId={datasheet.id}
                                         currentDataSheetId={dataSheetId}
                                         imageSource={datasheet.data().dataSheetImageUrl}

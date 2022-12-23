@@ -48,7 +48,7 @@ export default function Index() {
   const [dataSheetImageUrl, setDataSheetImageUrl] = useState('')
   const [dataSheetDescription, setDataSheetDescription] = useState('')
 
-  const createDataSheet = async (e) =>{
+  const createDataSheet = async (e:any) =>{
     e.preventDefault();
     setSheetLoading(true);
     const docRef = await addDoc(collection(db, "sheets"), {

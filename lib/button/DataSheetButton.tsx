@@ -116,8 +116,9 @@ interface DataSheetButtonProps extends React.ComponentProps<typeof DataSheetButt
   dataSheetId:string,
   currentDataSheetId?:string,
   subtitle?:string,
-  public:boolean,
-  onClick?:any
+  public?:boolean,
+  onClick?:any,
+  children:any
 }
 
 export default function DataSheetButton(props:DataSheetButtonProps) {

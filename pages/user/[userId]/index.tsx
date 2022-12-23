@@ -44,13 +44,19 @@ const DashBoardAlignStyled = styled('div',{
     gap:'1em',
   },
   '@bp2_':{
-    display:'grid',
-    gridTemplateColumns:'1fr 6fr',
+    // display:'grid',
+    // gridTemplateColumns:'1fr 6fr',
+    display:'flex',
+    justifyContent:'space-between',
     gap:'2em',
   }
 })
 
 const SideBarContainerStyled = styled('div',{
+  top:'$1',
+  position:'sticky',
+  background:'$gray1',
+  zIndex:'1000',
   display:'flex',
   gap:'$1',
   alignItems:'center',
@@ -58,11 +64,15 @@ const SideBarContainerStyled = styled('div',{
     justifyContent:'space-between',
     flexDirection:'row',
     width:'100%',
-    marginBottom:'$4'
+    marginBottom:'$4',
+    border:'1px solid $gray4',
+    borderRadius:'$3',
+    padding:'$2',
+    boxShadow:'$medium'
   },
   '@bp2_':{
     flexDirection:'column',
-    marginTop:'$2'
+    marginTop:'$2',
   }
 })
 const SideBarStyled = styled('div',{
@@ -76,6 +86,11 @@ const SideBarStyled = styled('div',{
     flexDirection:'column',
     marginTop:'$2'
   }
+})
+
+const DetailedContentStyled = styled('section',{
+  marginTop:'$4',
+  // background:'red',
 })
 
 export interface SheetDocTypes{
@@ -172,80 +187,82 @@ function IndivisualUser() {
                     </Dialog>
                   </SideBarStyled>
                 </SideBarContainerStyled>
-                {currentView == 'main' &&
-                  <SheetContainer
-                    title={'Main'}
-                    user={user}
-                    sheetDataArray={allSheetDataArray}
-                    currentView={currentView}
-                  />
-                }
-                {currentView == 'shared' &&
-                  <SheetContainer
-                    title={'Sharing'}
-                    user={user}
-                    sheetDataArray={allSharedSheetDataArray}
-                    currentView={currentView}
-                  />
-                }
-                {currentView == 'archive' &&
-                  <SheetContainer
-                    title={'Archive'}
-                    user={user}
-                    sheetDataArray={allArchivedSheetDataArray}
-                    currentView={currentView}
-                  />
-                }
-                {currentView === 'datasheet' &&
-                  <Stack>
-                    <AlignItems justifyContent={'spaceBetween'}>
-                      <Heading
-                        type={'h1'}
-                        margin={'0 0 0.5em 0.5em'} 
-                      >
-                        Datasheets
-                      </Heading>
-                      <Button
-                       icon={<FiGrid/>}
-                       size={'small'}
-                       onClick={()=>router.push('/datasheet/')}
-                      >
-                        他のデータシートを見る
-                      </Button>
-                    </AlignItems>
-                    <Stack gap={'0'}>
-                      {
-                        dataSheetData?.docs.map((datasheet) =>{
-                          return (
-                            <DataSheetButton
-                              key={datasheet.id}
-                              size={'large'}
-                              public={datasheet.data().public}
-                              dataSheetId={datasheet.id}
-                              imageSource={datasheet.data().dataSheetImageUrl}
-                              subtitle={datasheet.data().dataSheetDescription}
-                              onClick={()=>router.push(`/datasheet/${datasheet.id}/`)}
+                <DetailedContentStyled>
+                  {currentView == 'main' &&
+                    <SheetContainer
+                      title={'Main'}
+                      user={user}
+                      sheetDataArray={allSheetDataArray}
+                      currentView={currentView}
+                    />
+                  }
+                  {currentView == 'shared' &&
+                    <SheetContainer
+                      title={'Sharing'}
+                      user={user}
+                      sheetDataArray={allSharedSheetDataArray}
+                      currentView={currentView}
+                    />
+                  }
+                  {currentView == 'archive' &&
+                    <SheetContainer
+                      title={'Archive'}
+                      user={user}
+                      sheetDataArray={allArchivedSheetDataArray}
+                      currentView={currentView}
+                    />
+                  }
+                  {currentView === 'datasheet' &&
+                    <Stack>
+                      <AlignItems justifyContent={'spaceBetween'}>
+                        <Heading
+                          type={'h1'}
+                          margin={'0 0 0.5em 0.5em'} 
+                        >
+                          Datasheets
+                        </Heading>
+                        <Button
+                        icon={<FiGrid/>}
+                        size={'small'}
+                        onClick={()=>router.push('/datasheet/')}
+                        >
+                          他のデータシートを見る
+                        </Button>
+                      </AlignItems>
+                      <Stack gap={'0'}>
+                        {
+                          dataSheetData?.docs.map((datasheet) =>{
+                            return (
+                              <DataSheetButton
+                                key={datasheet.id}
+                                size={'large'}
+                                public={datasheet.data().public}
+                                dataSheetId={datasheet.id}
+                                imageSource={datasheet.data().dataSheetImageUrl}
+                                subtitle={datasheet.data().dataSheetDescription}
+                                onClick={()=>router.push(`/datasheet/${datasheet.id}/`)}
+                              >
+                                {datasheet.data().dataSheetName}
+                              </DataSheetButton>
+                            )
+                          })
+                        }
+                        {dataSheetData?.docs.length == 0 &&
+                          <Container styleType={'gradient'}>
+                            <AlignItems
+                              justifyContent={'center'}
                             >
-                              {datasheet.data().dataSheetName}
-                            </DataSheetButton>
-                          )
-                        })
-                      }
-                      {dataSheetData?.docs.length == 0 &&
-                        <Container styleType={'gradient'}>
-                          <AlignItems
-                            justifyContent={'center'}
-                          >
-                            <FiDatabase/>
-                            <h4>
-                              データシートなし
-                            </h4>
-                          </AlignItems>
-                        </Container>
-                      }
+                              <FiDatabase/>
+                              <h4>
+                                データシートなし
+                              </h4>
+                            </AlignItems>
+                          </Container>
+                        }
+                      </Stack>
                     </Stack>
-                  </Stack>
-                }
+                  }
+                </DetailedContentStyled>
               </DashBoardAlignStyled>
               <Footer shadow>
                 <AlignItems justifyContent={'center'}>

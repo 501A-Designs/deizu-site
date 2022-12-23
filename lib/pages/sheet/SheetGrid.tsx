@@ -80,7 +80,7 @@ export default function SheetGrid(props:EditorProps) {
                   <SubjectCell
                     key={cellId}
                     viewOnly={viewOnly}
-                    cellData={sheetData?.cells[cellId]}
+                    cellData={sheetData?.cells && sheetData?.cells[cellId]}
                     cellId={cellId}
                     dataSheetData={dataSheetData?.data()}
                     user={user}

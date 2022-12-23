@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useRouter } from 'next/router';
 import { FiCalendar, FiCheck } from 'react-icons/fi';
 import { styled } from '../../../stitches.config';
@@ -17,6 +17,7 @@ import { SheetDocTypes } from '../../../pages/user/[userId]';
 import { SheetDataTypes } from '../sheet/Editor';
 import Heading from '../../component/Heading';
 import LinkTag from '../../component/LinkTag';
+import { scheduleCellId } from '../../data/scheduleCellId';
 
 interface SheetContainerProps {
   title:string,
@@ -59,18 +60,42 @@ export default function SheetContainer(props:SheetContainerProps) {
   const [v2SheetData, loadingV2SheetData] = useDocument<DocumentData>(userDoc);
 
   const convertV2toV3 = async () =>{
+    let updatedObject:object;
+    let updateObjCloneObjectAssign = (obj:any, key1:any, key2:any, v:any)=> {
+      const newObj = Object.assign({}, obj)
+      newObj[key1][key2] = v;
+      updatedObject = newObj;
+    }
     const scheduleGridCollection:any = collection(db, `users/${props.user?.uid}/scheduleGrid/`)
+    const scheduleCellIdFlat = scheduleCellId.flat(1);
     await Object.keys(v2SheetData?.data()?.sheets).map(sheet => {
+      let cellsDataObject = v2SheetData?.data()?.sheets[sheet]?.cells;
+      scheduleCellIdFlat.map(cellId =>{
+        let cellData = cellsDataObject[cellId];
+        let newColor;
+        if (cellData && cellData[cellId+'Color']) {
+          let cellColor = cellData[cellId+'Color'];
+          if(cellColor ==  "#ff9999") newColor = '$red7';
+          if(cellColor ==  "#add8e6") newColor = '$blue7';
+          if(cellColor ==  "#ffde88") newColor = '$amber7';
+          if(cellColor ==  "#90ee90") newColor = '$green7';
+          if(cellColor ==  "#ffc0cb") newColor = '$pink7';
+          if(cellColor ==  "#ffceff") newColor = '$purple7';
+          if(cellColor ==  "#e4c997") newColor = '$brown7';
+          if(cellColor ==  "#97e4c0") newColor = '$teal7';
+          if(cellColor ==  "#ffc74e") newColor = '$orange7';
+          updateObjCloneObjectAssign(cellsDataObject,cellId,cellId+'Color',newColor)
+        }
+      })
       addDoc(scheduleGridCollection,{
         title:sheet,
         sharing:false,
-        cells:v2SheetData?.data()?.sheets[sheet].cells ? v2SheetData?.data()?.sheets[sheet].cells:{},
-        // dataSheetId:v2SheetData?.data()?.sheets[sheet]?.dataSheetId === undefined ? '':v2SheetData?.data()?.sheets[sheet]?.dataSheetId,
+        cells:v2SheetData?.data()?.sheets[sheet].cells && updatedObject,
+        time:v2SheetData?.data()?.sheets[sheet].time && v2SheetData?.data()?.sheets[sheet].time,
         date: serverTimestamp(),
         bannerImageUrl:v2SheetData?.data()?.[sheet]?.bannerImageUrl === undefined ?
         '':v2SheetData?.data()?.[sheet].bannerImageUrl,
-        backgroundImageUrl:v2SheetData?.data()?.[sheet]?.backgroundImageUrl === undefined ?
-        '':v2SheetData?.data()?.[sheet].backgroundImageUrl,
+        backgroundImageUrl:v2SheetData?.data()?.[sheet]?.backgroundImageUrl && v2SheetData?.data()?.[sheet].backgroundImageUrl,
         archived:false
       })
     })
@@ -100,7 +125,7 @@ export default function SheetContainer(props:SheetContainerProps) {
           }
         >
           <ul>
-            <li><LinkTag href={'/'}>v3の変更一覧</LinkTag></li>
+            <li><LinkTag href={'/updates'}>v3の変更一覧</LinkTag></li>
             <li><LinkTag href={'/'}>具体的な技術的な変更（ブログ記事）</LinkTag></li>
           </ul>
         </Alert>:

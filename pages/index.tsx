@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { NextSeo } from 'next-seo';
 
 import Button from '../lib/button/Button'
-import NavFooter from '../lib/component/NavFooter'
+import { BlurHeader } from '../lib/component/BlurHeader'
 import Container from '../lib/component/Container'
 
 import AlignItems from '../lib/style/AlignItems'
@@ -11,7 +11,7 @@ import AlignItems from '../lib/style/AlignItems'
 import appIcon from '../public/deizuAppIconUpdated.png'
 import { useRouter } from 'next/router'
 
-import { FiArrowRightCircle, FiArrowUpCircle } from 'react-icons/fi';
+import { FiArrowRightCircle } from 'react-icons/fi';
 import Stack from '../lib/style/Stack';
 import { styled } from '../stitches.config';
 import MockUp from '../lib/pages/landing/MockUp';
@@ -86,45 +86,38 @@ export default function Home() {
           cardType: 'summary_large_image',
         }}
       />
-      <div
-        className={'sidePadding'}
-        style={{
-          display:'flex',
-          justifyContent: 'center'
-        }}
+      <BlurHeader />
+      <AlignItems
+        flexDirection={'column'}
+        justifyContent={'center'}
       >
         <AlignItems
-          flexDirection={'column'}
-          justifyContent={'center'}
+          marginTop={'small'}
+          gap={'medium'}
         >
-          <AlignItems
-            marginTop={'small'}
-            gap={'medium'}
-          >
-            <Image
-              src={appIcon}
-              width={45}
-              height={45}
-              alt={'Application Icon'}
-            />
-            <h1 style={{fontWeight:'900'}}>Deizu</h1>
-          </AlignItems>
-          <p>時間割作成、履修の記録を効率的に。</p>
-          <MockUp/>
-          <AlignItems
-            marginTop={'medium'}
-            gap={'medium'}
-          >
-            <Button
-              styleType={'fill'}
-              onClick={() =>router.push('/app')}
-              icon={<FiArrowRightCircle/>}
-            >
-              今すぐ始める
-            </Button>
-          </AlignItems>
+          <Image
+            src={appIcon}
+            width={40}
+            height={40}
+            alt={'Application Icon'}
+          />
+          <h1 style={{fontWeight:'900'}}>Deizu</h1>
         </AlignItems>
-      </div>
+        <p>時間割作成、履修の記録を効率的に。</p>
+        <MockUp/>
+        <AlignItems
+          marginTop={'medium'}
+          gap={'medium'}
+        >
+          <Button
+            styleType={'fill'}
+            onClick={() =>router.push('/app')}
+            icon={<FiArrowRightCircle/>}
+          >
+            今すぐ始める
+          </Button>
+        </AlignItems>
+      </AlignItems>
       {/* <hr/> */}
       <DuoGridStyled>
         <AlignItems style={{justifyContent: 'center'}}>
@@ -159,7 +152,7 @@ export default function Home() {
           <Container styleType={'transparent'}>
             <Stack gap={'$2'}>
               {featureList.map(listContent => {
-                return <BlockListStyled>{listContent}</BlockListStyled>
+                return <BlockListStyled key={listContent}>{listContent}</BlockListStyled>
               })}
             </Stack>
           </Container>
@@ -201,7 +194,6 @@ export default function Home() {
           </Container>
         </AlignItems>
       </DuoGridStyled>
-      <NavFooter />
     </BodyMargin>
   )
 }
