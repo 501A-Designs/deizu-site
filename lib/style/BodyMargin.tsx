@@ -3,16 +3,16 @@ import { styled } from '../../stitches.config'
 
 const BodyMarginStyled = styled('div',{
 	'@bp1':{
-    padding:'0 5% 0 5%',
+    padding:'5% 5% 0 5%',
   },
 	'@bp2':{
-    padding:'0 7% 0 7%',
+    padding:'3% 7% 0 7%',
   },
 	'@bp3':{
-    padding:'0 10% 0 10%',
+    padding:'4% 10% 0 10%',
   },
 	'@bp4':{
-    padding:'0 15% 0 15%',
+    padding:'4% 15% 0 15%',
   },
   backgroundColor:'$gray1',
 })

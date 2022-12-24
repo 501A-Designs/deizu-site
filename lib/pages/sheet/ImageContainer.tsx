@@ -1,6 +1,7 @@
 import randomGradient from 'random-gradient'
-import React,{useState} from 'react'
+import React from 'react'
 import { styled } from '../../../stitches.config'
+import Menu from '../../component/Menu'
 
 const ImageContainerStyled = styled('div',{
   backgroundAttachment:'fixed',
@@ -14,6 +15,9 @@ const ImageContainerStyled = styled('div',{
 const DisplayOnHover = styled('div',{
   opacity:'0',
   transition:'$speed1',
+  '&:focus-visible':{
+    opacity:'1',
+  }
 })
 
 const ImageContainerOverlay = styled('div',{
@@ -60,7 +64,7 @@ interface ImageContainerProps{
   title:string
 }
 
-export default function ImageContainer(props:ImageContainerProps) {
+function ImageContainerComponent(props:ImageContainerProps) {
   return (
     <ImageContainerStyled
       css={{
@@ -78,5 +82,68 @@ export default function ImageContainer(props:ImageContainerProps) {
         <DisplayOnHover>{props.children}</DisplayOnHover>
       </ImageContainerOverlay>
     </ImageContainerStyled>
+  )
+}
+
+
+export default function ImageContainer(props:any) {
+return (
+    <>
+      {props.hideMenu ?
+        <ImageContainerStyled
+          css={{
+            backgroundImage:`${props.src ? `url(${props.src})` :'none'}`,
+            background:`${!props.src && randomGradient(props.id)}`,
+            height: '250px',
+          }}
+        >
+          <ImageContainerOverlay
+            css={{
+              height: '250px'
+            }}
+          >
+            <LargeHeading>{props.title}</LargeHeading>
+            <DisplayOnHover>{props.children}</DisplayOnHover>
+          </ImageContainerOverlay>
+        </ImageContainerStyled>:
+        <Menu
+          title={'基本設定'}
+          trigger={
+            <ImageContainerStyled
+              css={{
+                backgroundImage:`${props.src ? `url(${props.src})` :'none'}`,
+                background:`${!props.src && randomGradient(props.id)}`,
+                height: '250px',
+              }}
+            >
+              <ImageContainerOverlay
+                css={{
+                  height: '250px'
+                }}
+              >
+                <LargeHeading>{props.title}</LargeHeading>
+                <DisplayOnHover>{props.children}</DisplayOnHover>
+              </ImageContainerOverlay>
+            </ImageContainerStyled>
+          }
+        >
+          {/* <Menu.Item
+            // onSelect={()=>saveSheetImageUrl()}
+            onSelect={()=>alert('vruh')}
+            icon={<FiImage/>}
+          >
+            バナー画像を追加
+          </Menu.Item>
+          <Menu.Item
+            // onSelect={()=>updateTitle()}
+            onSelect={()=>alert('vruh')}
+            icon={<FiEdit3/>}
+          >
+            名前を変更
+          </Menu.Item> */}
+          {props.menuItem}
+        </Menu>
+      }
+    </>
   )
 }

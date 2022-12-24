@@ -18,7 +18,7 @@ import moment from 'moment';
 
 // Firebase
 import { doc, updateDoc, collection, DocumentData, setDoc, deleteDoc } from "firebase/firestore";
-import { db } from "../../../src/service/firebase";
+import { copyAlert, db } from "../../../src/service/firebase";
 import { useCollection } from "react-firebase-hooks/firestore";
 import DataSheetButton from "../../button/DataSheetButton";
 import Input from "../../component/Input";
@@ -78,6 +78,11 @@ export default function Editor(props:EditorProps) {
   const saveDataSheetId = async() =>{
     await setDoc(sheetDocRef, {dataSheetId:dataSheetId}, { merge: true });
   }
+  
+  const shareSheet = async(shareBoolean:boolean) => {
+    setShareSheetState(shareBoolean)
+    await setDoc(sheetDocRef, {sharing:shareBoolean}, { merge: true });
+  }
 
   const saveSheetImageUrl = async () => {
     let url = prompt('バナー画像URL')
@@ -85,11 +90,6 @@ export default function Editor(props:EditorProps) {
       await setDoc(sheetDocRef, {bannerImageUrl:url}, { merge: true });
       setSheetBannerImageUrl(url)
     }
-  }
-
-  const shareSheet = async(shareBoolean:boolean) => {
-    setShareSheetState(shareBoolean)
-    await setDoc(sheetDocRef, {sharing:shareBoolean}, { merge: true });
   }
   
   const updateTitle = async () => {
@@ -118,211 +118,208 @@ export default function Editor(props:EditorProps) {
           status={'archived'}
         />
       }
-      <Menu
-        title={'基本設定'}
-        trigger={
-          <ImageContainer
-            id={sheetId}
-            src={sheetBannerImageUrl}
-            title={sheetTitle}
-          >
-            <AlignItems
-              marginBottom={'medium'}
+      <ImageContainer
+        hideMenu={viewOnly ? true:false}
+        id={sheetId}
+        src={sheetBannerImageUrl}
+        title={sheetTitle}
+        menuItem={
+          <>
+            <Menu.Item
+              onSelect={()=>saveSheetImageUrl()}
+              icon={<FiImage/>}
             >
-              {viewOnly ?
-                <>
-                  <Button
-                    size={'small'}
-                    icon={<FiLogIn/>}
-                    styleType={'outline'}
-                    onClick={() => router.push('/app')}
-                  >
-                    アカウント作成
-                  </Button>
-                  <Button
-                    icon={<FiEye/>}
-                    size={'small'}
-                  >
-                    閲覧中
-                  </Button>
-                </>:
-                <>
-                  <Button
-                    size={'icon'}
-                    icon={<FiHome/>}
-                    onClick={() => router.push(`/user/${user.uid}/`)}
-                  >
-                    ダッシュボード
-                  </Button>
-                  <Dialog
-                    title={'設定'}
-                    trigger={
-                      <Button
-                        size={'icon'}
-                        icon={<FiSettings/>}
-                      >
-                        設定
-                      </Button>
-                    }
-                  >
-                    {modalSection === 0 && <>
-                      <SectionButton
-                        onClick={()=>{
-                          setModalSection(1);
-                        }}
-                        leftIcon={<FiDatabase/>}
-                        rightIcon={<FiChevronRight/>}
-                      >
-                        データシートを繋げる
-                      </SectionButton>
-                      <SectionButton
-                        onClick={()=>setModalSection(2)}
-                        leftIcon={<FiUsers/>}
-                        rightIcon={<FiChevronRight/>}
-                      >
-                        共有設定
-                      </SectionButton>
-                      <SectionButton
-                        onClick={()=>setModalSection(3)}
-                        leftIcon={<FiAlertTriangle/>}
-                        rightIcon={<FiChevronRight/>}
-                      >
-                        デインジャーゾーン
-                      </SectionButton>
-                      <SectionButton
-                        onClick={()=>router.push('/about')}
-                        leftIcon={<FiInfo/>}
-                        rightIcon={<FiExternalLink/>}
-                      >
-                        Deizuについて
-                      </SectionButton></>
-                    }
-                    {modalSection !== 0 &&
-                      <Stack>
-                        <SectionButton
-                          onClick={()=>setModalSection(0)}
-                          leftIcon={<FiArrowLeft/>}
-                        >
-                          戻る
-                        </SectionButton>
-                        {modalSection === 1 && 
-                          <Stack>
-                            {sheetData?.dataSheetId && 
-                              <TextPreview justifyContent={'center'}>
-                                データシートに繋がっています
-                              </TextPreview>
-                            }
-                            <ScrollY>
-                              <Stack>
-                                {
-                                  dataSheetData?.docs.map(datasheet =>{
-                                    return (
-                                      <DataSheetButton
-                                        key={datasheet.id}
-                                        // displayAddButton={true}
-                                        dataSheetId={datasheet.id}
-                                        currentDataSheetId={dataSheetId}
-                                        imageSource={datasheet.data().dataSheetImageUrl}
-                                        subtitle={datasheet.data().dataSheetDescription}
-                                        onClick={()=>
-                                          setDataSheetId(datasheet.id)
-                                        }
-                                      >
-                                        {datasheet.data().dataSheetName}
-                                      </DataSheetButton>
-                                    )
-                                  })
-                                }
-                              </Stack>
-                            </ScrollY>
-                            <Stack>
-                              <Input
-                                fullWidth
-                                placeholder={'データシートID'}
-                                value={dataSheetId}
-                                onChange={(e)=>setDataSheetId(e.target.value)}
-                              />
-                              <Button
-                                disabled={dataSheetId ? false:true}
-                                icon={<FiGitBranch/>}
-                                onClick={()=>saveDataSheetId()}
-                              >
-                                データシートを繋げる
-                              </Button>
-                            </Stack>
-                          </Stack>
-                        }
-                        {modalSection === 2 &&         
-                          <>
-                            <AlignItems justifyContent={'spaceBetween'}>
-                              <p>{shareSheetState ? '現在共有中':'自分のみアクセス可能'}</p>
-                              <Toggle
-                                defaultChecked={shareSheetState}
-                                onClick={()=>shareSheet(!shareSheetState)}
-                              />
-                            </AlignItems>
-                            {shareSheetState &&
-                              <Stack>
-                                <p>
-                                  URLをコピーし他の人に送信することで時間割表を共有することができます。
-                                </p>
-                                <Button
-                                  icon={<FiCopy/>}
-                                  // onClick={() => copyAlert(`deizu.vercel.app/user/${user.uid}/sheet/${sheetData.title}`,'時間割表のリンク')}
-                                >
-                                  時間割表のリンクをコピー
-                                </Button>
-                              </Stack>
-                            }
-                          </>
-                        }
-                        {modalSection === 3 &&         
-                          <>
-                            <h3>デインジャーゾーン</h3>
-                            <AlignItems justifyContent={'spaceBetween'}>
-                              <p>「{sheetTitle}」を消去</p>
-                              <Button
-                                styleType={'red'}
-                                icon={<FiTrash2 />}
-                                onClick={async() => {
-                                    if (window.confirm("今開いている時間割表を消去したいですか？一度消去すると復旧することはできません。")) {
-                                      router.push('/app');
-                                      await deleteDoc(sheetDocRef);
-                                    }
-                                  }
-                                }
-                              >
-                                時間割表を消去
-                              </Button>
-                            </AlignItems>
-                          </>
-                        }
-                      </Stack>
-                    }
-                  </Dialog>
-                </>
-              }
-            </AlignItems>
-          </ImageContainer>
+              バナー画像を追加
+            </Menu.Item>
+            <Menu.Item
+              onSelect={()=>updateTitle()}
+              icon={<FiEdit3/>}
+            >
+              名前を変更
+            </Menu.Item>
+          </>
         }
       >
-        <Menu.Item
-          onSelect={()=>saveSheetImageUrl()}
+        <AlignItems
+          marginBottom={'medium'}
         >
-          <AlignItems>
-            <FiImage/>
-            バナー画像を追加
-          </AlignItems>
-        </Menu.Item>
-        <Menu.Item
-          onSelect={()=>updateTitle()}
-        >
-          <AlignItems>
-            <FiEdit3/>
-            名前を変更
-          </AlignItems>
-        </Menu.Item>
-      </Menu>
+          {viewOnly ?
+            <>
+              <Button
+                size={'small'}
+                icon={<FiLogIn/>}
+                styleType={'outline'}
+                onClick={() => router.push('/app')}
+              >
+                アカウント作成
+              </Button>
+              <Button
+                icon={<FiEye/>}
+                size={'small'}
+              >
+                閲覧中
+              </Button>
+            </>:
+            <>
+              <Button
+                size={'icon'}
+                icon={<FiHome/>}
+                onClick={() => router.push(`/user/${user.uid}/`)}
+              >
+                ダッシュボード
+              </Button>
+              <Dialog
+                title={'設定'}
+                trigger={
+                  <Button
+                    size={'icon'}
+                    icon={<FiSettings/>}
+                  >
+                    設定
+                  </Button>
+                }
+              >
+                {modalSection === 0 && 
+                  <>
+                    <SectionButton
+                      onClick={()=>{
+                        setModalSection(1);
+                      }}
+                      leftIcon={<FiDatabase/>}
+                      rightIcon={<FiChevronRight/>}
+                    >
+                      データシートを繋げる
+                    </SectionButton>
+                    <SectionButton
+                      onClick={()=>setModalSection(2)}
+                      leftIcon={<FiUsers/>}
+                      rightIcon={<FiChevronRight/>}
+                    >
+                      共有設定
+                    </SectionButton>
+                    <SectionButton
+                      onClick={()=>setModalSection(3)}
+                      leftIcon={<FiAlertTriangle/>}
+                      rightIcon={<FiChevronRight/>}
+                    >
+                      デインジャーゾーン
+                    </SectionButton>
+                    <SectionButton
+                      onClick={()=>router.push('/about')}
+                      leftIcon={<FiInfo/>}
+                      rightIcon={<FiExternalLink/>}
+                    >
+                      Deizuについて
+                    </SectionButton>
+                  </>
+                }
+                {modalSection !== 0 &&
+                  <Stack>
+                    <SectionButton
+                      onClick={()=>setModalSection(0)}
+                      leftIcon={<FiArrowLeft/>}
+                    >
+                      戻る
+                    </SectionButton>
+                    {modalSection === 1 && 
+                      <Stack>
+                        {sheetData?.dataSheetId && 
+                          <TextPreview justifyContent={'center'}>
+                            データシートに繋がっています
+                          </TextPreview>
+                        }
+                        <ScrollY>
+                          <Stack>
+                            {
+                              dataSheetData?.docs.map(datasheet =>{
+                                return (
+                                  <DataSheetButton
+                                    key={datasheet.id}
+                                    // displayAddButton={true}
+                                    dataSheetId={datasheet.id}
+                                    currentDataSheetId={dataSheetId}
+                                    imageSource={datasheet.data().dataSheetImageUrl}
+                                    subtitle={datasheet.data().dataSheetDescription}
+                                    onClick={()=>
+                                      setDataSheetId(datasheet.id)
+                                    }
+                                  >
+                                    {datasheet.data().dataSheetName}
+                                  </DataSheetButton>
+                                )
+                              })
+                            }
+                          </Stack>
+                        </ScrollY>
+                        <Stack>
+                          <Input
+                            fullWidth
+                            placeholder={'データシートID'}
+                            value={dataSheetId}
+                            onChange={(e)=>setDataSheetId(e.target.value)}
+                          />
+                          <Button
+                            disabled={dataSheetId ? false:true}
+                            icon={<FiGitBranch/>}
+                            onClick={()=>saveDataSheetId()}
+                          >
+                            データシートを繋げる
+                          </Button>
+                        </Stack>
+                      </Stack>
+                    }
+                    {modalSection === 2 &&         
+                      <>
+                        <AlignItems justifyContent={'spaceBetween'}>
+                          <p>{shareSheetState ? '現在共有中':'自分のみアクセス可能'}</p>
+                          <Toggle
+                            defaultChecked={shareSheetState}
+                            onClick={()=>shareSheet(!shareSheetState)}
+                          />
+                        </AlignItems>
+                        {shareSheetState &&
+                          <Stack>
+                            <p>
+                              URLをコピーし他の人に送信することで時間割表を共有することができます。
+                            </p>
+                            <Button
+                              icon={<FiCopy/>}
+                              onClick={() => copyAlert(`deizu.vercel.app/user/${user?.uid}/sheet/${sheetId}`)}
+                            >
+                              時間割表のリンクをコピー
+                            </Button>
+                          </Stack>
+                        }
+                      </>
+                    }
+                    {modalSection === 3 &&         
+                      <>
+                        <h3>デインジャーゾーン</h3>
+                        <AlignItems justifyContent={'spaceBetween'}>
+                          <p>「{sheetTitle}」を消去</p>
+                          <Button
+                            styleType={'red'}
+                            icon={<FiTrash2 />}
+                            onClick={async() => {
+                                if (window.confirm("今開いている時間割表を消去したいですか？一度消去すると復旧することはできません。")) {
+                                  router.push('/app');
+                                  await deleteDoc(sheetDocRef);
+                                }
+                              }
+                            }
+                          >
+                            時間割表を消去
+                          </Button>
+                        </AlignItems>
+                      </>
+                    }
+                  </Stack>
+                }
+              </Dialog>
+            </>
+          }
+        </AlignItems>
+      </ImageContainer>
 
       <BodyMargin>
         <Stack gap={'0.5em'}>

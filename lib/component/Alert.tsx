@@ -15,6 +15,7 @@ const StyledOverlay = styled(AlertDialog.Overlay, {
   backdropFilter: `blur(3px)`,
   position: 'fixed',
   inset: 0,
+  zIndex:1,
   '@media (prefers-reduced-motion: no-preference)': {
     animation: `${fadeIn} 150ms cubic-bezier(0.16, 1, 0.3, 1)`,
   },

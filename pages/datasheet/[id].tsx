@@ -13,12 +13,12 @@ import { useRouter } from 'next/router'
 
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth,copyAlert,db } from "../../src/service/firebase"
-import { doc, setDoc,arrayUnion, DocumentData } from "firebase/firestore";
+import { doc, setDoc,arrayUnion, DocumentData, updateDoc } from "firebase/firestore";
 
 import Input from '../../lib/component/Input';
 import Stack from '../../lib/style/Stack';
 
-import { FiLink2, FiLock, FiPlus, FiSave, FiSettings, FiTrash } from 'react-icons/fi';
+import { FiEdit3, FiImage, FiLink2, FiLock, FiPlus, FiSave, FiSettings, FiTrash } from 'react-icons/fi';
 import { useDocument } from 'react-firebase-hooks/firestore';
 import Heading from '../../lib/component/Heading';
 import Footer from '../../lib/component/Footer';
@@ -31,8 +31,8 @@ import Toggle from '../../lib/component/Toggle';
 
 import { buttonColor } from '../../lib/data/buttonColor';
 import DataSheetSubjectCell from '../../lib/pages/datasheet/DataSheetSubjectCell';
-import Container from '../../lib/component/Container';
 import Key from '../../lib/component/Key';
+import Menu from '../../lib/component/Menu';
 
 const HexGrid = styled('div',{
   display:'grid',
@@ -64,9 +64,9 @@ function IndivisualSheet() {
   const [subjectDescriptionInput, setSubjectDescriptionInput] = useState('')
   const [subjectColorInput, setSubjectColorInput] = useState('');
 
-  const [isPublic, setIsPublic] = useState(!dataSheetData?.data()?.public)
+  const [isPublic, setIsPublic] = useState(dataSheetData?.data()?.public)
+  const docRef = doc(db, `sheets/${dataSheetId}`);
   const togglePublicView = () =>{
-    const docRef = doc(db, "sheets", dataSheetId);
     setDoc(docRef,{public:!isPublic}, { merge: true });
     setIsPublic(!isPublic);
   }
@@ -75,30 +75,34 @@ function IndivisualSheet() {
     setDeleteMode(deleteMode ? false:true);
   }
 
-  useEffect(() => {
-    const down = (e:any) => {
-      if (e.key === 'x' && e.metaKey) {
-        if (confirm('消去モード有効しますか？')) { 
-          setDeleteMode(true);
-        }
-      }
-      if (e.key === 'z' && e.metaKey) {
-        setDeleteMode(false);
-      }
-    }
-    document.addEventListener('keydown', down)
-    return () => document.removeEventListener('keydown', down)
-  }, [])
-  
-
   let isOwner:boolean = false;
   if (dataSheetData?.data()?.ownerId == user?.uid) {
     isOwner = true;
   }
 
+  useEffect(() => {
+    if (isOwner) {      
+      const down = (e:any) => {
+        if (e.key === 'x' && e.metaKey) {
+          if (confirm('消去モード有効しますか？')) { 
+            setDeleteMode(true);
+          }
+        }
+        if (e.key === 'z' && e.metaKey) {
+          setDeleteMode(false);
+        }
+      }
+      document.addEventListener('keydown', down)
+      return () => document.removeEventListener('keydown', down)
+    }
+  }, [])
+
+  if (dataSheetData && dataSheetData?.data()?.dataSheetName == undefined) {
+    router.push('/datasheet');
+  }
+
   const insertNewSubjectData = async (e:any) => {
     e.preventDefault();
-    const docRef = doc(db, "sheets", dataSheetId);
     setDoc(docRef,
       {
         dataSheet:
@@ -114,6 +118,22 @@ function IndivisualSheet() {
     setSubjectLinkInput('');
     setSubjectDescriptionInput('');
     setSubjectColorInput('');
+  }
+
+  const saveSheetImageUrl = async () => {
+    let url = prompt('バナー画像URL')
+    if (url) {
+      await setDoc(docRef, {dataSheetImageUrl:url}, { merge: true });
+    }
+  }
+  
+  const updateTitle = async () => {
+    let newTitleValue = prompt('新しいタイトル')
+    if (newTitleValue) {
+      await updateDoc(docRef, {
+        dataSheetName:newTitleValue
+      })
+    }
   }
 
   interface DataSheetSubjectCellProps {
@@ -154,8 +174,26 @@ function IndivisualSheet() {
                 </Dialog>
               }
               <ImageContainer
+                hideMenu={!user ? true:false}
                 id={dataSheetId}
                 title={dataSheetData?.data()?.dataSheetName}
+                src={dataSheetData?.data()?.dataSheetImageUrl}
+                menuItem={
+                  <>
+                    <Menu.Item
+                      onSelect={()=>saveSheetImageUrl()}
+                      icon={<FiImage/>}
+                    >
+                      バナー画像を追加
+                    </Menu.Item>
+                    <Menu.Item
+                      onSelect={()=>updateTitle()}
+                      icon={<FiEdit3/>}
+                    >
+                      名前を変更
+                    </Menu.Item>
+                  </>
+                }
               >
                 <AlignItems
                   marginBottom={'medium'}
@@ -167,35 +205,37 @@ function IndivisualSheet() {
                   >
                     IDをコピー
                   </Button>
-                  <Dialog
-                    title={'データシートの設定'}
-                    trigger={
-                      <Button
-                        size={'icon'}
-                        icon={<FiSettings/>}
-                      >
-                        設定
-                      </Button>
-                    }
-                  >
-                    <AlignItems justifyContent={'spaceBetween'}>
-                      <p>一般公開</p>
-                      <Toggle
-                        defaultChecked={isPublic}
-                        onClick={()=>togglePublicView()}
-                      />
-                    </AlignItems>
-                    <AlignItems justifyContent={'spaceBetween'}>
-                      <p>削除モード</p>
-                      <Toggle
-                        defaultChecked={deleteMode}
-                        onClick={()=>toggleDeleteMode()}
-                      />
-                    </AlignItems>
-                    <p>
-                      ※消去モードは<Key>Cmd</Key>と<Key>X</Key>ですぐ切り替えることができ、<Key>Cmd</Key>と<Key>Z</Key>を押すと元に戻ることができます。
-                    </p>
-                  </Dialog>
+                  {isOwner &&                  
+                    <Dialog
+                      title={'データシートの設定'}
+                      trigger={
+                        <Button
+                          size={'icon'}
+                          icon={<FiSettings/>}
+                        >
+                          設定
+                        </Button>
+                      }
+                    >
+                      <AlignItems justifyContent={'spaceBetween'}>
+                        <p>一般公開</p>
+                        <Toggle
+                          defaultChecked={isPublic}
+                          onClick={()=>togglePublicView()}
+                        />
+                      </AlignItems>
+                      <AlignItems justifyContent={'spaceBetween'}>
+                        <p>削除モード</p>
+                        <Toggle
+                          defaultChecked={deleteMode}
+                          onClick={()=>toggleDeleteMode()}
+                        />
+                      </AlignItems>
+                      <p>
+                        ※消去モードは<Key>Cmd</Key>と<Key>X</Key>ですぐ切り替えることができ、<Key>Cmd</Key>と<Key>Z</Key>を押すと元に戻ることができます。
+                      </p>
+                    </Dialog>
+                  }
                 </AlignItems>
               </ImageContainer>
               <BodyMargin minHeight={'100vh'}>
@@ -220,7 +260,7 @@ function IndivisualSheet() {
                       })}
                     </>:
                     <>
-                      {/* {dataSheetData?.data()?.dataSheet.map(props =>{
+                      {dataSheetData?.data()?.dataSheet.map((props:any) =>{
                         return <MockupCell
                           key={props}
                           subjectName = {props.subjectName}
@@ -228,7 +268,7 @@ function IndivisualSheet() {
                           subjectColor = {props.subjectColor}
                           subjectDescription = {props.subjectDescription}
                         />
-                      })} */}
+                      })}
                     </>
                   }
                 </HexGrid>

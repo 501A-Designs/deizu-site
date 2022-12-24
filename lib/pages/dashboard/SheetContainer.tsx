@@ -34,24 +34,13 @@ const TotalText = styled('p',{
   userSelect:'none',
   width:'fit-content',
   marginTop:'$4',
-  backgroundColor:'$gray1',
+  backgroundColor:'$gray2',
   border:'1px solid $gray4',
   color:'$gray12',
-  padding:'$1 $3',
+  padding:'$1 $2',
   borderRadius:'$3',
   fontSize:'$s'
 })
-
-const tagsData = [
-  {
-    type:'archived',
-    name:'共有中'
-  },
-  {
-    type:'sharing',
-    name:'アーカイブ'
-  },
-]
 
 export default function SheetContainer(props:SheetContainerProps) {
   const router = useRouter();
@@ -70,32 +59,35 @@ export default function SheetContainer(props:SheetContainerProps) {
     const scheduleCellIdFlat = scheduleCellId.flat(1);
     await Object.keys(v2SheetData?.data()?.sheets).map(sheet => {
       let cellsDataObject = v2SheetData?.data()?.sheets[sheet]?.cells;
-      scheduleCellIdFlat.map(cellId =>{
-        let cellData = cellsDataObject[cellId];
-        let newColor;
-        if (cellData && cellData[cellId+'Color']) {
-          let cellColor = cellData[cellId+'Color'];
-          if(cellColor ==  "#ff9999") newColor = '$red7';
-          if(cellColor ==  "#add8e6") newColor = '$blue7';
-          if(cellColor ==  "#ffde88") newColor = '$amber7';
-          if(cellColor ==  "#90ee90") newColor = '$green7';
-          if(cellColor ==  "#ffc0cb") newColor = '$pink7';
-          if(cellColor ==  "#ffceff") newColor = '$purple7';
-          if(cellColor ==  "#e4c997") newColor = '$brown7';
-          if(cellColor ==  "#97e4c0") newColor = '$teal7';
-          if(cellColor ==  "#ffc74e") newColor = '$orange7';
-          updateObjCloneObjectAssign(cellsDataObject,cellId,cellId+'Color',newColor)
-        }
-      })
+      if (cellsDataObject !== undefined) {        
+        scheduleCellIdFlat.map(cellId =>{
+          let newColor;
+          if (cellsDataObject[cellId] && cellsDataObject[cellId][cellId+'Color']) {
+            let cellColor = cellsDataObject[cellId][cellId+'Color'];
+            if(cellColor ==  "#ff9999") newColor = '$red7';
+            if(cellColor ==  "#add8e6") newColor = '$blue7';
+            if(cellColor ==  "#ffde88") newColor = '$amber7';
+            if(cellColor ==  "#90ee90") newColor = '$green7';
+            if(cellColor ==  "#ffc0cb") newColor = '$pink7';
+            if(cellColor ==  "#ffceff") newColor = '$purple7';
+            if(cellColor ==  "#e4c997") newColor = '$brown7';
+            if(cellColor ==  "#97e4c0") newColor = '$teal7';
+            if(cellColor ==  "#ffc74e") newColor = '$orange7';
+            updateObjCloneObjectAssign(cellsDataObject,cellId,cellId+'Color',newColor)
+          }
+        })
+      }
+
+      console.log(v2SheetData?.data()?.sheets[sheet].cells,updatedObject,)
       addDoc(scheduleGridCollection,{
         title:sheet,
         sharing:false,
-        cells:v2SheetData?.data()?.sheets[sheet].cells && updatedObject,
-        time:v2SheetData?.data()?.sheets[sheet].time && v2SheetData?.data()?.sheets[sheet].time,
+        cells:v2SheetData?.data()?.sheets[sheet].cells !== undefined && updatedObject,
+        time:v2SheetData?.data()?.sheets[sheet].time !== undefined && v2SheetData?.data()?.sheets[sheet].time,
         date: serverTimestamp(),
         bannerImageUrl:v2SheetData?.data()?.[sheet]?.bannerImageUrl === undefined ?
         '':v2SheetData?.data()?.[sheet].bannerImageUrl,
-        backgroundImageUrl:v2SheetData?.data()?.[sheet]?.backgroundImageUrl && v2SheetData?.data()?.[sheet].backgroundImageUrl,
+        backgroundImageUrl:v2SheetData?.data()?.[sheet]?.backgroundImageUrl !== '' || v2SheetData?.data()?.[sheet]?.backgroundImageUrl && v2SheetData?.data()?.[sheet].backgroundImageUrl,
         archived:false
       })
     })
@@ -121,7 +113,7 @@ export default function SheetContainer(props:SheetContainerProps) {
           }
           title={'v3へ対応'}
           description={
-            'Deizu v3のリリース基づき時間割表の保存の方法を大幅に変更いたしました。今まで作成した時間割表を引き続き使用するができますのでご安心ください。'
+            'Deizu v3のリリース基づき時間割表の保存の方法を大幅に変更いたしました。今まで作成した時間割表を引き続き使用する事ができますのでご安心ください。'
           }
         >
           <ul>

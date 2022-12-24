@@ -4,7 +4,7 @@ import { FiPlus, FiArrowLeft } from "react-icons/fi";
 import { NextSeo } from 'next-seo';
 
 
-import { addDoc, collection, DocumentData, getDocs, query, where } from "firebase/firestore";
+import { addDoc, collection, DocumentData, query, where } from "firebase/firestore";
 
 // Button Component
 import Button from '../../lib/button/Button';

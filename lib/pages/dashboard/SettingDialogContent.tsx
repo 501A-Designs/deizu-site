@@ -1,18 +1,15 @@
-import React,{useEffect, useState} from 'react'
-import SectionButton from '../../button/SectionButton';
+// import React,{useEffect, useState} from 'react'
+// import SectionButton from '../../button/SectionButton';
 import Stack from '../../style/Stack';
 
-import {FiChevronLeft, FiChevronRight, FiImage, FiSave, FiSmile} from 'react-icons/fi'
 import Container from '../../component/Container';
 import AlignItems from '../../style/AlignItems';
 import Heading from '../../component/Heading';
 import Toggle from '../../component/Toggle';
-import Button from '../../button/Button';
 import { useTheme } from 'next-themes';
-import Notify from '../../component/Notify';
 
 export default function SettingDialogContent() {
-  const [modalSection, setModalSection] = useState(0);
+  // const [modalSection, setModalSection] = useState(0);
   const { theme, setTheme } = useTheme();
   const toggleTheme = () => {
     setTheme(theme === "light" ? "dark" : "light")
@@ -20,7 +17,7 @@ export default function SettingDialogContent() {
 
   return (
     <Stack>
-      {modalSection === 0 && 
+      {/* {modalSection === 0 && 
         <Stack>
           <SectionButton
             leftIcon={<FiImage/>}
@@ -61,7 +58,19 @@ export default function SettingDialogContent() {
             </AlignItems>
           </Container>
         }
-      </Stack>
+      </Stack> */}
+      <Container index={'inner'}>
+        <Heading type={'h3'}>
+          ダークモード
+        </Heading>
+        <AlignItems justifyContent={'spaceBetween'}>
+          <p>UI全体が暗く表示されます。</p>
+          <Toggle
+            defaultChecked={theme === "dark"}
+            onClick={()=>toggleTheme()}
+          />
+        </AlignItems>
+      </Container>
     </Stack>
   )
 }

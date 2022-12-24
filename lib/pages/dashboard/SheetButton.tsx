@@ -1,11 +1,9 @@
 import React from 'react'
-import * as ContextMenu from '@radix-ui/react-context-menu';
 
-import { FiArchive, FiCornerRightUp, FiCornerUpLeft, FiEdit3, FiLink, FiUsers } from 'react-icons/fi'
+import { FiArchive, FiCornerUpLeft, FiEdit3, FiLink, FiUsers } from 'react-icons/fi'
 import { FiTrash } from 'react-icons/fi';
 import { styled } from '../../../stitches.config';
 import AlignItems from '../../style/AlignItems';
-import { TooltipLabel } from '../../component/TooltipLabel';
 import Tag from '../../component/Tag';
 import Stack from '../../style/Stack';
 import moment from 'moment';
@@ -73,7 +71,6 @@ const ButtonImageStyled = styled('img', {
 
 // interface
 export default function SheetButton(props:any) {
-  const router = useRouter();
   let user = props.user;
   let sheetTitle:string = props.children;
   const sheetId:string = props.sheetId;

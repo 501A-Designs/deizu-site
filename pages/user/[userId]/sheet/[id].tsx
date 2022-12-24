@@ -6,15 +6,13 @@ import StaticScene from '../../../../lib/style/StaticScene';
 import { useRouter } from 'next/router'
 
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { useCollection, useDocument, useDocumentData } from 'react-firebase-hooks/firestore';
+import { useDocument } from 'react-firebase-hooks/firestore';
 
 import { auth,db } from "../../../../src/service/firebase"
 import { doc, DocumentData } from "firebase/firestore";
 
 import Editor from '../../../../lib/pages/sheet/Editor';
 import { styled } from '../../../../stitches.config';
-import StatusBar from '../../../../lib/component/StatusBar';
-import { FiArchive, FiUsers } from 'react-icons/fi';
 
 function IndivisualSheet() {
   const router = useRouter();

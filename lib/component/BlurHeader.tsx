@@ -4,7 +4,7 @@ export const BlurHeader = styled('div',{
   position: 'sticky',
   top: 0,
   zIndex: 1000,
-  marginBottom:'-35px',
+  marginBottom:'-30px',
   height: '50px',
   backdropFilter: 'blur(5px)',
   WebkitBackdropFilter: 'blur(5px)',

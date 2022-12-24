@@ -6,6 +6,7 @@ import { ThemeProvider } from "next-themes";
 import { darkTheme, globalCss } from '../stitches.config';
 import * as Toast from '@radix-ui/react-toast';
 import Link from 'next/link';
+import { BlurHeader } from '../lib/component/BlurHeader';
 
 const globalStyles = globalCss({
   html:{
@@ -61,6 +62,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           dark: darkTheme.className
         }}
       >
+        {/* <BlurHeader/> */}
         <Toast.Provider swipeDirection={'down'}>
           <Component {...pageProps} />
         </Toast.Provider>

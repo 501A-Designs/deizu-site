@@ -20,7 +20,7 @@ import 'moment/locale/ja';
 import Stack from '../../../lib/style/Stack';
 
 import { NextSeo } from 'next-seo';
-import { FiChevronLeft, FiChevronRight, FiEdit2, FiImage, FiPlus, FiSave, FiSmile,FiArchive, FiCircle, FiExternalLink, FiFolder, FiFolderPlus, FiHeart, FiMoreHorizontal, FiDatabase, FiUsers, FiSettings, FiGrid, FiCalendar } from 'react-icons/fi';
+import { FiArchive, FiFolder, FiDatabase, FiUsers, FiSettings, FiGrid } from 'react-icons/fi';
 
 import SheetContainer from '../../../lib/pages/dashboard/SheetContainer';
 import Dialog from '../../../lib/component/Dialog';
@@ -37,6 +37,8 @@ import CreateNewDialogContent from '../../../lib/pages/dashboard/CreateNewDialog
 import DataSheetButton from '../../../lib/button/DataSheetButton';
 import CreateNewButton from '../../../lib/component/CreateNewButton';
 import Container from '../../../lib/component/Container';
+import { BlurHeader } from '../../../lib/component/BlurHeader';
+import LinkTag from '../../../lib/component/LinkTag';
 
 const DashBoardAlignStyled = styled('div',{
   minHeight:'100vh',
@@ -44,10 +46,8 @@ const DashBoardAlignStyled = styled('div',{
     gap:'1em',
   },
   '@bp2_':{
-    // display:'grid',
-    // gridTemplateColumns:'1fr 6fr',
-    display:'flex',
-    justifyContent:'space-between',
+    display:'grid',
+    gridTemplateColumns:'1fr 6fr',
     gap:'2em',
   }
 })
@@ -56,15 +56,17 @@ const SideBarContainerStyled = styled('div',{
   top:'$1',
   position:'sticky',
   background:'$gray1',
-  zIndex:'1000',
   display:'flex',
   gap:'$1',
   alignItems:'center',
+  zIndex:'1',
+
   '@bp1':{
     justifyContent:'space-between',
     flexDirection:'row',
     width:'100%',
     marginBottom:'$4',
+    top:'$4',
     border:'1px solid $gray4',
     borderRadius:'$3',
     padding:'$2',
@@ -89,8 +91,7 @@ const SideBarStyled = styled('div',{
 })
 
 const DetailedContentStyled = styled('section',{
-  marginTop:'$4',
-  // background:'red',
+  marginTop:'$2',
 })
 
 export interface SheetDocTypes{
@@ -127,6 +128,7 @@ function IndivisualUser() {
             title={`ダッシュボード`}
             description={`${user.displayName?.split(' ')[0]}さんのDeizuダッシュボード`}
           />
+          <BlurHeader/>
           {user.uid == userId &&
             <BodyMargin>
               <DashBoardAlignStyled>
@@ -157,7 +159,7 @@ function IndivisualUser() {
                       selected={currentView == 'shared'}
                       onClick={()=> setCurrentView('shared')}
                     >
-                      時間割表を開く
+                      共有中を開く
                     </SideButton>
                     <SideButton
                       icon={<FiArchive/>}
@@ -171,7 +173,7 @@ function IndivisualUser() {
                       selected={currentView == 'datasheet'}
                       onClick={()=> setCurrentView('datasheet')}
                     >
-                      作成したデータシートを見る
+                      作成したデータシート
                     </SideButton>
                     <Dialog
                       title={'設定'}
@@ -188,6 +190,30 @@ function IndivisualUser() {
                   </SideBarStyled>
                 </SideBarContainerStyled>
                 <DetailedContentStyled>
+                  {allSheetDataArray && 
+                    <>
+                      {
+                        allSheetDataArray?.docs.length >= 5 &&
+                        <Container
+                          index={'inner'}
+                          styleType={'filled'}
+                          marginBottom={'1.5em'}
+                        >
+                          <p>使わない時間割表は左クリックするとアーカイブする事ができます。（モバイル端末をご使用の場合は長押し）</p>
+                        </Container>
+                      }
+                      {
+                        allSheetDataArray?.docs.length == 0 &&
+                        <Container
+                          index={'inner'}
+                          styleType={'filled'}
+                          marginBottom={'1.5em'}
+                        >
+                          <p>初めての時間割表を作成してみよう！（データシートに関しては<LinkTag href={'/usage'}>ここらから</LinkTag>使い方を知る）</p>
+                        </Container>
+                      }
+                    </>
+                  }
                   {currentView == 'main' &&
                     <SheetContainer
                       title={'Main'}

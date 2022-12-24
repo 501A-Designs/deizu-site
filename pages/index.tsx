@@ -54,39 +54,40 @@ export default function Home() {
   ]
 
   return (
+    <>
+    <NextSeo
+      title="Deizu"
+      description="時間割表を作成するサイト"
+      openGraph={{
+        url: '/deizu-og-image.png',
+        title: 'Deizu',
+        description: '時間割表を作成するサイト',
+        images: [
+          {
+            url: '/deizu-og-image.png',
+            width: 800,
+            height: 600,
+            alt: 'Deizu OG Image',
+            type: 'image/png',
+          },
+          {
+            url: '/deizu-og-image.png',
+            width: 900,
+            height: 800,
+            alt: 'Deizu OG Image',
+            type: 'image/png',
+          },
+        ],
+        // siteName: 'Deizu',
+      }}
+      twitter={{
+        handle: '@handle',
+        site: '@site',
+        cardType: 'summary_large_image',
+      }}
+    />
+    <BlurHeader />
     <BodyMargin>
-      <NextSeo
-        title="Deizu"
-        description="時間割表を作成するアプリ"
-        openGraph={{
-          url: '/deizu-og-image.png',
-          title: 'Deizu',
-          description: '時間割表を作成するアプリ',
-          images: [
-            {
-              url: '/deizu-og-image.png',
-              width: 800,
-              height: 600,
-              alt: 'Deizu OG Image',
-              type: 'image/png',
-            },
-            {
-              url: '/deizu-og-image.png',
-              width: 900,
-              height: 800,
-              alt: 'Deizu OG Image',
-              type: 'image/png',
-            },
-          ],
-          // siteName: 'Deizu',
-        }}
-        twitter={{
-          handle: '@handle',
-          site: '@site',
-          cardType: 'summary_large_image',
-        }}
-      />
-      <BlurHeader />
       <AlignItems
         flexDirection={'column'}
         justifyContent={'center'}
@@ -103,7 +104,7 @@ export default function Home() {
           />
           <h1 style={{fontWeight:'900'}}>Deizu</h1>
         </AlignItems>
-        <p>時間割作成、履修の記録を効率的に。</p>
+        <p>誰もが予定管理を効率的に。</p>
         <MockUp/>
         <AlignItems
           marginTop={'medium'}
@@ -135,9 +136,7 @@ export default function Home() {
             yDegree={'-2deg'}
           >
             <h2>v3.0.0</h2>
-            {/* <h4>ミニマル</h4> */}
             <ul>
-              <li>APIコールの削減</li>
               <li>モバイルに適したレイアウト</li>
               <li>データシートのセルの消去・編集</li>
               <li>配色を2種類にまで削減</li>
@@ -195,5 +194,6 @@ export default function Home() {
         </AlignItems>
       </DuoGridStyled>
     </BodyMargin>
+    </>
   )
 }

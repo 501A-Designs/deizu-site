@@ -15,6 +15,8 @@ import { db } from '../../../src/service/firebase';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { useRouter } from 'next/router';
 import { styled } from '../../../stitches.config';
+import Link from 'next/link';
+import LinkTag from '../../component/LinkTag';
 
 
 const SelectBackdropContainerStyled = styled('section',{
