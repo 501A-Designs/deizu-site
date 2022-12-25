@@ -67,10 +67,9 @@ export default function StatusBar(props:any) {
   }, [compact]);
 
   return (
-    <StatusBarContainerStyled
-      onClick={props.onClick}
-    >
+    <StatusBarContainerStyled>
       <StatusBarStyled
+        onClick={props.onClick}
         status={
           props.status == 'private' ||
           props.status == 'viewOnly' ?

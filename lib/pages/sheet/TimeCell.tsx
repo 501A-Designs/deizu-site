@@ -174,10 +174,13 @@ export default function TimeCell(props:TimeCellProps) {
   }
 
   return (
-    <Dialog
-      title={viewOnly ? '編集不可能':displayPeriod+'限目の時間'}
-      trigger={
-        <TimeContainerStyled css={{borderRadius:`${timeContainerDynamicBorderRadius()}`}}>
+    <>
+      {viewOnly ?
+        <TimeContainerStyled
+          css={{
+            borderRadius:`${timeContainerDynamicBorderRadius()}`
+          }}
+        >
           {timeStart ? 
             <TimeStyled>
               {timeStart}
@@ -193,43 +196,62 @@ export default function TimeCell(props:TimeCellProps) {
             </TimeStyled>:
             <br/>
           }
-        </TimeContainerStyled>
-      }
-    >
-      {viewOnly ?
-        <p>編集するにはオーナーにDeizuのユーザーIDを共有する必要があります。</p>:
-        <Stack gap={'1em'}>
-          <AlignItems justifyContent={'center'}>
-            <TextPreview>
-              {timeStart ? timeStart:'開始時'}
-            </TextPreview>
-            <span>〜</span>
-            <TextPreview>
-              {timeEnd ? timeEnd:'終了時'}
-            </TextPreview>
-          </AlignItems>
-          <Stack>
-            <Input
-              type={'time'}
-              value={timeStart}
-              onChange={(e)=>setTimeStart(e.target.value)}
-              placeholder={'開始時'}
-            />
-            <Input
-              type={'time'}
-              value={timeEnd}
-              onChange={(e)=>setTimeEnd(e.target.value)}
-              placeholder={'終了時'}
-            />
+        </TimeContainerStyled>:
+        <Dialog
+          title={viewOnly ? '編集不可能':displayPeriod+'限目の時間'}
+          trigger={
+            <TimeContainerStyled css={{borderRadius:`${timeContainerDynamicBorderRadius()}`}}>
+              {timeStart ? 
+                <TimeStyled>
+                  {timeStart}
+                </TimeStyled>:
+                <br/>
+              }
+              <TimePeriodStyled>
+                <h3>{props.displayPeriod}</h3>
+              </TimePeriodStyled>
+              {timeEnd ? 
+                <TimeStyled>
+                  {timeEnd}
+                </TimeStyled>:
+                <br/>
+              }
+            </TimeContainerStyled>
+          }
+        >
+          <Stack gap={'1em'}>
+            <AlignItems justifyContent={'center'}>
+              <TextPreview>
+                {timeStart ? timeStart:'開始時'}
+              </TextPreview>
+              <span>〜</span>
+              <TextPreview>
+                {timeEnd ? timeEnd:'終了時'}
+              </TextPreview>
+            </AlignItems>
+            <Stack>
+              <Input
+                type={'time'}
+                value={timeStart}
+                onChange={(e)=>setTimeStart(e.target.value)}
+                placeholder={'開始時'}
+              />
+              <Input
+                type={'time'}
+                value={timeEnd}
+                onChange={(e)=>setTimeEnd(e.target.value)}
+                placeholder={'終了時'}
+              />
+            </Stack>
+            <Button
+              icon={<FiSave/>}
+              onClick={(e)=>saveTimeData(e)}
+            >
+              時間を保存
+            </Button>
           </Stack>
-          <Button
-            icon={<FiSave/>}
-            onClick={(e)=>saveTimeData(e)}
-          >
-            時間を保存
-          </Button>
-        </Stack>
+        </Dialog>
       }
-    </Dialog>
+    </>
   )
 }
