@@ -64,12 +64,13 @@ const DataSheetButtonStyled = styled('div',{
 
 const DataSheetButtonImageStyled = styled('div', {
   borderRadius:'$2',
-  border: '1px solid $gray2',
+  border: '1px solid $gray4',
   variants:{
     imageSource:{
       true:{
         objectFit: 'cover',
         backgroundSize: 'cover',
+        backgroundPosition:'center'
       }
     },
     size:{

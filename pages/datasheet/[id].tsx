@@ -13,12 +13,12 @@ import { useRouter } from 'next/router'
 
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth,copyAlert,db } from "../../src/service/firebase"
-import { doc, setDoc,arrayUnion, DocumentData, updateDoc } from "firebase/firestore";
+import { doc, setDoc,arrayUnion, DocumentData, updateDoc, deleteDoc } from "firebase/firestore";
 
 import Input from '../../lib/component/Input';
 import Stack from '../../lib/style/Stack';
 
-import { FiEdit3, FiImage, FiLink2, FiLock, FiPlus, FiSave, FiSettings, FiTrash } from 'react-icons/fi';
+import { FiEdit3, FiImage, FiLink2, FiLock, FiPlus, FiSave, FiSettings, FiTrash, FiTrash2 } from 'react-icons/fi';
 import { useDocument } from 'react-firebase-hooks/firestore';
 import Heading from '../../lib/component/Heading';
 import Footer from '../../lib/component/Footer';
@@ -64,11 +64,9 @@ function IndivisualSheet() {
   const [subjectDescriptionInput, setSubjectDescriptionInput] = useState('')
   const [subjectColorInput, setSubjectColorInput] = useState('');
 
-  const [isPublic, setIsPublic] = useState(dataSheetData?.data()?.public)
   const docRef = doc(db, `sheets/${dataSheetId}`);
   const togglePublicView = () =>{
-    setDoc(docRef,{public:!isPublic}, { merge: true });
-    setIsPublic(!isPublic);
+    setDoc(docRef,{public:!dataSheetData?.data()?.public}, { merge: true });
   }
 
   const toggleDeleteMode = () => {
@@ -79,23 +77,6 @@ function IndivisualSheet() {
   if (dataSheetData?.data()?.ownerId == user?.uid) {
     isOwner = true;
   }
-
-  useEffect(() => {
-    if (isOwner) {      
-      const down = (e:any) => {
-        if (e.key === 'x' && e.metaKey) {
-          if (confirm('消去モード有効しますか？')) { 
-            setDeleteMode(true);
-          }
-        }
-        if (e.key === 'z' && e.metaKey) {
-          setDeleteMode(false);
-        }
-      }
-      document.addEventListener('keydown', down)
-      return () => document.removeEventListener('keydown', down)
-    }
-  }, [])
 
   if (dataSheetData && dataSheetData?.data()?.dataSheetName == undefined) {
     router.push('/datasheet');
@@ -152,9 +133,9 @@ function IndivisualSheet() {
       {!dataSheetData ?
         <StaticScene type="loading"/>:
         <>
-          {user ? 
+          {user ?
             <>
-              {!dataSheetData?.data()?.public &&
+              {!dataSheetData?.data()?.public && isOwner &&
                 <Dialog
                   title={'権限を切り替える'}
                   trigger={
@@ -165,16 +146,16 @@ function IndivisualSheet() {
                   }
                 >
                   <AlignItems justifyContent={'spaceBetween'}>
-                    <p>一般公開</p>
+                    <p>誰でも編集可能に</p>
                     <Toggle
-                      defaultChecked={isPublic}
+                      defaultChecked={dataSheetData?.data()?.public}
                       onClick={()=>togglePublicView()}
                     />
                   </AlignItems>
                 </Dialog>
               }
               <ImageContainer
-                hideMenu={!user ? true:false}
+                hideMenu={isOwner ? false:true}
                 id={dataSheetId}
                 title={dataSheetData?.data()?.dataSheetName}
                 src={dataSheetData?.data()?.dataSheetImageUrl}
@@ -218,9 +199,9 @@ function IndivisualSheet() {
                       }
                     >
                       <AlignItems justifyContent={'spaceBetween'}>
-                        <p>一般公開</p>
+                        <p>誰でも編集可能に</p>
                         <Toggle
-                          defaultChecked={isPublic}
+                          defaultChecked={dataSheetData?.data()?.public}
                           onClick={()=>togglePublicView()}
                         />
                       </AlignItems>
@@ -231,9 +212,22 @@ function IndivisualSheet() {
                           onClick={()=>toggleDeleteMode()}
                         />
                       </AlignItems>
-                      <p>
-                        ※消去モードは<Key>Cmd</Key>と<Key>X</Key>ですぐ切り替えることができ、<Key>Cmd</Key>と<Key>Z</Key>を押すと元に戻ることができます。
-                      </p>
+                      <hr/>
+                      <AlignItems justifyContent={'spaceBetween'}>
+                        <p>このデータシートを削除</p>
+                        <Button
+                          styleType={'red'}
+                          icon={<FiTrash2/>}
+                          onClick={async() => {
+                            if (window.confirm("今開いているデータシートを消去したいですか？一度消去すると復旧することはできません。")) {
+                              router.push('/datasheet');
+                              await deleteDoc(docRef);
+                            }
+                          }}
+                        >
+                          削除
+                        </Button>
+                      </AlignItems>
                     </Dialog>
                   }
                 </AlignItems>
@@ -275,64 +269,130 @@ function IndivisualSheet() {
               </BodyMargin>
               {user &&
                 <Footer shadow>
-                  <AlignItems justifyContent={'center'}>
-                    <Dialog
-                      title={'データを追加'}
-                      trigger={<CreateNewButton/>}
-                    >
-                      <Stack>
-                        <AlignItems justifyContent={'center'}>
-                          <MockupCell
-                            styleType={'display'}
-                            subjectName = {subjectNameInput}
-                            subjectLink = {subjectLinkInput}
-                            subjectColor = {subjectColorInput}
-                            subjectDescription = {subjectDescriptionInput}
-                          />
-                        </AlignItems>
-                        <AlignItems
-                          marginTop={'medium'}
-                          marginBottom={'medium'}
-                          justifyContent={'center'}
-                        >
-                          {buttonColor.map((props)=>
-                            <ColorButton
-                              key={props}
-                              color={props}
-                              onClick={() => {
-                                setSubjectColorInput(props);
-                              }}
+                  {console.log(dataSheetData?.data()?.public, isOwner)}
+                  {
+                    dataSheetData?.data()?.public ?
+                    <AlignItems justifyContent={'center'}>
+                      <Dialog
+                        title={'データを追加'}
+                        trigger={<CreateNewButton/>}
+                      >
+                        <Stack>
+                          <AlignItems justifyContent={'center'}>
+                            <MockupCell
+                              styleType={'display'}
+                              subjectName = {subjectNameInput}
+                              subjectLink = {subjectLinkInput}
+                              subjectColor = {subjectColorInput}
+                              subjectDescription = {subjectDescriptionInput}
                             />
-                          )}
+                          </AlignItems>
+                          <AlignItems
+                            marginTop={'medium'}
+                            marginBottom={'medium'}
+                            justifyContent={'center'}
+                          >
+                            {buttonColor.map((props)=>
+                              <ColorButton
+                                key={props}
+                                color={props}
+                                onClick={() => {
+                                  setSubjectColorInput(props);
+                                }}
+                              />
+                            )}
+                          </AlignItems>
+                          <Input
+                            fullWidth
+                            value={subjectNameInput}
+                            onChange={(e)=>setSubjectNameInput(e.target.value)}
+                            placeholder={'科目名'}
+                          />
+                          <Input
+                            fullWidth
+                            value={subjectDescriptionInput}
+                            onChange={(e)=>setSubjectDescriptionInput(e.target.value)}
+                            placeholder={'科目の概要'}
+                          />
+                          <Input
+                            fullWidth
+                            value={subjectLinkInput}
+                            onChange={(e)=>setSubjectLinkInput(e.target.value)}
+                            placeholder={'URLリンク'}
+                          />
+                          <Button
+                            disabled={subjectNameInput ? false:true}
+                            onClick={(e) => insertNewSubjectData(e)}
+                            icon={<FiPlus/>}
+                          >
+                            追加
+                          </Button>
+                        </Stack>
+                      </Dialog>
+                    </AlignItems>:
+                    <>
+                      {isOwner &&
+                        <AlignItems justifyContent={'center'}>
+                          <Dialog
+                            title={'データを追加'}
+                            trigger={<CreateNewButton/>}
+                          >
+                            <Stack>
+                              <AlignItems justifyContent={'center'}>
+                                <MockupCell
+                                  styleType={'display'}
+                                  subjectName = {subjectNameInput}
+                                  subjectLink = {subjectLinkInput}
+                                  subjectColor = {subjectColorInput}
+                                  subjectDescription = {subjectDescriptionInput}
+                                />
+                              </AlignItems>
+                              <AlignItems
+                                marginTop={'medium'}
+                                marginBottom={'medium'}
+                                justifyContent={'center'}
+                              >
+                                {buttonColor.map((props)=>
+                                  <ColorButton
+                                    key={props}
+                                    color={props}
+                                    onClick={() => {
+                                      setSubjectColorInput(props);
+                                    }}
+                                  />
+                                )}
+                              </AlignItems>
+                              <Input
+                                fullWidth
+                                value={subjectNameInput}
+                                onChange={(e)=>setSubjectNameInput(e.target.value)}
+                                placeholder={'科目名'}
+                              />
+                              <Input
+                                fullWidth
+                                value={subjectDescriptionInput}
+                                onChange={(e)=>setSubjectDescriptionInput(e.target.value)}
+                                placeholder={'科目の概要'}
+                              />
+                              <Input
+                                fullWidth
+                                value={subjectLinkInput}
+                                onChange={(e)=>setSubjectLinkInput(e.target.value)}
+                                placeholder={'URLリンク'}
+                              />
+                              <Button
+                                disabled={subjectNameInput ? false:true}
+                                onClick={(e) => insertNewSubjectData(e)}
+                                icon={<FiPlus/>}
+                              >
+                                追加
+                              </Button>
+                            </Stack>
+                          </Dialog>
                         </AlignItems>
-                        <Input
-                          fullWidth
-                          value={subjectNameInput}
-                          onChange={(e)=>setSubjectNameInput(e.target.value)}
-                          placeholder={'科目名'}
-                        />
-                        <Input
-                          fullWidth
-                          value={subjectDescriptionInput}
-                          onChange={(e)=>setSubjectDescriptionInput(e.target.value)}
-                          placeholder={'科目の概要'}
-                        />
-                        <Input
-                          fullWidth
-                          value={subjectLinkInput}
-                          onChange={(e)=>setSubjectLinkInput(e.target.value)}
-                          placeholder={'URLリンク'}
-                        />
-                        <Button
-                          disabled={subjectNameInput ? false:true}
-                          onClick={(e) => insertNewSubjectData(e)}
-                          icon={<FiPlus/>}
-                        >
-                          追加
-                        </Button>
-                      </Stack>
-                    </Dialog>
-                  </AlignItems>
+                      }
+                    </>
+                  }
                 </Footer>
               }
             </>:

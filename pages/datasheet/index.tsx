@@ -40,12 +40,12 @@ const DuoGrid = styled('div',{
 export default function Index() {
   const router = useRouter()
   const [user] = useAuthState(auth);
-  const [dataSheetData] = useCollection<DocumentData>(query(collection(db, "sheets"),where('public','==', true)))
+  const [dataSheetData] = useCollection<DocumentData>(query(collection(db, "sheets")))
 
 
   const [sheetLoading, setSheetLoading] = useState(false)
   const [dataSheetName, setDataSheetName] = useState('')
-  const [dataSheetImageUrl, setDataSheetImageUrl] = useState('')
+  // const [dataSheetImageUrl, setDataSheetImageUrl] = useState('')
   const [dataSheetDescription, setDataSheetDescription] = useState('')
 
   const createDataSheet = async (e:any) =>{
@@ -54,8 +54,8 @@ export default function Index() {
     const docRef = await addDoc(collection(db, "sheets"), {
       dataSheet:[],
       dataSheetName:dataSheetName,
-      dataSheetImageUrl:dataSheetImageUrl,
       dataSheetDescription:dataSheetDescription,
+      // dataSheetImageUrl:dataSheetImageUrl,
       ownerId:user?.uid
     });
     router.push(`/datasheet/${docRef.id}/`)
@@ -137,12 +137,12 @@ export default function Index() {
                     onChange={(e)=>setDataSheetDescription(e.target.value)}
                     placeholder={'データシートの概要・説明'}
                   />
-                  <Input
+                  {/* <Input
                     fullWidth
                     value={dataSheetImageUrl}
                     onChange={(e)=>setDataSheetImageUrl(e.target.value)}
                     placeholder={'画像URL'}
-                  />
+                  /> */}
                   
                   <Button
                     icon={<FiPlus/>}

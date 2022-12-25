@@ -108,7 +108,20 @@ export default function Editor(props:EditorProps) {
         <>
           {viewOnly ?
             <StatusBar status={'viewOnly'}/>:
-            <StatusBar status={'sharing'}/>
+            <Dialog
+              title={'共有設定'}
+              trigger={
+                <StatusBar status={'sharing'}/>
+              }
+            >
+              <AlignItems justifyContent={'spaceBetween'}>
+                <p>現在共有中</p>
+                <Toggle
+                  defaultChecked={shareSheetState}
+                  onClick={()=>shareSheet(!shareSheetState)}
+                />
+              </AlignItems>
+            </Dialog>
           }
         </>
       }

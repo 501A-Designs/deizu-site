@@ -118,7 +118,7 @@ export default function SheetContainer(props:SheetContainerProps) {
         >
           <ul>
             <li><LinkTag href={'/updates'}>v3の変更一覧</LinkTag></li>
-            <li><LinkTag href={'/'}>具体的な技術的な変更（ブログ記事）</LinkTag></li>
+            <li><LinkTag href={'https://zenn.dev/501a/articles/4caad38e2e82cd/'}>具体的な技術的な変更（ブログ記事）</LinkTag></li>
           </ul>
         </Alert>:
         <Stack gap={'0'}>

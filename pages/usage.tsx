@@ -23,66 +23,57 @@ export default function Usage() {
           justifyContent={'center'}
           marginBottom={'extraLarge'}
         >
-          <Heading type={'h1'}>Deizuの使用法</Heading>
+          <Heading type={'h1'}>データシートの使用法</Heading>
           <Heading type={'h4'}>ちょっとややこしい部分を解説</Heading>
         </AlignItems>
-        <Heading type={'h2'}>データシートの使用法</Heading>
         <Container
-          // index={'inner'}
-          styleType={'gradient'}
           marginTop={'1em'}
           marginBottom={'2em'}
         >
           <Heading type={'h3'}>データシートとは？</Heading>
           <p>
-            Deizuには時間割ごとでデータシートというものを追加することができます。データシートはある項目にそって時間割の科目をまとまって保存されているものであり、データシートをある時間割に追加することで科目の入力がより素早くなります。
+            Deizuには時間割ごとでデータシートというものを追加することができます。データシートはある項目にそった科目を保存できる場所です。データシートを時間割に追加するとで科目を入力する際に表示され、時間割の入力が少し速くなります。
+            <br/>
+            ※例えば〇〇大学の〇〇学部の生徒がデータシートを作成すると、同じ〇〇大の〇〇学部の生徒が使うことができます。
           </p>
         </Container>
         <Heading type={'h3'}>時間割表にデータシートを追加</Heading>
-        <ol>
-          <li>データシートのIDをコピー</li>
-          <Container
-            styleType={'filled'}
-            marginTop={'0.5em'}
-            marginBottom={'1.5em'}
-          >
-            <p>
-              データシートにはそれぞれユニークなIDがあり、データシートのIDをコピする事で時間割表に追加することができます。
-              <br />
-              IDはデータシートの一覧のページのデータシートのボタンの左にある丸いアイコンを押すことでコピーすることができます。
-              <br />
-              またボタンを押しデータシートのページを開くと移動するURLの後ろの部分からもIDを抽出することができます。（下記を参照）
-            </p>
-            <TextPreview>
-              deizu.vercel.app/datasheet/データシートID
-            </TextPreview>
-          </Container>
-          <li>時間割表に追加</li>
-          <Container
-            styleType={'filled'}
-            marginTop={'0.5em'}
-            marginBottom={'1.5em'}
-          >
-            <p>
-              データシートを追加したい時間割表を開き、一番右に見られる設定のアイコンを押してください。
-              <br />
-              設定を開くと一番上にある、「データシートを繋げる」を押し、1でコピーしたデータシートのIDをインプットに入力し「データシートを繋げる」と書いたボタンを押すとデータシートが時間割表に追加されます。
-            </p>
-          </Container>
-          <li>確認</li>
-          <Container
-            styleType={'filled'}
-            marginTop={'0.5em'}
-            marginBottom={'1.5em'}
-          >
-            <p>
-              追加されると追加したデータシートの名前が入力した欄の上に表示され、設定を閉じ時間割表のセルを開くとデータシートに保存されている科目の一覧が表示されます。横スクロールし、追加したい科目をクリックすると科目の情報が入力されます。追加で「概要」または「URL」の部分に情報を書き込むことができ、追加で入力する情報はデータシートには共有されないので安心してください。
-            </p>
-          </Container>
-        </ol>
+        <Container
+          styleType={'gradient'}
+          marginTop={'0.5em'}
+          marginBottom={'1.5em'}
+        >
+          <Heading type={'h4'}>
+            時間割表から直接データシートを繋げる方法
+          </Heading>
+          <p>
+            データシートを追加したい時間割表を開き、一番右に見られる設定のアイコンを押してください。
+            <br />
+            設定を開くと一番上にある、「データシートを繋げる」を押し、繋げたいデータシートをクリック。これをした後、「データシートを繋げる」と書いたボタンを押すことでデータシートが時間割表に追加されます。
+            <br/>
+            ※データシートにはそれぞれユニークなIDがあり、データシートのIDをコピ-する事で時間割表に追加することができます。
+            <hr/>
+          </p>
+          <Heading type={'h4'}>
+            データシートのページから追加する方法
+          </Heading>
+          <p>
+            使いたいデータシートを開き、右側の方にある「IDをコピー」と書いてあるボタンを押すことでIDをコピーすることができます。このコピーしたIDは接続したい時間割表の設定画面に表示されるインプットに入力し、追加する事ができます。
+          </p>
+        </Container>
+        <Heading type={'h3'}>データシートを使う上で</Heading>
+        <Container
+          styleType={'gradient'}
+          marginTop={'0.5em'}
+          marginBottom={'1.5em'}
+        >
+          <p>
+            追加されると追加したデータシートの名前が入力した欄の上に表示され、設定を閉じ時間割表のセルを開くとデータシートに保存されている科目の一覧が表示されます。横スクロールし、追加したい科目をクリックすると科目の情報が入力されます。追加で「概要」または「URL」の部分に情報を書き込むことができ、追加で入力する情報はデータシートには共有されないので安心してください。
+          </p>
+        </Container>
         <Heading type={'h3'}>データシートを作成</Heading>
         <Container
-          styleType={'filled'}
+          styleType={'gradient'}
           marginTop={'0.5em'}
           marginBottom={'1.5em'}
         >
@@ -90,13 +81,7 @@ export default function Usage() {
             データシート一覧のページからデータシートを新しく作成することができます（以下のURL）
           </p>
           <TextPreview>
-            deizu.vercel.app/datasheet/
-          </TextPreview>
-          <p>
-            なおデータシート作成のページに直接飛びたい人は以下のURLで開くことができます（Deizuにログインする必要がございます。新規登録・ログインは<LinkTag href="/app">こちら</LinkTag>から）
-          </p>
-          <TextPreview>
-            deizu.vercel.app/datasheet/create/
+            <LinkTag href={'/datasheet'}>deizu.vercel.app/datasheet/</LinkTag>
           </TextPreview>
         </Container>
       </BodyMargin>
