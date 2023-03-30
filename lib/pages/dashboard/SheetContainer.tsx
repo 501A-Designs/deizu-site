@@ -77,8 +77,6 @@ export default function SheetContainer(props:SheetContainerProps) {
           }
         })
       }
-
-      console.log(v2SheetData?.data()?.sheets[sheet].cells,updatedObject,)
       addDoc(scheduleGridCollection,{
         title:sheet,
         sharing:false,

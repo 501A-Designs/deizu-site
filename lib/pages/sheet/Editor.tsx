@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import {  FiArrowLeft, FiEye, FiAlertTriangle, FiChevronRight, FiCopy, FiDatabase, FiExternalLink, FiHome, FiImage, FiInfo, FiLogIn, FiSettings, FiTrash2, FiUsers, FiGitBranch, FiEdit3, FiArchive } from 'react-icons/fi';
+import {  FiArrowLeft, FiAlertTriangle, FiChevronRight, FiCopy, FiDatabase, FiExternalLink, FiHome, FiImage, FiInfo, FiSettings, FiTrash2, FiUsers, FiGitBranch, FiEdit3, FiArchive } from 'react-icons/fi';
 
 // Components
 import Stack from "../../style/Stack";

@@ -10,7 +10,6 @@ import moment from 'moment';
 import Heading from '../../component/Heading';
 import Menu from '../../component/Menu';
 import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
-import { useRouter } from 'next/router';
 import { copyAlert, db } from '../../../src/service/firebase';
 import randomGradient from 'random-gradient';
 

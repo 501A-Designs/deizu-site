@@ -96,7 +96,6 @@ export default function DataSheetSubjectCell(props:any) {
           <Stack>
             <AlignItems justifyContent={'center'}>
               <MockupCell
-                // key={props}
                 subjectName = {subjectNameInput}
                 subjectLink = {subjectLinkInput}
                 subjectColor = {subjectColorInput}
